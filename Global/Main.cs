@@ -127,6 +127,7 @@ namespace cotf
             bg0;
         public static Image[] trapTexture = new Image[TrapID.Sets.Total];
         public static Image[] chainTexture = new Image[1];
+        public static Image[] wallTexture = new Image[4];
         //public static KeyStates EscState = KeyStates.None;
         public static Camera camera1 = new Camera();
         public static Vector2 MouseWorld;

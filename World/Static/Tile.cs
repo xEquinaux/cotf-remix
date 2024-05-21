@@ -58,7 +58,7 @@ namespace cotf.World
         {
             owner = 255;
             defaultColor = Color.LightGray;
-
+                                            
             //  Brush style texture init
             Bitmap bmp = new Bitmap(50, 50);
             using (Graphics gfx = Graphics.FromImage(bmp))

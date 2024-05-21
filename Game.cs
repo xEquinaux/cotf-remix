@@ -252,11 +252,15 @@ namespace cotf
             Main.pixel = Asset<Image>.Request("pixel");
             Main.fow = Asset<Image>.Request("fow");
             Main.fow50 = Asset<Image>.Request("fow50");
-            Main.square = Asset<Image>.Request("background");
+            Main.square = Asset<Image>.Request("Ground/background");
             Main.grass = Asset<Image>.Request("small");
             for (int i = 0; i < Main.trapTexture.Length; i++)
             {
                 Main.trapTexture[i] = Main.texture90;
+            }
+            for (int i = 1; i <= 4; i++)
+            {
+                Main.wallTexture[i] = Asset<Image>.Request($"Walls/wall{i}");
             }
             Main.chainTexture[0] = Asset<Image>.Request("chain");
         }
