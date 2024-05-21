@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <UseWindowsForms>true</UseWindowsForms>
+	<ImplicitUsings>true</ImplicitUsings>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Item\Prefix\**" />
+    <Compile Remove="Item\Suffix\**" />
+    <EmbeddedResource Remove="Item\Prefix\**" />
+    <EmbeddedResource Remove="Item\Suffix\**" />
+    <None Remove="Item\Prefix\**" />
+    <None Remove="Item\Suffix\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Textures\background.png" />
+    <None Remove="Textures\bg.png" />
+    <None Remove="Textures\chain.png" />
+    <None Remove="Textures\fow.png" />
+    <None Remove="Textures\fow50.png" />
+    <None Remove="Textures\item0.png" />
+    <None Remove="Textures\loot0.png" />
+    <None Remove="Textures\npc1.png" />
+    <None Remove="Textures\pixel.png" />
+    <None Remove="Textures\projectile0.png" />
+    <None Remove="Textures\scenery0.png" />
+    <None Remove="Textures\small.png" />
+    <None Remove="Textures\temp.png" />
+    <None Remove="Textures\temp90.png" />
+    <None Remove="Textures\trap0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.5" />
+	  <Referece Include="System.Drawing.Common">
+		  <HintPath>C:\Program Files (x86)\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.6\System.Drawing.Common.dll</HintPath>
+	  </Referece>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Textures\background.png" />
+    <Resource Include="Textures\bg.png" />
+    <Resource Include="Textures\chain.png" />
+    <Resource Include="Textures\fow.png" />
+    <Resource Include="Textures\fow50.png" />
+    <Resource Include="Textures\scenery0.png" />
+    <Resource Include="Textures\loot0.png" />
+    <Resource Include="Textures\npc1.png" />
+    <Resource Include="Textures\projectile0.png" />
+    <Resource Include="Textures\trap0.png" />
+    <Resource Include="Textures\pixel.png" />
+    <Resource Include="Textures\small.png" />
+    <Resource Include="Textures\item0.png" />
+    <Resource Include="Textures\temp.png" />
+    <Resource Include="Textures\temp90.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Native">
+      <HintPath>..\..\..\Downloads\Native.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Common">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\tModLoader\Libraries\system.drawing.common\6.0.0\lib\net6.0\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="tUserInterface">
+      <HintPath>..\..\..\Downloads\tUserInterface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
+    <Message Text="Restoring dotnet tools" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>
