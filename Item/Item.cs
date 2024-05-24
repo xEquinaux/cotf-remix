@@ -22,6 +22,7 @@ namespace cotf
         public bool channel;
         public bool autoReuse;
         public bool isCoin = false;
+        public bool identified = false;
         public short
             useTime,
             useSpeed;
@@ -93,16 +94,19 @@ namespace cotf
         }
         public static void RollStatus(Item item)
         {
-            int rand = Main.rand.Next(3);
+            int rand = Main.rand.Next(4);
             switch (rand)
             {
                 default:
-                case 0:
+                case 0:     // rolls nothing
                     break;
                 case 1:
                     item.Cursed(true);
                     break;
                 case 2:
+                    item.Enchanted(true);
+                    break;
+               case 3:
                     item.Enchanted(true);
                     break;
             }
@@ -111,10 +115,20 @@ namespace cotf
         {
             if (flag)
             {
-                //  trait = //Add an enchantment
-                //  EnchantedStats();
-                borderColor = Color.LightSkyBlue;
-                cursed = false;
+                if (Main.rand.NextBool(2))
+                {
+                    suffix = new Suffix();
+                    suffix.Apply(suffix.RollTrait(true));
+                    borderColor = Color.LightSkyBlue;
+                    cursed = false;
+                }
+                if (Main.rand.NextBool(2))
+                {
+                    prefix = new Prefix();
+                    prefix.Apply(prefix.RollTrait(true));
+                    borderColor = Color.LightSkyBlue;
+                    cursed = false;
+                }
             }
             return enchanted = flag;
         }
@@ -122,25 +136,32 @@ namespace cotf
         {
             if (flag)
             {
-                //trait = //Add a Curse
-                CursedStats();
-                borderColor = Color.Purple;
-                enchanted = false;
+                if (Main.rand.NextBool(2))
+                { 
+                    suffix.Apply(suffix.RollTrait(false));
+                    borderColor = Color.Purple;
+                    enchanted = false;
+                }
+                if (Main.rand.NextBool(2))
+                {
+                    prefix.Apply(prefix.RollTrait(false));
+                    borderColor = Color.Purple;
+                    enchanted = false;
+                }
             }
             return cursed = flag;
         }
-        protected virtual void CursedStats()
-        {
-        }
-        protected virtual void EnchantedStats()
-        {
-        }
         public virtual void OnEquip(Player player)
         {
-            if (this.cursed)
+            if (!this.identified)
             {
-                player.ApplyCurse(this);
+                RollStatus(this);
+                IdentifyItem(this);
             }
+        }
+        public static void IdentifyItem(Item item)
+        {
+            item.identified = true;
         }
         public bool EquipItem(Player myPlayer)
         {

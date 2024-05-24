@@ -190,8 +190,8 @@ namespace cotf
             CurrentFloor = 1;
         public static int netMode = 0;
         private static int floorNum = 1; // Default is set to start at floor 1
-        public static int offX => Main.myPlayer.width;
-        public static int offY => Main.myPlayer.height;
+        public static int offX => 1;//-Main.myPlayer.width;
+        public static int offY => 1;//-Main.myPlayer.height;
         public static int ScreenX
         {
             get { return screenX; }

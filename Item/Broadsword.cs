@@ -12,7 +12,7 @@ using ToolTip = cotf.Base.ToolTip;
 
 namespace cotf
 {
-    public class Broadsword : Item, ITrait, IAffix
+    public class Broadsword : Item
     {
         protected override Color rarity => base.rarity;
         public override ToolTip ToolTip => toolTip;

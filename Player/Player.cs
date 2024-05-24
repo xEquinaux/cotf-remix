@@ -95,8 +95,10 @@ namespace cotf
             //  Need to reorient draw init positions
             FindRandomTile();
             int item = Item.NewItem(X, Y, 32, 32, ItemID.Torch, (byte)this.whoAmI);
-            PickupItem(ref Main.item[item]);
+            EquipTorch(Main.item[item]);
+            //PickupItem(ref Main.item[item]);
             //lamp.active = false;
+            //inventory[3] = item;
         }
         public void FindRandomTile(bool moveToTile = true)
         {
@@ -147,7 +149,7 @@ namespace cotf
             //  Inventory interaction
             if (Main.open)
             {
-                Point offset = new System.Drawing.Point(mouse.X + -Main.offX, mouse.Y + -Main.offY);
+                Point offset = new System.Drawing.Point(mouse.X + UI.Button.offX, mouse.Y + UI.Button.offY);
                 if (itemTextBox == null || !itemTextBox.active)
                 { 
                     for (int i = 0; i < Item.nearby.Count; i++)

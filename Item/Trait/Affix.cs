@@ -17,6 +17,7 @@ namespace cotf.Base
             //  A default player variables class perhaps
         public abstract string GetName(Item item);
             //return item.name = $"{prefix} {item.Name} {suffix}";
+        public abstract ITrait RollTrait(bool enchanted);
     }
     public interface IAffix
     {
@@ -59,6 +60,17 @@ namespace cotf.Base
         public virtual void RemoveEffect(Player player)
         {
         }
+
+        public virtual ITrait RollTrait(bool enchanted)
+        {
+            int rand = Main.rand.Next(4);
+            switch (rand)
+            {
+                default:
+                case 0:
+                    return new Summoning();
+            }    
+        }
     }
     public class Suffix : ITrait, IAffix
     {
@@ -94,6 +106,17 @@ namespace cotf.Base
 
         public virtual void RemoveEffect(Player player)
         {
+        }
+
+        public virtual ITrait RollTrait(bool enchanted)
+        {
+            int rand = Main.rand.Next(4);
+            switch (rand)
+            {
+                default:
+                case 0:
+                    return new Summoning();
+            }    
         }
     }
 }

@@ -59,8 +59,8 @@ namespace cotf
             internal int index = 0;
             public override int X => (int)position.X;
             public override int Y => (int)position.Y;
-            private int offX => -Main.myPlayer.width;
-            private int offY => -Main.myPlayer.height;
+            public static int offX => -Main.myPlayer.width;
+            public static int offY => -Main.myPlayer.height;
             private Font font = System.Drawing.SystemFonts.DialogFont;
             private new Rectangle box => new Rectangle(parent.padded.Right - (Button.Width + 10) * (index + 1), parent.padded.Bottom + Button.Height, Width, Height);
             private Rectangle padded => new Rectangle(box.X - margin.Left, box.Y - margin.Top, box.Width + margin.Right * 2, box.Height + margin.Bottom * 2);

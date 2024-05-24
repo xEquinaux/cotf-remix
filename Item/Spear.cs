@@ -42,10 +42,6 @@ namespace cotf
             Item.RollStatus(this);
             base.Init();
         }
-        protected override void CursedStats()
-        {
-            base.CursedStats();
-        }
         public override bool UseItem(Player myPlayer)
         {
             return base.UseItem(myPlayer);

@@ -60,10 +60,10 @@ namespace cotf.World
             defaultColor = Color.LightGray;
                                             
             //  Brush style texture init
-            Bitmap bmp = new Bitmap(50, 50);
-            using (Graphics gfx = Graphics.FromImage(bmp))
-                gfx.FillRectangle(Brushes.LightGray, new Rectangle(0, 0, 50, 50));
-            texture = preTexture = bmp;
+            //Bitmap bmp = new Bitmap(50, 50);
+            //using (Graphics gfx = Graphics.FromImage(bmp))
+            //    gfx.FillRectangle(Brushes.LightGray, new Rectangle(0, 0, 50, 50));
+            texture = preTexture = (Bitmap)Main.wallTexture[Main.rand.Next(4)];
 
             return;
             //  Debugging

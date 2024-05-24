@@ -45,5 +45,10 @@ namespace cotf
         {
             
         }
-    }
+
+		public ITrait RollTrait(bool enchanted)
+		{
+			return null;
+		}
+	}
 }

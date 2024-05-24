@@ -46,6 +46,7 @@
 	  </Referece>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Textures\background.png" />
     <Resource Include="Textures\Ground\background.png" />
     <Resource Include="Textures\bg.png" />
     <Resource Include="Textures\chain.png" />

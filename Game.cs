@@ -260,7 +260,7 @@ namespace cotf
             }
             for (int i = 1; i <= 4; i++)
             {
-                Main.wallTexture[i] = Asset<Image>.Request($"Walls/wall{i}");
+                Main.wallTexture[i - 1] = Asset<Image>.Request($"Walls/wall{i}");
             }
             Main.chainTexture[0] = Asset<Image>.Request("chain");
         }
