@@ -387,7 +387,7 @@ namespace cotf.Base
                     new RectangleF(0, 0, texture.Width, (int)(texture.Width * f)), Helper.ToDegrees(angle - Helper.Radian * 90f), new PointF(texture.Width / 2, texture.Height / 2), Color.Black, RotateType.GraphicsTransform, graphics);
             }
         }
-        public static void DrawChain(Image texture, Entity ent, Tile tile, Graphics graphics)
+        public static void DrawChain(Image texture, Entity ent, cotf.World.Tile tile, Graphics graphics)
         {
             for (int n = 0; n < tile.Distance(ent.Center); n += texture.Width)
             {

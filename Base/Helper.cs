@@ -268,6 +268,26 @@ namespace cotf.Base
     }
     public static class Helper
     {
+        public static Vector2 AngleBased(Vector2 position, float angle, float radius)
+        {
+            float cos = position.X + (float)(radius * Math.Cos(angle));
+            float sine = position.Y + (float)(radius * Math.Sin(angle));
+            return new Vector2(cos, sine);
+        }
+        public static Vector2 AngleBased(float angle, float radius)
+        {
+            float cos = (float)(radius * Math.Cos(angle));
+            float sine = (float)(radius * Math.Sin(angle));
+            return new Vector2(cos, sine);
+        }
+        public static void Clamp(ref int input, int min, int max, out int result)
+        {
+           if (input < min)
+                 input = min;
+           if (input > max)
+                 input = max;
+           result = input;
+        }
         public const float Radian = 0.017f;
         public static double ToRadian(double degrees)
         {
@@ -1278,4 +1298,441 @@ namespace cotf.Base
         MatrixTransform,
         GraphicsTransform
     }
+    public static class Draw
+    {
+        public const float radian = 0.017f;
+        public static float radians(float distance)
+        {
+            return radian * (45f / distance);
+        }
+    }
+    public class Treasures
+    { 
+      public int offset;
+      private ushort floorID;
+      private ushort newTileID;
+      private ushort wallID;
+      private List<Vector2> list;
+      public void Initialize(int offset, ushort newTileID, ushort floorID, ushort wallID)
+      {
+         this.offset = offset;
+         this.newTileID = newTileID;
+         this.floorID = floorID;
+         this.wallID = wallID;
+         //list = ArchaeaWorld.origins;
+      }
+      public void PlaceChests(int total, int retries)
+      {
+         int index = 1;
+         int count = 0;
+         int loop = 0;
+         var getFloor = GetFloor();
+         int length = list.Count;
+         bool[] added = new bool[length];
+         while (count < total)
+         {
+               if (loop < total * retries)
+                  loop++;
+               else
+               {
+                  index++;
+                  loop = 0;
+               }
+               foreach (Vector2 ground in getFloor[index - 1])
+               {
+                  int x = (int)ground.X;
+                  int y = (int)ground.Y;
+                  if (!ArchaeaWorld.Inbounds(x, y)) continue;
+                  if (Main.tile[x, y].WallType == wallID && WorldGen.genRand.NextBool(8))
+                     WorldGen.PlaceTile(x, y, newTileID, true, true);
+                  if (Main.tile[x, y].TileType == newTileID)
+                  {
+                     added[index] = true;
+                     count++;
+                     break;
+                  }
+               }
+               if (added[index])
+               {
+                  index++;
+                  loop = 0;
+               }
+               if (index == length)
+                  break;
+         }
+      }
+      public void PlaceTile(Vector2[] region, int total, int retries, ushort newTileID, bool genPlace = true, bool force = false, bool random = false, int odds = 5, bool proximity = false, int radius = 30, bool iterate = false, bool onlyOnWall = false)
+      {
+         int loop = 0;
+         int index = 0;
+         var getFloor = region;
+         while (index < getFloor.Length)
+         {
+               if (loop < total * retries)
+                  loop++;
+               else break;
+               if (getFloor[index] == Vector2.Zero)
+               {
+                  index++;
+                  continue;
+               }
+               int x = (int)getFloor[index].X;
+               int y = (int)getFloor[index].Y;
+               Tile tile = Main.tile[x, y];
+               if (random && WorldGen.genRand.Next(odds) != 0) continue;
+               if (onlyOnWall && Main.tile[x, y].WallType != wallID)
+               {
+                  index++;
+                  continue;
+               }
+               if (proximity && Vicinity(getFloor[index], radius, newTileID))
+               {
+                  index++;
+                  continue;
+               }
+               if (genPlace)
+                  WorldGen.PlaceTile(x, y, newTileID, true, force);
+               else
+               {
+                  tile.HasTile = true;
+                  tile.TileType = newTileID;
+               }
+               if (total == 1 && tile.TileType == newTileID && tile.HasTile)
+                  break;
+               if (iterate && index == getFloor.Length - 1)
+                  index = 0;
+               index++;
+         }
+      }
+      public bool PlaceTile(int i, int j, ushort tileType, bool genPlace = false, bool force = false, int proximity = -1, bool wall = false, int style = 0)
+      {
+         Tile tile = Main.tile[i, j];
+         if (proximity != -1 && Vicinity(new Vector2(i, j), proximity, tileType))
+               return false;
+         if (!genPlace)
+         {
+               tile.HasTile = true;
+               tile.TileType = tileType;
+         }
+         else
+         {
+               WorldGen.PlaceTile(i, j, tileType, true, force, -1, style);
+         }
+         if (tile.TileType == tileType)
+               return true;
+         return false;
+      }
+      public Vector2[][] GetFloor()
+      {
+         int index = 0;
+         int count = 0;
+         int length = list.Count;
+         var tiles = new Vector2[length][];
+         for (int k = 0; k < length; k++)
+               tiles[k] = new Vector2[length * length];
+         foreach (Vector2 v2 in list)
+         {
+               for (int i = (int)v2.X - offset; i < (int)v2.X + offset; i++)
+                  for (int j = (int)v2.Y - offset; j < (int)v2.Y + offset; j++)
+                  {
+                     Tile floor = Main.tile[i, j];
+                     Tile ground = Main.tile[i, j + 1];
+                     if ((!floor.HasTile || !Main.tileSolid[floor.TileType]) &&
+                           ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorID)
+                     {
+                           if (count < tiles[index].Length)
+                           {
+                              tiles[index][count] = new Vector2(i, j);
+                              count++;
+                           }
+                     }
+                  }
+               count = 0;
+               if (index < length)
+                  index++;
+               else
+                  break;
+         }
+         return tiles;
+      }
+      public static Vector2[] FindAll(Vector2 region, int width, int height, bool overflow = false, ushort[] floorIDs = null)
+      {
+            int index = width * height * floorIDs.Length;
+         int amount = (int)Math.Sqrt(index) / 10;
+         int count = 0;
+         var tiles = new Vector2[index];
+         foreach (ushort floorType in floorIDs)
+               for (int i = (int)region.X; i < (int)region.X + width; i++)
+                  for (int j = (int)region.Y; j < (int)region.Y + height; j++)
+                  {
+                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                     Tile origin = Main.tile[i, j];
+                     Tile ceiling = Main.tile[i, j - 1];
+                     Tile ground = Main.tile[i, j + 1];
+                     Tile right = Main.tile[i + 1, j];
+                     Tile ieft = Main.tile[i - 1, j];
+                     if (origin.HasTile && Main.tileSolid[origin.TileType]) continue;
+                     if (ceiling.HasTile && Main.tileSolid[ceiling.TileType] && ceiling.TileType == floorType || 
+                           ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorType || 
+                           right.HasTile && Main.tileSolid[right.TileType] && right.TileType == floorType || 
+                           ieft.HasTile && Main.tileSolid[ieft.TileType] && ieft.TileType == floorType)
+                     {
+                           if (count < tiles.Length)
+                           {
+                              tiles[count] = new Vector2(i, j);
+                              count++;
+                           }
+                     }
+                  }
+         return tiles;
+      }
+      public static Vector2[] GetFloor(Vector2 region, int width, int height, bool overflow = false, ushort[] floorIDs = null)
+      {
+         int index = width * height * floorIDs.Length;
+         int amount = (int)Math.Sqrt(index) / 10;
+         int count = 0;
+         var tiles = new Vector2[index];
+         foreach (ushort floorType in floorIDs)
+               for (int i = (int)region.X; i < (int)region.X + width; i++)
+                  for (int j = (int)region.Y; j < (int)region.Y + height; j++)
+                  {
+                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                     Tile floor = Main.tile[i, j];
+                     Tile ground = Main.tile[i, j + 1];
+                     if (floor.HasTile && Main.tileSolid[floor.TileType]) continue;
+                     if (ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorType)
+                     {
+                           if (count < tiles.Length)
+                           {
+                              tiles[count] = new Vector2(i, j);
+                              count++;
+                           }
+                     }
+                  }
+         return tiles;
+      }
+      public static Vector2[] GetFloor(int i, int j, int width, int height, ushort floorType)
+      {
+         if (!ArchaeaWorld.Inbounds(i, j))
+         {
+               return new Vector2[] { Vector2.Zero };
+         }
+         List<Vector2> list = new List<Vector2>();
+         for (int m = i; m < i + width; m++)
+         {
+               for (int n = j; n < j + height; n++)
+               {
+                  if (!ArchaeaWorld.Inbounds(i, j))
+                  {
+                     if (list.Count == 0)
+                     { 
+                           return new Vector2[] { Vector2.Zero };
+                     }
+                     else return list.ToArray();
+                  }
+                  if (Main.tile[m, n].TileType != 0)
+                  {
+                     if (!Main.tile[m, n - 1].HasTile)
+                     { 
+                           list.Add(new Vector2(m, n));
+                     }
+                  }
+               }
+         }
+         return list.ToArray();
+      }
+      public static Vector2[] GetCeiling(Vector2 region, int radius, bool overflow = false, ushort tileType = 0)
+      {
+         int index = (int)Math.Pow(radius * 2, 2);
+         int count = 0;
+         var tiles = new Vector2[index];
+         for (int i = (int)region.X - radius; i < (int)region.X + radius; i++)
+               for (int j = (int)region.Y - radius; j < (int)region.Y + radius; j++)
+               {
+                  if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                  if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                  Tile roof = Main.tile[i, j];
+                  Tile ceiling = Main.tile[i, j + 1];
+                  if (ceiling.HasTile && Main.tileSolid[ceiling.TileType]) continue;
+                  if (roof.HasTile && Main.tileSolid[roof.TileType] && roof.TileType == tileType)
+                  {
+                     if (count < tiles.Length)
+                     {
+                           tiles[count] = new Vector2(i, j);
+                           count++;
+                     }
+                  }
+               }
+         return tiles;
+      }
+      public static Vector2[] GetCeiling(Vector2 region, int width, int height, bool overflow = false, ushort tileType = 0)
+      {
+         var tiles = new List<Vector2>();
+         for (int i = (int)region.X; i < width; i++)
+               for (int j = (int)region.Y; j < height; j++)
+               {
+                  if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                  if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                  Tile roof = Main.tile[i, j];
+                  Tile ceiling = Main.tile[i, j + 1];
+                  if (ceiling.HasTile && Main.tileSolid[ceiling.TileType]) continue;
+                  if (roof.HasTile && Main.tileSolid[roof.TileType] && roof.TileType == tileType)
+                     tiles.Add(new Vector2(i, j + 1));
+               }
+         return tiles.ToArray();
+      }
+      public static Vector2[] GetRegion(Vector2 region, int width, int height, bool overflow = false, bool attach = false, ushort[] tileTypes = null)
+      {
+         int index = width * height * tileTypes.Length;
+         int count = 0;
+         var tiles = new Vector2[index];
+         foreach (ushort tileType in tileTypes)
+               for (int i = (int)region.X; i < (int)region.X + width; i++)
+                  for (int j = (int)region.Y; j < (int)region.Y + height; j++)
+                  {
+                     if (count >= tiles.Length) continue;
+                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     if (attach && Main.tile[i, j].TileType != tileType) continue;
+                     if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                     tiles[count] = new Vector2(i, j);
+                     count++;
+                  }
+         return tiles;
+      }
+      public static Vector2[] GetWall(Vector2 region, int width, int height, bool overflow = false, bool attach = false, ushort[] attachTypes = null)
+      {
+         int index = width * height * attachTypes.Length;
+         int count = 0;
+         var tiles = new Vector2[index];
+         foreach (ushort tileType in attachTypes)
+               for (int i = (int)region.X; i < (int)region.X + width; i++)
+                  for (int j = (int)region.Y; j < (int)region.Y + height; j++)
+                  {
+                     if (count >= tiles.Length) continue;
+                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                     Tile tile = Main.tile[i, j];
+                     Tile wallL = Main.tile[i - 1, j];
+                     Tile wallR = Main.tile[i + 1, j];
+                     if (wallL.HasTile && Main.tileSolid[wallL.TileType])
+                           if (!tile.HasTile || !Main.tileSolid[tile.TileType])
+                           {
+                              if (attach && wallL.TileType != tileType) continue;
+                              tiles[count] = new Vector2(i, j);
+                           }
+                     if (wallR.HasTile && Main.tileSolid[wallR.TileType])
+                           if (!tile.HasTile || !Main.tileSolid[tile.TileType])
+                           {
+                              if (attach && wallR.TileType != tileType) continue;
+                              tiles[count] = new Vector2(i, j);
+                           }
+                     count++;
+                  }
+         return tiles;
+      }
+      public static Vector2[] GetWall(int x, int y, int width, int height, ushort[] tileTypes = null, int radius = -1)
+      {
+         int count = 0;
+         List<Vector2> list = new List<Vector2>();
+         foreach (ushort tileType in tileTypes)
+               for (int i = x; i < width; i++)
+                  for (int j = y; j < width; j++)
+                  {
+                     if (!ArchaeaWorld.Inbounds(i, j))
+                           continue;
+                     if (radius != -1 && Vicinity(new Vector2(i, j), radius, tileType))
+                           continue;
+                     Tile up = Main.tile[i, j - 1];
+                     Tile left = Main.tile[i - 1, j];
+                     Tile right = Main.tile[i + 1, j];
+                     if ((left.TileType == tileType || right.TileType == tileType) && !up.HasTile)
+                     {
+                           list.Add(new Vector2(i, j));
+                           count++;
+                     }
+                  }
+         return list.ToArray();
+      }
+      public static bool Vicinity(Vector2 region, int radius, ushort tileType)
+      {
+         int x = (int)region.X;
+         int y = (int)region.Y;
+         for (int i = x - radius; i < x + radius; i++)
+               for (int j = y - radius; j < y + radius; j++)
+               {
+                  if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                  if (Main.tile[i, j].TileType == tileType)
+                     return true;
+               }
+         return false;
+      }
+      public static int Vicinity(Vector2 region, int radius, ushort[] tileType)
+      {
+         Func<int> count = delegate ()
+         {
+               int x = (int)region.X;
+               int y = (int)region.Y;
+               int tiles = 0;
+               for (int i = x - radius; i < x + radius; i++)
+                  for (int j = y - radius; j < y + radius; j++)
+                  {
+                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     foreach (ushort type in tileType)
+                           if (Main.tile[i, j].TileType == type && Main.tile[i, j].HasTile)
+                           {
+                              tiles++;
+                              break;
+                           }
+                  }
+               return tiles;
+         };
+         return count();
+      }
+      public static bool Vicinity(Vector2 region, int radius, ushort[] tileType, int limit)
+      {
+         Func<bool> count = delegate ()
+         {
+               int x = (int)region.X;
+               int y = (int)region.Y;
+               int tiles;
+               foreach (ushort type in tileType)
+               {
+                  tiles = 0;
+                  for (int i = x - radius; i < x + radius; i++)
+                     for (int j = y - radius; j < y + radius; j++)
+                     {
+                           if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                           if (Main.tile[i, j].TileType == type && Main.tile[i, j].HasTile)
+                           {
+                              if (tiles++ > limit)
+                                 return true;
+                           }
+                     }
+               }
+               return false;
+         };
+         return count();
+      }
+      public static int ProximityCount(Vector2 region, int radius, ushort tileType)
+      {
+         int x = (int)region.X;
+         int y = (int)region.Y;
+         int count = 0;
+         for (int i = x - radius; i < x + radius; i++)
+               for (int j = y - radius; j < y + radius; j++)
+               {
+                  if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                  Tile tile = Main.tile[i, j];
+                  if (tile.TileType == tileType)
+                     count++;
+               }
+         return count;
+      }
+      public static bool ActiveAndSolid(int i, int j)
+      {
+         return Main.tile[i, j].HasTile && Main.tileSolid[Main.tile[i, j].TileType];
+      }
+   }
 }

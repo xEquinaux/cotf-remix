@@ -32,7 +32,7 @@ namespace cotf.World
         {
             base.Draw(graphics);
         }
-        public static int CreateDoor(bool locked, Tile tile, Direction direction, short type = DoorType.Default)
+        public static int CreateDoor(bool locked, cotf.World.Tile tile, Direction direction, short type = DoorType.Default)
         {
             int num = Main.door.Length - 1;
             for (int n = 0; n < Main.door.Length; n++)

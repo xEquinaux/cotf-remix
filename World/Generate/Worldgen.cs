@@ -172,7 +172,7 @@ namespace cotf.World
                                 {
                                     if (i / size < brush.GetLength(0) && j / size < brush.GetLength(1))
                                     { 
-                                        Tile tile;
+                                        cotf.World.Tile tile;
                                         (tile = brush[i / size, j / size]).active(false);
                                         //room.region[i / size, j / size] = tile;
                                     }
@@ -197,7 +197,7 @@ namespace cotf.World
                                 {
                                     if (W / size < brush.GetLength(0) && H / size < brush.GetLength(1))
                                     { 
-                                        Tile tile;
+                                        cotf.World.Tile tile;
                                         (tile = brush[W / size, H / size]).active(false);
                                         //room.region[W / size, H / size] = tile;
                                     }

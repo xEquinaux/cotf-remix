@@ -24,6 +24,10 @@ namespace cotf
                 min *= max / min;
             }
             return random.Next(min, max);
+        }                              
+        public int Next(int[] array)
+        { 
+            return array[Next(array.Length)];
         }
         public bool NextBool()
         {

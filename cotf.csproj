@@ -64,6 +64,9 @@
     <Resource Include="Textures\temp90.png" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="CirclePrefect">
+      <HintPath>lib\CirclePrefect.dll</HintPath>
+    </Reference>
     <Reference Include="Native">
       <HintPath>..\..\..\Downloads\Native.dll</HintPath>
     </Reference>

@@ -158,7 +158,7 @@ namespace cotf.World
         }
         public static Tile Clone(Tile copy)
         {
-            Tile tile = new Tile();
+            cotf.World.Tile tile = new Tile();
             tile.i = copy.i;
             tile.j = copy.j;
             tile.X = copy.X;
@@ -170,7 +170,7 @@ namespace cotf.World
         }
         public Tile Clone()
         {
-            Tile tile = new Tile();
+            cotf.World.Tile tile = new Tile();
             tile.i = i;
             tile.j = j;
             tile.X = X;
