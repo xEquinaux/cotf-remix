@@ -1,4 +1,7 @@
-﻿using System;
+﻿using cotf;
+using cotf.Base;
+using cotf.World;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,22 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Terraria;
-using Terraria.GameContent.Generation;
-using Terraria.GameContent.Shaders;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
-
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ArchaeaMod;
-using ArchaeaMod.GenLegacy;
-using ArchaeaMod.Items;
-using ArchaeaMod.Items.Alternate;
-using ArchaeaMod.Merged;
-using ArchaeaMod.Merged.Items;
-using ArchaeaMod.Merged.Tiles;
-using ArchaeaMod.Merged.Walls;
 
 namespace ArchaeaMod.Structure
 {
@@ -33,15 +22,15 @@ namespace ArchaeaMod.Structure
             Width = 150, 
             Height;
         internal static int
-            Top => Main.UnderworldLayer - Height;
+            Top => /*Main.UnderworldLayer -*/ Height;
         public static ushort
             Air = 1,
-            Tile = ArchaeaWorld.factoryBrick,
-            Wall = ArchaeaWorld.factoryBrickWallUnsafe,
-            Tile2 = ArchaeaWorld.Ash,
-            ConveyerL = TileID.ConveyorBeltLeft,
-            ConveyerR = TileID.ConveyorBeltRight,
-            Door = ArchaeaWorld.factoryMetalDoor;
+            Tile = 0,//ArchaeaWorld.factoryBrick,
+            Wall = 0,//ArchaeaWorld.factoryBrickWallUnsafe,
+            Tile2 = 0,//ArchaeaWorld.Ash,
+            ConveyerL = (ushort)TileID.ConveyorBeltLeft,
+            ConveyerR = (ushort)TileID.ConveyorBeltRight,
+            Door = 0;//ArchaeaWorld.factoryMetalDoor;
         public static IList<Room> room = new List<Room>();
         public void CastleGen(out ushort[,] tile, out ushort[,] background, int width, int height, int size = 4, int maxNodes = 50, float nodeDistance = 60)
         {
@@ -361,7 +350,7 @@ namespace ArchaeaMod.Structure
                     int X = Math.Max(0, Math.Min(x + i, Width - 1));
                     int Y = Math.Max(0, Math.Min(y + j, Height - 1));
                     
-                    if (!GetSafely(X, Y - 1).HasTile && GetSafely(X, Y + 1).HasTile && (tile[X, Y] == ConveyerL || tile[X, Y] == ConveyerR))
+                    if (!GetSafely(X, Y - 1).Active && GetSafely(X, Y + 1).Active && (tile[X, Y] == ConveyerL || tile[X, Y] == ConveyerR))
                     {
                         continue;
                     }
@@ -396,8 +385,8 @@ namespace ArchaeaMod.Structure
         };
         public static Tile GetSafely(int i, int j, int buffer = 20)
         {
-            int m = Math.Max(buffer, Math.Min(Main.maxTilesX - buffer, i));
-            int n = Math.Max(buffer, Math.Min(Main.maxTilesY - buffer, j));
+            int m = Math.Max(buffer, Math.Min(/*Main.maxTilesX*/4800 - buffer, i));
+            int n = Math.Max(buffer, Math.Min(/*Main.maxTilesY*/1600 - buffer, j));
             return Main.tile[m, n];
         }
         public static void Decorate(int x, int y, int width, int height)
@@ -410,22 +399,22 @@ namespace ArchaeaMod.Structure
                 {
                     for (int j = y; j < y + height; j++)
                     {
-                        if (GetSafely(i, j).WallType == Wall && (!GetSafely(i - 1, j).HasTile || GetSafely(i + 1, j).HasTile))
+                        if (/*GetSafely(i, j).WallType == Wall && */(!GetSafely(i - 1, j).Active || GetSafely(i + 1, j).Active))
                         {
-                            if (GetSafely(i, j + 1).TileType != Tile && GetSafely(i, j + 1).TileType == Tile)
+                            if (GetSafely(i, j + 1).type != Tile && GetSafely(i, j + 1).type == Tile)
                             {
                                 var _t = GetSafely(i, j + 1);
-                                _t.HasTile = false;
-                                WorldGen.PlaceTile(i, j + 1, TileID.Timers, true, true);
+                                _t.Active = false;
+                                Main.tile[i, j + 1].type = TileID.Timers;
                             }
                             var tile = GetSafely(i, j);
                             tile.active(true);
                             tile.type = TileID.AdamantiteBeam;
-                            tile.RedWire = true;
-                            tile.HasActuator = true;
-                            tile.IsActuated = true;
-                            var tile2 = GetSafely(i, j + 1);
-                            tile2.RedWire = true; 
+                            //tile.RedWire = true;
+                            //tile.HasActuator = true;
+                            //tile.IsActuated = true;
+                            //var tile2 = GetSafely(i, j + 1);
+                            //tile2.RedWire = true; 
                         }
                     }
                 }
@@ -439,7 +428,7 @@ namespace ArchaeaMod.Structure
                 countRightY = 0;
                 for (int j = y; j < y + height; j++)
                 {
-                    if (GetSafely(i, j).WallType == Wall && !GetSafely(i, j).HasTile && GetSafely(i - 1, j).HasTile && GetSafely(i - 1, j).TileType == Tile)
+                    if (/*GetSafely(i, j).WallType == Wall && */!GetSafely(i, j).Active && GetSafely(i - 1, j).Active && GetSafely(i - 1, j).type == Tile)
                     {
                         countLeftY++;
                     }
@@ -450,7 +439,7 @@ namespace ArchaeaMod.Structure
                     {
                         if (j % 15 == 0)
                         { 
-                            if (GetSafely(i, j).WallType == Wall && !GetSafely(i, j).HasTile && GetSafely(i - 1, j).HasTile && GetSafely(i - 1, j).TileType == Tile)
+                            if (/*GetSafely(i, j).WallType == Wall && */!GetSafely(i, j).Active && GetSafely(i - 1, j).Active && GetSafely(i - 1, j).type == Tile)
                             {
                                 for (int m = 0; m < stepsLeft.GetLength(1); m++)
                                 {
@@ -459,10 +448,12 @@ namespace ArchaeaMod.Structure
                                         switch (stepsLeft[m, n])
                                         {
                                             case 1:
-                                                WorldGen.PlaceTile(i + m, j + n, Tile2, true, true);
+                                                Main.tile[i + m, j + n].type = (short)Tile2;
+                                                //WorldGen.PlaceTile(i + m, j + n, Tile2, true, true);
                                                 break;
                                             case 2:
-                                                WorldGen.PlaceTile(i + m, j + n, Tile, true, true);
+                                                Main.tile[i + m, j + n].type = (short)Tile;
+                                                //WorldGen.PlaceTile(i + m, j + n, Tile, true, true);
                                                 break;
                                         }
                                     }
@@ -473,7 +464,7 @@ namespace ArchaeaMod.Structure
                 }
                 for (int j = y; j < y + height; j++)
                 {
-                    if (GetSafely(i, j).WallType == Wall && !GetSafely(i, j).HasTile && GetSafely(i + 1, j).HasTile && GetSafely(i + 1, j).TileType == Tile)
+                    if (/*GetSafely(i, j).WallType == Wall && */!GetSafely(i, j).Active && GetSafely(i + 1, j).Active && GetSafely(i + 1, j).type == Tile)
                     {
                         countRightY++;
                     }
@@ -484,7 +475,7 @@ namespace ArchaeaMod.Structure
                     {
                         if (j % 15 == 7)
                         { 
-                            if (GetSafely(i, j).WallType == Wall && !GetSafely(i, j).HasTile && GetSafely(i + 1, j).HasTile && GetSafely(i + 1, j).TileType == Tile)
+                            if (/*GetSafely(i, j).WallType == Wall && */!GetSafely(i, j).Active && GetSafely(i + 1, j).Active && GetSafely(i + 1, j).type == Tile)
                             {
                                 for (int m = 0; m < stepsRight.GetLength(1); m++)
                                 {
@@ -493,10 +484,12 @@ namespace ArchaeaMod.Structure
                                         switch (stepsRight[m, n])
                                         {
                                             case 1:
-                                                WorldGen.PlaceTile(i - m, j + n, Tile2, true, true);
+                                                Main.tile[i + m, j + n].type = (short)Tile2;
+                                                //WorldGen.PlaceTile(i + m, j + n, Tile2, true, true);
                                                 break;
                                             case 2:
-                                                WorldGen.PlaceTile(i - m, j + n, Tile, true, true);
+                                                Main.tile[i + m, j + n].type = (short)Tile;
+                                                //WorldGen.PlaceTile(i + m, j + n, Tile, true, true);
                                                 break;
                                         }
                                     }
@@ -519,26 +512,26 @@ namespace ArchaeaMod.Structure
                     {
                         if (Main.rand.NextBool())
                         { 
-                            if (GetSafely(i, j - 8).HasTile && !GetSafely(i, j - 7).HasTile && GetSafely(i, j).WallType == Wall &&  GetSafely(i - 1, j).HasTile && GetSafely(i - 1, j).TileType == Tile && !GetSafely(i, j).HasTile)
+                            if (GetSafely(i, j - 8).Active && !GetSafely(i, j - 7).Active && /*GetSafely(i, j).WallType == Wall &&*/  GetSafely(i - 1, j).Active && GetSafely(i - 1, j).type == Tile && !GetSafely(i, j).Active)
                             {
                                 for (int m = 0; m < 5; m++)
                                 {
-                                    WorldGen.PlaceTile(i + m, j, Tile, true, true);
-                                    WorldGen.PlaceTile(i - m, j + 1, Tile, true, true);
+                                    Main.tile[i + m, j].type = (short)Tile;
+                                    Main.tile[i + m, j + 1].type = (short)Tile;
                                 }
                                 bool placed = false;
                                 for (int m = 0; m < 5; m++)
                                 {
                                     if (!placed)
                                     {
-                                        t.PlaceTile(i + m, j + 2, (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>(), true, false, 4, false);
-                                        placed = Main.tile[i + m, j + 2].type == ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>();
+                                        //t.PlaceTile(i + m, j + 2, (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>(), true, false, 4, false);
+                                        //placed = Main.tile[i + m, j + 2].type == ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>();
                                     }
                                     if (m == 2) 
                                     {
                                         if (Main.rand.NextBool(8))
                                         { 
-                                            WorldGen.PlaceTile(i + m, j - 1, ModContent.TileType<ArchaeaMod.Tiles.m_chair>(), true, true);
+                                            //WorldGen.PlaceTile(i + m, j - 1, ModContent.TileType<ArchaeaMod.Tiles.m_chair>(), true, true);
                                         }
                                     }
                                 }
@@ -547,26 +540,26 @@ namespace ArchaeaMod.Structure
                         }
                         if (Main.rand.NextBool())
                         {
-                            if (GetSafely(i, j - 8).HasTile && !GetSafely(i, j - 7).HasTile && GetSafely(i, j).WallType == Wall && GetSafely(i + 1, j).HasTile && GetSafely(i + 1, j).TileType == Tile && !GetSafely(i, j).HasTile)
+                            if (GetSafely(i, j - 8).Active && !GetSafely(i, j - 7).Active &&/* GetSafely(i, j).WallType == Wall &&*/ GetSafely(i + 1, j).Active && GetSafely(i + 1, j).type == Tile && !GetSafely(i, j).Active)
                             {
                                 for (int m = 0; m < 5; m++)
                                 {
-                                    WorldGen.PlaceTile(i - m, j, Tile, true, true);
-                                    WorldGen.PlaceTile(i - m, j + 1, Tile, true, true);
+                                    Main.tile[i - m, j].type = (short)Tile;
+                                    Main.tile[i - m, j + 1].type = (short)Tile;
                                 }
                                 bool placed = false;
                                 for (int m = 0; m < 5; m++)
                                 {
                                     if (!placed)
                                     { 
-                                        t.PlaceTile(i + m, j + 2, (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>(), true, false, 4, false);
-                                        placed = Main.tile[i + m, j + 2].type == ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>();
+                                        //t.PlaceTile(i + m, j + 2, (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>(), true, false, 4, false);
+                                        //placed = Main.tile[i + m, j + 2].type == ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>();
                                     }
                                     if (m == 2)
                                     {
                                         if (Main.rand.NextBool(8))
                                         {
-                                            WorldGen.PlaceTile(i - m, j - 1, ModContent.TileType<ArchaeaMod.Tiles.m_chair>(), true, true);
+                                            //WorldGen.PlaceTile(i - m, j - 1, ModContent.TileType<ArchaeaMod.Tiles.m_chair>(), true, true);
                                         }
                                     }
                                 }
@@ -584,9 +577,9 @@ namespace ArchaeaMod.Structure
                 {
                     for (int j = y; j < y + height; j++)
                     {
-                        if ((GetSafely(i - 1, j).HasTile || GetSafely(i + 1, j).HasTile) && GetSafely(i, j).WallType == Wall)
+                        if ((GetSafely(i - 1, j).Active || GetSafely(i + 1, j).Active))// && GetSafely(i, j).WallType == Wall)
                         {
-                            WorldGen.PlaceTile(i, j, TileID.Chain);
+                            Main.tile[i, j].type = TileID.Chain;//WorldGen.PlaceTile(i, j, TileID.Chain);
                         }
                     }
                 }
@@ -597,7 +590,7 @@ namespace ArchaeaMod.Structure
             {
                 for (int i = 0; i < width; i++)
                 {
-                    if (GetSafely(i + 1, j).WallType == Wall && GetSafely(i, j).TileType == Tile && GetSafely(i, j).HasTile && !GetSafely(i, j - 1).HasTile && !GetSafely(i + 1, j).HasTile)
+                    if (/*GetSafely(i + 1, j).WallType == Wall && */GetSafely(i, j).type == Tile && GetSafely(i, j).Active && !GetSafely(i, j - 1).Active && !GetSafely(i + 1, j).Active)
                     {
                         flag = true;
                     }
@@ -605,8 +598,8 @@ namespace ArchaeaMod.Structure
                     {
                         for (int m = 0; m < 10; m++)
                         {
-                            WorldGen.PlaceTile(i + m, j, TileID.Platforms, true, false); 
-                            if (GetSafely(i + m + 1, j).HasTile)
+                            //WorldGen.PlaceTile(i + m, j, TileID.Platforms, true, false); 
+                            if (GetSafely(i + m + 1, j).Active)
                             {
                                 break;
                             }

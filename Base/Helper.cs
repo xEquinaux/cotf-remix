@@ -1655,7 +1655,7 @@ namespace cotf.Base
                   }
          return list.ToArray();
       }
-      public static bool Vicinity(Vector2 region, int radius, ushort tileType)
+      public static bool Vicinity(Vector2 region, int radius, short tileType)
       {
          int x = (int)region.X;
          int y = (int)region.Y;
@@ -1668,7 +1668,7 @@ namespace cotf.Base
                }
          return false;
       }
-      public static int Vicinity(Vector2 region, int radius, ushort[] tileType)
+      public static int Vicinity(Vector2 region, int radius, short[] tileType)
       {
          Func<int> count = delegate ()
          {
@@ -1690,7 +1690,7 @@ namespace cotf.Base
          };
          return count();
       }
-      public static bool Vicinity(Vector2 region, int radius, ushort[] tileType, int limit)
+      public static bool Vicinity(Vector2 region, int radius, short[] tileType, int limit)
       {
          Func<bool> count = delegate ()
          {
@@ -1715,7 +1715,7 @@ namespace cotf.Base
          };
          return count();
       }
-      public static int ProximityCount(Vector2 region, int radius, ushort tileType)
+      public static int ProximityCount(Vector2 region, int radius, short tileType)
       {
          int x = (int)region.X;
          int y = (int)region.Y;

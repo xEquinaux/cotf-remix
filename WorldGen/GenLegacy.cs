@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace ArchaeaMod.Unused
 {
@@ -27,7 +28,7 @@ namespace ArchaeaMod.Unused
         public Vector2[] DigStarts(int total)
         {
             List<Vector2> centers = new List<Vector2>();
-            int randX = Main.rand.Next(sideLimit, GenVars.tRight - sideLimit);
+            int randX = Main.rand.Next(sideLimit, /*GenVars.tRight - */sideLimit);
             int randY = Main.rand.Next(ceiling, floor);
             for (int i = 0; i < total; i++)
                 centers.Add(new Vector2(randX, randY));
@@ -51,7 +52,7 @@ namespace ArchaeaMod.GenLegacy
         public static bool miniBiome;
         private int width
         {
-            get { return (int)Main.rightWorld / 16 / 3; }
+            get { return (int)4800 / 16 / 3; }
         }
         private int leftBounds
         {
@@ -59,11 +60,11 @@ namespace ArchaeaMod.GenLegacy
         }
         private int upperBounds
         {
-            get { return Main.maxTilesY / 3 + 50; }
+            get { return 1600 / 3 + 50; }
         }
         public int maxY
         {
-            get { return (int)Main.bottomWorld / 16 - 200; }
+            get { return (int)1600 / 16 - 200; }
         }
         private int centerX
         {
@@ -71,7 +72,7 @@ namespace ArchaeaMod.GenLegacy
         }
         private int centerY
         {
-            get { return (int)(Main.bottomWorld / 16 / 1.5f); }
+            get { return (int)(1600 / 16 / 1.5f); }
         }
         public int lookFurther;
         public static int whoAmI = 0;
@@ -89,8 +90,8 @@ namespace ArchaeaMod.GenLegacy
         public int points;
         private int cycle;
         private int id;
-        private int X = Main.maxTilesX;
-        private int Y = Main.maxTilesY;
+        private int X = 0;//Main.maxTilesX;
+        private int Y = 0;//Main.maxTilesY;
         private int Width;
         private int Height;
         private int iterate;
@@ -98,7 +99,7 @@ namespace ArchaeaMod.GenLegacy
         public Vector2 center;
         public static Vector2 origin;
         private Vector2 position;
-        public static Rectangle[] bounds;
+        public static Microsoft.Xna.Framework.Rectangle[] bounds;
         public static Dictionary<Vector2, int> plots = new Dictionary<Vector2, int>();
         public static SkyDen[] mDen;
         private SkyDen den;
@@ -168,38 +169,38 @@ namespace ArchaeaMod.GenLegacy
         {
             int size = Main.rand.Next(1, 4);
             int rand = Main.rand.Next(1, 5);
-            if (Main.rand.Next(1, 4) == 1 && Main.tile[x + 1 + lookFurther, y].HasTile)
+            if (Main.rand.Next(1, 4) == 1 && Main.tile[x + 1 + lookFurther, y].Active)
             {
                 center.X += 1f;
                 lookFurther = 0;
                 points++;
                 DigPlot(size);
             }
-            if (Main.rand.Next(1, 4) == 1 && Main.tile[x - 1 - lookFurther, y].HasTile)
+            if (Main.rand.Next(1, 4) == 1 && Main.tile[x - 1 - lookFurther, y].Active)
             {
                 center.X -= 1f;
                 lookFurther = 0;
                 points++;
                 DigPlot(size);
             }
-            if (Main.rand.Next(1, 4) == 1 && Main.tile[x, y + 1 + lookFurther].HasTile && center.Y < maxY)
+            if (Main.rand.Next(1, 4) == 1 && Main.tile[x, y + 1 + lookFurther].Active && center.Y < maxY)
             {
                 center.Y += 1f;
                 lookFurther = 0;
                 points++;
                 DigPlot(size);
             }
-            if (Main.rand.Next(1, 4) == 1 && Main.tile[x, y - 1 - lookFurther].HasTile && center.Y > upperBounds)
+            if (Main.rand.Next(1, 4) == 1 && Main.tile[x, y - 1 - lookFurther].Active && center.Y > upperBounds)
             {
                 center.Y -= 1f;
                 lookFurther = 0;
                 points++;
                 DigPlot(size);
             }
-            if (!Main.tile[x + 1 + lookFurther, y].HasTile &&
-                !Main.tile[x - 1 - lookFurther, y].HasTile &&
-                !Main.tile[x, y + 1 + lookFurther].HasTile &&
-                !Main.tile[x, y - 1 - lookFurther].HasTile)
+            if (!Main.tile[x + 1 + lookFurther, y].Active &&
+                !Main.tile[x - 1 - lookFurther, y].Active &&
+                !Main.tile[x, y + 1 + lookFurther].Active &&
+                !Main.tile[x, y - 1 - lookFurther].Active)
                 lookFurther++;
             if (!plots.ContainsKey(center))
                 plots.Add(center, size);
@@ -222,15 +223,16 @@ namespace ArchaeaMod.GenLegacy
                         {
                             center.X += 1f;
                             lookFurther++;
-                        } while (!Main.tile[x + 1 + lookFurther, y].HasTile
-                                && x < Main.rightWorld / 16);
+                        } while (!Main.tile[x + 1 + lookFurther, y].Active
+                                     //TODO Main.rightWorld
+                                && x < 4800 / 16);
                         break;
                     case 2:
                         do
                         {
                             center.X -= 1f;
                             lookFurther++;
-                        } while (!Main.tile[x - 1 - lookFurther, y].HasTile
+                        } while (!Main.tile[x - 1 - lookFurther, y].Active
                                 && x > 50);
                         break;
                     case 3:
@@ -238,15 +240,16 @@ namespace ArchaeaMod.GenLegacy
                         {
                             center.Y += 1f;
                             lookFurther++;
-                        } while (!Main.tile[x, y + 1 + lookFurther].HasTile
-                                && y < Main.bottomWorld / 16);
+                        } while (!Main.tile[x, y + 1 + lookFurther].Active
+                                     //TODO Main.bottomWorld
+                                && y < 1600 / 16);
                         break;
                     case 4:
                         do
                         {
                             center.Y -= 1f;
                             lookFurther++;
-                        } while (!Main.tile[x, y - 1 - lookFurther].HasTile
+                        } while (!Main.tile[x, y - 1 - lookFurther].Active
                                 && y > maxY);
                         break;
                     default:
@@ -288,8 +291,8 @@ namespace ArchaeaMod.GenLegacy
             return new Vector2(previous.X, origin.Y);
         }
         public static bool Inbounds(int x, int y)
-        {
-            return x < Main.maxTilesX - 50 && x > 50 && y < Main.maxTilesY - 200 && y > 50;
+        {            //TODO                     //TODO
+            return x < 4800 - 50 && x > 50 && y < 1600 - 200 && y > 50;
         }
         public void DigPlot(int size)
         {
@@ -349,7 +352,7 @@ namespace ArchaeaMod.GenLegacy
             int y = (int)position.Y;
             if (Inbounds(x, y))
             { 
-                WorldGen.PlaceLiquid(x, y, (byte)LiquidID.Water, 60);
+                //WorldGen.PlaceLiquid(x, y, (byte)LiquidID.Water, 60);
             }
         }
         public void CheckComplete(int divisor = 2)
@@ -423,12 +426,12 @@ namespace ArchaeaMod.GenLegacy
         public float progress;
         public int[][,] rooms = new int[20][,];
         private Vector2[] centers = new Vector2[20];
-        private Mod mod = ModLoader.GetMod("ArchaeaMod");
+        //private Mod mod = ModLoader.GetMod("ArchaeaMod");
         public void SkyFortGen(ushort tileType, ushort wallType)
         {
             int roomX = Main.rand.Next(300);
             int roomY = 0;
-            float maxTiles = Main.rand.Next(200, (int)(Main.maxTilesX / 1.5));
+            float maxTiles = Main.rand.Next(200, (int)(/*Main.maxTilesX*/4800 / 1.5));
             start = (int)maxTiles;//(int)(maxTiles / Main.rand.NextFloat(1.5f, 4f));
             for (int i = 0; i < rooms.Length; i++)
             {
@@ -453,18 +456,18 @@ namespace ArchaeaMod.GenLegacy
 
                         int x = roomX + start - width;
                         int y = roomY + top;
-                        cotf.World.Tile tile = Framing.GetTileSafely(x + m, y + n);
+                        cotf.World.Tile tile = Main.tile[x + m, y + n];
                         centers[i] = new Vector2(x + randX / 2, y + randY / 2);
                         switch (rooms[i][m, n])
                         {
                             case 0:
-                                tile.WallType = wallType;
+                                //tile.WallType = wallType;
                                 tile.type = 0;
                                 tile.active(false);
                                 break;
                             case 1:
                                 if (Main.rand.Next(2) == 1)
-                                    tile.type = tileType;
+                                    tile.type = (short)tileType;
                                 else
                                     tile.type = TileID.RainCloud;
                                 tile.active(true);
@@ -485,12 +488,12 @@ namespace ArchaeaMod.GenLegacy
                                     for (float l = 0; l < 1f; l += 0.025f)
                                     {
                                         Vector2 placement = Vector2.Lerp(center, point, l);
-                                        Tile cloud = Main.tile[(int)Math.Max(placement.X, 0), (int)Math.Max(placement.Y, 0)];
+                                        cotf.World.Tile cloud = Main.tile[(int)Math.Max(placement.X, 0), (int)Math.Max(placement.Y, 0)];
                                         if (Main.rand.Next(2) == 0)
-                                            cloud.TileType = TileID.Cloud;
+                                            cloud.type = TileID.Cloud;
                                         else
-                                            cloud.TileType = TileID.RainCloud;
-                                        cloud.HasTile = true;
+                                            cloud.type = TileID.RainCloud;
+                                        cloud.active(true);
                                     }
                                 }
                                 break;
@@ -508,12 +511,12 @@ namespace ArchaeaMod.GenLegacy
                                     {
                                         int placeX = (int)Math.Max(placement.X + l, 0);
                                         int placeY = (int)Math.Max(placement.Y + q, 0);
-                                        Tile hall = Main.tile[placeX, placeY];
-                                        if (hall.WallType == 0)
-                                        {
-                                            hall.TileType = tileType;
-                                            hall.HasTile = true;
-                                        }
+                                        cotf.World.Tile hall = Main.tile[placeX, placeY];
+                                        //if (hall.WallType == 0)
+                                        //{
+                                            hall.type = (short)tileType;
+                                            hall.active(true);
+                                        //}
                                     }
                                 }
                             }
@@ -526,10 +529,10 @@ namespace ArchaeaMod.GenLegacy
                                     {
                                         int wallX = (int)Math.Max(placement.X + p, 0);
                                         int wallY = (int)Math.Max(placement.Y + q, 0);
-                                        Tile wall = Main.tile[wallX, wallY];
-                                        wall.WallType = wallType;
-                                        wall.TileType = 0;
-                                        wall.HasTile = false;
+                                        cotf.World.Tile wall = Main.tile[wallX, wallY];
+                                        //wall.WallType = wallType;
+                                        wall.type = 0;
+                                        wall.active(false);
                                     }
                                 }
                             }

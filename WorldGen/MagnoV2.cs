@@ -1,4 +1,7 @@
-﻿using System;
+﻿using cotf;
+using cotf.Base;
+using cotf.World;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,39 +11,25 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Terraria;
-using Terraria.GameContent.Generation;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
-
-using ArchaeaMod.GenLegacy;
-using ArchaeaMod.Items;
-using ArchaeaMod.Items.Alternate;
-using ArchaeaMod.Merged;
-using ArchaeaMod.Merged.Items;
-using ArchaeaMod.Merged.Tiles;
-using ArchaeaMod.Merged.Walls;
-using Terraria.Utilities;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace ArchaeaMod.Gen
 {
     public class MagnoV2
     {
-        public static UnifiedRandom rand;
+        public static Random rand;
         public static MagnoV2 Instance;
         public static MagnoV2 NewBiome(ref int originX, ref int originY)
         {
             Instance = new MagnoV2();
             rand = Main.rand;
-            var array = new ushort[] { TileID.Mud, TileID.IceBlock, TileID.SnowBlock, TileID.BlueDungeonBrick, TileID.GreenDungeonBrick, TileID.PinkDungeonBrick };
+            var array = new short[] { TileID.Mud, TileID.IceBlock, TileID.SnowBlock, TileID.BlueDungeonBrick, TileID.GreenDungeonBrick, TileID.PinkDungeonBrick };
             while (Treasures.Vicinity(new Vector2(originX, originY), 50, array, 75) || Treasures.Vicinity(new Vector2(originX + 800, originY), 50, array, 75))
             {
-                originX = Main.rand.Next(200, Main.maxTilesX - 200 - 800);
-                if (originX < Main.maxTilesX / 5 || originX > (Main.maxTilesX - 800) * 0.8)
+                originX = Main.rand.Next(200, /*Main.maxTilesX*/4800 - 200 - 800);
+                if (originX < /*Main.maxTilesX*/ 4800 / 5 || originX > (/*Main.maxTilesX*/4800 - 800) * 0.8)
                     continue;
-                originY = Main.maxTilesY - 650;
+                originY = /*Main.maxTilesY*/1600 - 650;
             }
             Instance.originX = originX;
             Instance.originY = originY;
@@ -74,7 +63,7 @@ namespace ArchaeaMod.Gen
             ScreenWidth = 800;
             ScreenHeight = 450;
         }
-        public void tGenerate(ref GenerationProgress progress)
+        public void tGenerate()
         {
             int width = ScreenWidth;
             int height = ScreenHeight;
@@ -117,12 +106,12 @@ namespace ArchaeaMod.Gen
                         {
                             float cos = start.X + n * (float)Math.Cos(r);
                             float sin = start.Y + n * (float)Math.Sin(r);
-                            if (cos > 0 && cos < Main.maxTilesX && sin > 0 && sin < Main.maxTilesY)
+                            if (cos > 0 && cos < /*Main.maxTilesX*/4800 && sin > 0 && sin < /*Main.maxTilesY*/ 1600)
                             {
-                                Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.magnoStone;
+                                Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.magnoStone;
                                 if (ash && flag && r <= Math.PI && r >= 0f)
                                 {
-                                    Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.Ash;
+                                    Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.Ash;
                                 }
                             }
                         }
@@ -171,7 +160,6 @@ namespace ArchaeaMod.Gen
                 miner.Add(start);
                 start.X += move;
             }
-            progress.Value = 0.2f;
             start = new Vector2(left, top + height / 4);
             while (start.X < left + width / 2)
             {
@@ -192,12 +180,12 @@ namespace ArchaeaMod.Gen
                         {
                             float cos = start.X + n * (float)Math.Cos(r);
                             float sin = start.Y + n * (float)Math.Sin(r);
-                            if (cos > 0 && cos < Main.maxTilesX && sin > 0 && sin < Main.maxTilesY)
+                            if (cos > 0 && cos < /*Main.maxTilesX*/4800 && sin > 0 && sin < /*Main.maxTilesY*/ 1600)
                             {
-                                Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.magnoStone;
+                                Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.magnoStone;
                                 if (ash && flag && r <= Math.PI && r >= 0f)
                                 {
-                                    Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.Ash;
+                                    Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.Ash;
                                 }
                             }
                         }
@@ -246,7 +234,6 @@ namespace ArchaeaMod.Gen
                 miner.Add(start);
                 start.X += move;
             }
-            progress.Value = 0.4f;
             flag = false;
             ticks = 0;
             bool back = true, forward = false;
@@ -263,12 +250,12 @@ namespace ArchaeaMod.Gen
                         {
                             float cos = branch.X + n * (float)Math.Cos(r);
                             float sin = branch.Y + n * (float)Math.Sin(r);
-                            if (cos > 0 && cos < Main.maxTilesX && sin > 0 && sin < Main.maxTilesY)
+                            if (cos > 0 && cos < /*Main.maxTilesX*/ 4800 && sin > 0 && sin < /*Main.maxTilesY*/ 1600)
                             {
-                                Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.magnoStone;
+                                Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.magnoStone;
                                 if (ash && flag && r <= Math.PI && r >= 0f)
                                 {
-                                    Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.Ash;
+                                    Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.Ash;
                                 }
                             }
                         }
@@ -317,7 +304,6 @@ namespace ArchaeaMod.Gen
                 miner.Add(branch);
                 branch.Y += move;
             }
-            progress.Value = 0.6f;
             branch.X = left + bound.Width * 0.75f;
             branch.Y = top + radius;
             while (branch.Y < height - radius * 2f)
@@ -330,12 +316,12 @@ namespace ArchaeaMod.Gen
                         {
                             float cos = branch.X + n * (float)Math.Cos(r);
                             float sin = branch.Y + n * (float)Math.Sin(r);
-                            if (cos > 0 && cos < Main.maxTilesX && sin > 0 && sin < Main.maxTilesY)
+                            if (cos > 0 && cos < /*Main.maxTilesX*/4800 && sin > 0 && sin < /*Main.maxTilesY*/ 1600)
                             {
-                                Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.magnoStone;
+                                Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.magnoStone;
                                 if (ash && flag && r <= Math.PI && r >= 0f)
                                 {
-                                    Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.Ash;
+                                    Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.Ash;
                                 }
                             }
                         }
@@ -384,7 +370,6 @@ namespace ArchaeaMod.Gen
                 miner.Add(branch);
                 branch.Y += move;
             }
-            progress.Value = 0.8f;
             while (true)
             {
                 if (!flag && Main.rand.NextDouble() >= 0.50f)
@@ -400,12 +385,12 @@ namespace ArchaeaMod.Gen
                         {
                             float cos = start.X + n * (float)Math.Cos(r);
                             float sin = start.Y + n * (float)Math.Sin(r);
-                            if (cos > 0 && cos < Main.maxTilesX && sin > 0 && sin < Main.maxTilesY)
+                            if (cos > 0 && cos < /*Main.maxTilesX*/4800 && sin > 0 && sin < /*Main.maxTilesY*/ 1600)
                             {
-                                Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.magnoStone;
+                                Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.magnoStone;
                                 if (ash && flag && r <= Math.PI && r >= 0f)
                                 {
-                                    Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.Ash;
+                                    Main.tile[(int)cos + originX, (int)sin + originY].type = 0;// ArchaeaWorld.Ash;
                                 }
                             }
                         }
@@ -496,12 +481,12 @@ namespace ArchaeaMod.Gen
                         {
                             float cos = start.X + n * (float)Math.Cos(r);
                             float sin = start.Y + n * (float)Math.Sin(r);
-                            if (cos > 0 && cos < Main.maxTilesX && sin > 0 && sin < Main.maxTilesY)
+                            if (cos > 0 && cos < /*Main.maxTilesX*/ 4800 && sin > 0 && sin < /*Main.maxTilesY*/ 1600)
                             {
-                                Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.magnoStone;
+                                Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.magnoStone;
                                 if (ash && flag && r <= Math.PI && r >= 0f)
                                 {
-                                    Main.tile[(int)cos + originX, (int)sin + originY].type = ArchaeaWorld.Ash;
+                                    Main.tile[(int)cos + originX, (int)sin + originY].type = 0;//ArchaeaWorld.Ash;
                                 }
                             }
                         }
@@ -550,7 +535,6 @@ namespace ArchaeaMod.Gen
                 miner.Add(start);
                 start.X += move;
             }
-            progress.Value = 0.9f;
             radius = 15f / radiusLimit;
             for (int i = 1; i < miner.Count; i++)
             {
@@ -569,19 +553,18 @@ namespace ArchaeaMod.Gen
                             float sin = loc.Y + n * (float)Math.Sin(r);
                             int offset = 0;
                             //offset = (int)(radius * (vertical ? Math.Cos(i) : Math.Sin(i)));
-                            if (cos > 0 && cos < Main.maxTilesX && sin > 0 && sin < Main.maxTilesY)
+                            if (cos > 0 && cos < /*Main.maxTilesX*/ 4800 && sin > 0 && sin < /*Main.maxTilesY*/ 1600)
                             {
                                 cotf.World.Tile tile = Main.tile[(int)cos + originX + offset, (int)sin + originY + offset];
                                 tile.active(false);
-                                Main.tile[(int)cos + originX + offset, (int)sin + originY + offset].WallType = ArchaeaWorld.magnoCaveWall;
-                                if (rand.NextFloat() < emptyWallChance) Main.tile[(int)cos + originX + offset, (int)sin + originY + offset].WallType = WallID.None;
+                                //Main.tile[(int)cos + originX + offset, (int)sin + originY + offset].WallType = ArchaeaWorld.magnoCaveWall;
+                                //if (rand.NextDouble() < emptyWallChance) Main.tile[(int)cos + originX + offset, (int)sin + originY + offset].WallType = WallID.None;
                             }
                         }
                     }
                 }
             }
             radius = 30 / radiusLimit;
-            progress.Value = 0.95f;
             for (int i = 1; i < cavern.Count; i++)
             {
                 bool vertical = true;
@@ -599,18 +582,17 @@ namespace ArchaeaMod.Gen
                             float sin = loc.Y + n * (float)Math.Sin(r);
                             int offset = 0;
                             //offset = (int)(radius * (vertical ? Math.Cos(i) : Math.Sin(i)));
-                            if (cos > 0 && cos < Main.maxTilesX && sin > 0 && sin < Main.maxTilesY)
+                            if (cos > 0 && cos < /*Main.maxTilesX*/ 4800 && sin > 0 && sin < /*Main.maxTilesY*/ 1600)
                             {
                                 cotf.World.Tile tile = Main.tile[(int)cos + originX + offset, (int)sin + originY + offset];
                                 tile.active(false);
-                                Main.tile[(int)cos + originX + offset, (int)sin + originY + offset].WallType = ArchaeaWorld.magnoCaveWall;
-                                if (rand.NextFloat() < emptyWallChance) Main.tile[(int)cos + originX + offset, (int)sin + originY + offset].WallType = WallID.None;
+                                //Main.tile[(int)cos + originX + offset, (int)sin + originY + offset].WallType = ArchaeaWorld.magnoCaveWall;
+                                //if (rand.NextFloat() < emptyWallChance) Main.tile[(int)cos + originX + offset, (int)sin + originY + offset].WallType = WallID.None;
                             }
                         }
                     }
                 }
             }
-            progress.Value = 1f;
         }
     }
 }

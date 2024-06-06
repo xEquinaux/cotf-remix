@@ -42,7 +42,19 @@ namespace ArchaeaMod
          Cloud,
          Containers,
          Chests,
-         Haze;
+         Haze,
+         PearlstoneBrick,
+         Bubble,
+         Mud, 
+         IceBlock,
+         SnowBlock, 
+         BlueDungeonBrick, 
+         GreenDungeonBrick,
+         PinkDungeonBrick,
+         ConveyorBeltLeft,
+         ConveyorBeltRight,
+         Timers,
+         AdamantiteBeam;
    }
    public class Structures
    {

@@ -1,19 +1,17 @@
+using cotf;
+using cotf.World;
+using cotf.Base;
 using System;
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.IO;
-using Terraria.ModLoader;
-using Terraria.WorldBuilding;
-using WorldGen = Terraria.WorldGen;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace ArchaeaMod.Biome
 {
     public class MagnoBiome
     {
-        public static void Generate(GenerationProgress progress)
+        public static void Generate()
         {
             //int worldLeft = Main.rand.Next(Main.maxTilesX / 4, (int)(Main.maxTilesX * 0.75f));
             //int worldTop = 400;
@@ -68,8 +66,8 @@ namespace ArchaeaMod.Biome
                         if (n >= tunnel)
                         {
                             float cos = start.X + n * (float)Math.Cos(r);
-                            float sin = start.Y + n * (float)Math.Sin(r);
-                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.magnoStone;
+                            float sin = start.Y + n * (float)Math.Sin(r);                   //TODO
+                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = 0; //ArchaeaWorld.magnoStone;
                             if (ash && flag && r <= Math.PI && r >= 0f)
                             {
                                 //Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.Ash;
@@ -120,7 +118,6 @@ namespace ArchaeaMod.Biome
                 miner.Add(start);
                 start.X += move;
             }
-            progress.Value = 0.2f;
             start = new Vector2(worldLeft, worldTop + height / 4);
             while (start.X < width / 2)
             {
@@ -140,8 +137,8 @@ namespace ArchaeaMod.Biome
                         if (n >= tunnel)
                         {
                             float cos = start.X + n * (float)Math.Cos(r);
-                            float sin = start.Y + n * (float)Math.Sin(r);
-                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.magnoStone;
+                            float sin = start.Y + n * (float)Math.Sin(r);                  //TODOs
+                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = 0;//ArchaeaWorld.magnoStone;
                             if (ash && flag && r <= Math.PI && r >= 0f)
                             {
                                 //Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.Ash;
@@ -192,7 +189,6 @@ namespace ArchaeaMod.Biome
                 miner.Add(start);
                 start.X += move;
             }
-            progress.Value = 0.4f;
             flag = false;
             ticks = 0;
             bool back = true, forward = false;
@@ -208,8 +204,8 @@ namespace ArchaeaMod.Biome
                         if (n >= tunnel)
                         {
                             float cos = branch.X + n * (float)Math.Cos(r);
-                            float sin = branch.Y + n * (float)Math.Sin(r);
-                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.magnoStone;
+                            float sin = branch.Y + n * (float)Math.Sin(r);                 //TODO
+                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = 0;//ArchaeaWorld.magnoStone;
                             if (ash && flag && r <= Math.PI && r >= 0f)
                             {
                                 //Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.Ash;
@@ -260,7 +256,6 @@ namespace ArchaeaMod.Biome
                 miner.Add(branch);
                 branch.Y -= move;
             }
-            progress.Value = 0.6f;
             branch.X *= 2f;
             branch.Y = worldTop + height - radius;
             while (branch.Y > radius * 2f)
@@ -272,8 +267,8 @@ namespace ArchaeaMod.Biome
                         if (n >= tunnel)
                         {
                             float cos = branch.X + n * (float)Math.Cos(r);
-                            float sin = branch.Y + n * (float)Math.Sin(r);
-                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.magnoStone;
+                            float sin = branch.Y + n * (float)Math.Sin(r);                //TODO
+                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = 0;//ArchaeaWorld.magnoStone;
                             if (ash && flag && r <= Math.PI && r >= 0f)
                             {
                                 //Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.Ash;
@@ -324,7 +319,6 @@ namespace ArchaeaMod.Biome
                 miner.Add(branch);
                 branch.Y -= move;
             }
-            progress.Value = 0.8f;
             while (true)
             {
                 if (!flag && Main.rand.NextDouble() >= 0.50f)
@@ -339,8 +333,8 @@ namespace ArchaeaMod.Biome
                         if (n >= tunnel)
                         {
                             float cos = start.X + n * (float)Math.Cos(r);
-                            float sin = start.Y + n * (float)Math.Sin(r);
-                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.magnoStone;
+                            float sin = start.Y + n * (float)Math.Sin(r);                 //TODO
+                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = 0;//ArchaeaWorld.magnoStone;
                             if (ash && flag && r <= Math.PI && r >= 0f)
                             {
                                 //Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.Ash;
@@ -432,8 +426,8 @@ namespace ArchaeaMod.Biome
                         if (n >= tunnel)
                         {
                             float cos = start.X + n * (float)Math.Cos(r);
-                            float sin = start.Y + n * (float)Math.Sin(r);
-                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.magnoStone;
+                            float sin = start.Y + n * (float)Math.Sin(r);                 //TODO
+                            Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = 0;//ArchaeaWorld.magnoStone;
                             if (ash && flag && r <= Math.PI && r >= 0f)
                             {
                                 //Main.tile[Math.Max((int)cos, 1), Math.Max((int)sin, 1)].type = ArchaeaWorld.Ash;
@@ -484,7 +478,6 @@ namespace ArchaeaMod.Biome
                 miner.Add(start);
                 start.X += move;
             }
-            progress.Value = 0.9f;
             radius = 20f;
             foreach (var loc in miner)
             {
@@ -505,7 +498,6 @@ namespace ArchaeaMod.Biome
                 }
             }
             radius = 40f;
-            progress.Value = 0.95f;
             foreach (var loc in cavern)
             {
                 tunnel = (float)Main.rand.Next(20, 35);
@@ -524,7 +516,6 @@ namespace ArchaeaMod.Biome
                     }
                 }
             }
-            progress.Value = 1f;
         }
     }
 }

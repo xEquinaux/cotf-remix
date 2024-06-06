@@ -1,4 +1,7 @@
-﻿using System;
+﻿using cotf;
+using cotf.Base;
+using cotf.World;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +9,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.WorldBuilding;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace ArchaeaMod
 {
@@ -19,28 +19,28 @@ namespace ArchaeaMod
         public bool complete;
         public static bool miniBiome;
         private int width
-        {
-            get { return (int)Main.rightWorld / 16 / 3; }
+        {                    //TODO
+            get { return (int)4800 / 16 / 3; }
         }
         private int leftBounds
         {
             get { return Main.rand.Next(width, width * 2); }
         }
         private int upperBounds
-        {
-            get { return Main.maxTilesY / 3 + 50; }
+        {                  //TODO
+            get { return 1600 / 3 + 50; }
         }
         public int maxY
-        {
-            get { return (int)Main.bottomWorld / 16 - 200; }
+        {                 //TODO
+            get { return (int)1600 * 16 / 16 - 200; }
         }
         private int centerX
         {
             get { return leftBounds + width / 2; }
         }
         private int centerY
-        {
-            get { return (int)(Main.bottomWorld / 16 / 1.5f); }
+        {                      //TODO
+            get { return (int)(1600 * 16 / 16 / 1.5f); }
         }
         public int lookFurther;
         public static int whoAmI = 0;
@@ -58,8 +58,8 @@ namespace ArchaeaMod
         public int points;
         private int cycle;
         private int id;
-        private int X = Main.maxTilesX;
-        private int Y = Main.maxTilesY;
+        private int X = 4800;//Main.maxTilesX;
+        private int Y = 1600;//Main.maxTilesY;
         private int Width;
         private int Height;
         private int iterate;
@@ -91,38 +91,38 @@ namespace ArchaeaMod
         {
             int size = Main.rand.Next(1, 4);
             int rand = Main.rand.Next(1, 5);
-            if (Main.rand.Next(1, 4) == 1 && Main.tile[x + 1 + lookFurther, y].HasTile)
+            if (Main.rand.Next(1, 4) == 1 && Main.tile[x + 1 + lookFurther, y].Active)
             {
                 center.X += 1f;
                 lookFurther = 0;
                 points++;
                 DigPlot(size);
             }
-            if (Main.rand.Next(1, 4) == 1 && Main.tile[x - 1 - lookFurther, y].HasTile)
+            if (Main.rand.Next(1, 4) == 1 && Main.tile[x - 1 - lookFurther, y].Active)
             {
                 center.X -= 1f;
                 lookFurther = 0;
                 points++;
                 DigPlot(size);
             }
-            if (Main.rand.Next(1, 4) == 1 && Main.tile[x, y + 1 + lookFurther].HasTile && center.Y < maxY)
+            if (Main.rand.Next(1, 4) == 1 && Main.tile[x, y + 1 + lookFurther].Active && center.Y < maxY)
             {
                 center.Y += 1f;
                 lookFurther = 0;
                 points++;
                 DigPlot(size);
             }
-            if (Main.rand.Next(1, 4) == 1 && Main.tile[x, y - 1 - lookFurther].HasTile && center.Y > upperBounds)
+            if (Main.rand.Next(1, 4) == 1 && Main.tile[x, y - 1 - lookFurther].Active && center.Y > upperBounds)
             {
                 center.Y -= 1f;
                 lookFurther = 0;
                 points++;
                 DigPlot(size);
             }
-            if (!Main.tile[x + 1 + lookFurther, y].HasTile &&
-                !Main.tile[x - 1 - lookFurther, y].HasTile &&
-                !Main.tile[x, y + 1 + lookFurther].HasTile &&
-                !Main.tile[x, y - 1 - lookFurther].HasTile)
+            if (!Main.tile[x + 1 + lookFurther, y].Active &&
+                !Main.tile[x - 1 - lookFurther, y].Active &&
+                !Main.tile[x, y + 1 + lookFurther].Active &&
+                !Main.tile[x, y - 1 - lookFurther].Active)
                 lookFurther++;
             if (!plots.ContainsKey(center))
                 plots.Add(center, size);
@@ -145,15 +145,16 @@ namespace ArchaeaMod
                         {
                             center.X += 1f;
                             lookFurther++;
-                        } while (!Main.tile[x + 1 + lookFurther, y].HasTile
-                                && x < Main.rightWorld / 16);
+                        } while (!Main.tile[x + 1 + lookFurther, y].Active
+                        //TODO
+                                && x < 4800);
                         break;
                     case 2:
                         do
                         {
                             center.X -= 1f;
                             lookFurther++;
-                        } while (!Main.tile[x - 1 - lookFurther, y].HasTile
+                        } while (!Main.tile[x - 1 - lookFurther, y].Active
                                 && x > 50);
                         break;
                     case 3:
@@ -161,15 +162,16 @@ namespace ArchaeaMod
                         {
                             center.Y += 1f;
                             lookFurther++;
-                        } while (!Main.tile[x, y + 1 + lookFurther].HasTile
-                                && y < Main.bottomWorld / 16);
+                        } while (!Main.tile[x, y + 1 + lookFurther].Active
+                        //TODO
+                                && y < 1600);
                         break;
                     case 4:
                         do
                         {
                             center.Y -= 1f;
                             lookFurther++;
-                        } while (!Main.tile[x, y - 1 - lookFurther].HasTile
+                        } while (!Main.tile[x, y - 1 - lookFurther].Active
                                 && y > maxY);
                         break;
                     default:
@@ -211,8 +213,8 @@ namespace ArchaeaMod
             return new Vector2(previous.X, origin.Y);
         }
         public static bool Inbounds(int x, int y)
-        {
-            return x < Main.maxTilesX - 50 && x > 50 && y < Main.maxTilesY - 200 && y > 50;
+        {              //TODO
+            return x < 4800 - 50 && x > 50 && y < 1600 - 200 && y > 50;
         }
         public void DigPlot(int size)
         {
@@ -273,7 +275,7 @@ namespace ArchaeaMod
             if (Inbounds(x, y))
             {
                 var tile = Main.tile[x, y];
-                WorldGen.PlaceLiquid(x, y, (byte)LiquidID.Water, 60);
+                //WorldGen.PlaceLiquid(x, y, (byte)LiquidID.Water, 60);
             }
         }
         public void CheckComplete(int divisor = 2)
