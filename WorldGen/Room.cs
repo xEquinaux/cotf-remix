@@ -8,29 +8,14 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Generation;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
 
 using ArchaeaMod.GenLegacy;
-using ArchaeaMod.Items;
-using ArchaeaMod.Items.Alternate;
-using ArchaeaMod.Merged;
-using ArchaeaMod.Merged.Items;
-using ArchaeaMod.Merged.Tiles;
-using ArchaeaMod.Merged.Walls;
-using Humanizer;
-using ArchaeaMod.NPCs.Bosses;
 using System.Runtime.CompilerServices;
-using cotf.WorldGen;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace ArchaeaMod.Structure
 {
+   /*
     public class Room
     {
         public Room(int type)
@@ -71,7 +56,7 @@ namespace ArchaeaMod.Structure
                         case RoomID.Empty:
                             goto case RoomID.Camp;
                         case RoomID.Simple:
-                            if (IsBottom(j) && Main.rand.NextBool())
+                            if (IsBottom(j) && WorldGen.genRand.NextBool())
                             {
                                 if (Main.tile[i, j + 1].HasTile)
                                 { 
@@ -110,8 +95,8 @@ namespace ArchaeaMod.Structure
                                                 Terraria.WorldGen.PlaceTile(x, y, ArchaeaWorld.factoryBrick, true, true);
                                                 break;
                                             default:
-                                                cotf.World.Tile tile = Main.tile[x, y];
-                                                tile.active(false);
+                                                Tile tile = Main.tile[x, y];
+                                                tile.HasTile = false;
                                                 break;
                                         }
                                     }
@@ -140,7 +125,7 @@ namespace ArchaeaMod.Structure
                             }
                             goto default;
                         case RoomID.Webbed:
-                            if (Main.rand.NextBool(24))
+                            if (WorldGen.genRand.NextBool(24))
                             {
                                 if (i > X1 + 8 && j > Y1 + 8)
                                 { 
@@ -169,7 +154,7 @@ namespace ArchaeaMod.Structure
                                 if (!placed)
                                 { 
                                     t.PlaceTile(i, j, (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>(), true, false, 4, false);
-                                    placed = Main.tile[i, j].type == (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>();
+                                    placed = Main.tile[i, j].TileType == (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>();
                                 }
                             }
                             goto default;
@@ -223,7 +208,7 @@ namespace ArchaeaMod.Structure
         }
         private bool IsPlaced(int i, int j, ushort tile)
         {
-            return Main.tile[i, j].type == tile && Main.tile[i, j].HasTile;
+            return Main.tile[i, j].TileType == tile && Main.tile[i, j].HasTile;
         }
         private bool IsBorder(int i, int j)
         {
@@ -265,7 +250,7 @@ namespace ArchaeaMod.Structure
             }
         }
     }
-
+    */
     public sealed class RoomID
     {
         public const byte Total = 13;

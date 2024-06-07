@@ -15,27 +15,13 @@
   <ItemGroup>
     <Compile Remove="Item\Prefix\**" />
     <Compile Remove="Item\Suffix\**" />
+    <Compile Remove="WorldGen\Factory\**" />
     <EmbeddedResource Remove="Item\Prefix\**" />
     <EmbeddedResource Remove="Item\Suffix\**" />
+    <EmbeddedResource Remove="WorldGen\Factory\**" />
     <None Remove="Item\Prefix\**" />
     <None Remove="Item\Suffix\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Textures\background.png" />
-    <None Remove="Textures\bg.png" />
-    <None Remove="Textures\chain.png" />
-    <None Remove="Textures\fow.png" />
-    <None Remove="Textures\fow50.png" />
-    <None Remove="Textures\item0.png" />
-    <None Remove="Textures\loot0.png" />
-    <None Remove="Textures\npc1.png" />
-    <None Remove="Textures\pixel.png" />
-    <None Remove="Textures\projectile0.png" />
-    <None Remove="Textures\scenery0.png" />
-    <None Remove="Textures\small.png" />
-    <None Remove="Textures\temp.png" />
-    <None Remove="Textures\temp90.png" />
-    <None Remove="Textures\trap0.png" />
+    <None Remove="WorldGen\Factory\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
@@ -44,24 +30,6 @@
 	  <Referece Include="System.Drawing.Common">
 		  <HintPath>C:\Program Files (x86)\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.6\System.Drawing.Common.dll</HintPath>
 	  </Referece>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Textures\background.png" />
-    <Resource Include="Textures\Ground\background.png" />
-    <Resource Include="Textures\bg.png" />
-    <Resource Include="Textures\chain.png" />
-    <Resource Include="Textures\fow.png" />
-    <Resource Include="Textures\fow50.png" />
-    <Resource Include="Textures\scenery0.png" />
-    <Resource Include="Textures\loot0.png" />
-    <Resource Include="Textures\npc1.png" />
-    <Resource Include="Textures\projectile0.png" />
-    <Resource Include="Textures\trap0.png" />
-    <Resource Include="Textures\pixel.png" />
-    <Resource Include="Textures\small.png" />
-    <Resource Include="Textures\item0.png" />
-    <Resource Include="Textures\temp.png" />
-    <Resource Include="Textures\temp90.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CirclePrefect">
@@ -76,6 +44,71 @@
     <Reference Include="tUserInterface">
       <HintPath>..\..\..\Downloads\tUserInterface.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Textures\background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\chain.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\fow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\fow50.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Ground\background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\item0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\loot0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\npc0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\npc1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\pixel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\projectile0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\scenery0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\temp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\temp90.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\trap0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Walls\wall1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Walls\wall2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Walls\wall3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Walls\wall4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

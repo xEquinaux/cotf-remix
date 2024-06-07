@@ -1340,17 +1340,17 @@ namespace cotf.Base
                }
                foreach (Vector2 ground in getFloor[index - 1])
                {
-                  int x = (int)ground.X;
-                  int y = (int)ground.Y;
-                  if (!ArchaeaWorld.Inbounds(x, y)) continue;
-                  if (Main.tile[x, y].WallType == wallID && WorldGen.genRand.NextBool(8))
-                     WorldGen.PlaceTile(x, y, newTileID, true, true);
-                  if (Main.tile[x, y].TileType == newTileID)
-                  {
-                     added[index] = true;
-                     count++;
-                     break;
-                  }
+                  //int x = (int)ground.X;
+                  //int y = (int)ground.Y;
+                  //if (!ArchaeaWorld.Inbounds(x, y)) continue;
+                  //if (Main.tile[x, y].WallType == wallID && WorldGen.genRand.NextBool(8))
+                  //   WorldGen.PlaceTile(x, y, newTileID, true, true);
+                  //if (Main.tile[x, y].TileType == newTileID)
+                  //{
+                  //   added[index] = true;
+                  //   count++;
+                  //   break;
+                  //}
                }
                if (added[index])
                {
@@ -1379,26 +1379,26 @@ namespace cotf.Base
                int x = (int)getFloor[index].X;
                int y = (int)getFloor[index].Y;
                Tile tile = Main.tile[x, y];
-               if (random && WorldGen.genRand.Next(odds) != 0) continue;
-               if (onlyOnWall && Main.tile[x, y].WallType != wallID)
-               {
-                  index++;
-                  continue;
-               }
-               if (proximity && Vicinity(getFloor[index], radius, newTileID))
-               {
-                  index++;
-                  continue;
-               }
-               if (genPlace)
-                  WorldGen.PlaceTile(x, y, newTileID, true, force);
-               else
-               {
-                  tile.HasTile = true;
-                  tile.TileType = newTileID;
-               }
-               if (total == 1 && tile.TileType == newTileID && tile.HasTile)
-                  break;
+               //if (random && WorldGen.genRand.Next(odds) != 0) continue;
+               //if (onlyOnWall && Main.tile[x, y].WallType != wallID)
+               //{
+               //   index++;
+               //   continue;
+               //}
+               //if (proximity && Vicinity(getFloor[index], radius, newTileID))
+               //{
+               //   index++;
+               //   continue;
+               //}
+               //if (genPlace)
+               //   WorldGen.PlaceTile(x, y, newTileID, true, force);
+               //else
+               //{
+               //   tile.HasTile = true;
+               //   tile.TileType = newTileID;
+               //}
+               //if (total == 1 && tile.TileType == newTileID && tile.HasTile)
+               //   break;
                if (iterate && index == getFloor.Length - 1)
                   index = 0;
                index++;
@@ -1406,20 +1406,20 @@ namespace cotf.Base
       }
       public bool PlaceTile(int i, int j, ushort tileType, bool genPlace = false, bool force = false, int proximity = -1, bool wall = false, int style = 0)
       {
-         Tile tile = Main.tile[i, j];
-         if (proximity != -1 && Vicinity(new Vector2(i, j), proximity, tileType))
-               return false;
-         if (!genPlace)
-         {
-               tile.HasTile = true;
-               tile.TileType = tileType;
-         }
-         else
-         {
-               WorldGen.PlaceTile(i, j, tileType, true, force, -1, style);
-         }
-         if (tile.TileType == tileType)
-               return true;
+         //Tile tile = Main.tile[i, j];
+         //if (proximity != -1 && Vicinity(new Vector2(i, j), proximity, tileType))
+         //      return false;
+         //if (!genPlace)
+         //{
+         //      tile.HasTile = true;
+         //      tile.TileType = tileType;
+         //}
+         //else
+         //{
+         //      WorldGen.PlaceTile(i, j, tileType, true, force, -1, style);
+         //}
+         //if (tile.TileType == tileType)
+         //      return true;
          return false;
       }
       public Vector2[][] GetFloor()
@@ -1437,15 +1437,15 @@ namespace cotf.Base
                   {
                      Tile floor = Main.tile[i, j];
                      Tile ground = Main.tile[i, j + 1];
-                     if ((!floor.HasTile || !Main.tileSolid[floor.TileType]) &&
-                           ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorID)
-                     {
-                           if (count < tiles[index].Length)
-                           {
-                              tiles[index][count] = new Vector2(i, j);
-                              count++;
-                           }
-                     }
+                     //if ((!floor.HasTile || !Main.tileSolid[floor.TileType]) &&
+                     //      ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorID)
+                     //{
+                     //      if (count < tiles[index].Length)
+                     //      {
+                     //         tiles[index][count] = new Vector2(i, j);
+                     //         count++;
+                     //      }
+                     //}
                   }
                count = 0;
                if (index < length)
@@ -1465,25 +1465,25 @@ namespace cotf.Base
                for (int i = (int)region.X; i < (int)region.X + width; i++)
                   for (int j = (int)region.Y; j < (int)region.Y + height; j++)
                   {
-                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                     if (overflow & WorldGen.genRand.Next(5) == 0) continue;
-                     Tile origin = Main.tile[i, j];
-                     Tile ceiling = Main.tile[i, j - 1];
-                     Tile ground = Main.tile[i, j + 1];
-                     Tile right = Main.tile[i + 1, j];
-                     Tile ieft = Main.tile[i - 1, j];
-                     if (origin.HasTile && Main.tileSolid[origin.TileType]) continue;
-                     if (ceiling.HasTile && Main.tileSolid[ceiling.TileType] && ceiling.TileType == floorType || 
-                           ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorType || 
-                           right.HasTile && Main.tileSolid[right.TileType] && right.TileType == floorType || 
-                           ieft.HasTile && Main.tileSolid[ieft.TileType] && ieft.TileType == floorType)
-                     {
-                           if (count < tiles.Length)
-                           {
-                              tiles[count] = new Vector2(i, j);
-                              count++;
-                           }
-                     }
+                     //if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     //if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                     //Tile origin = Main.tile[i, j];
+                     //Tile ceiling = Main.tile[i, j - 1];
+                     //Tile ground = Main.tile[i, j + 1];
+                     //Tile right = Main.tile[i + 1, j];
+                     //Tile ieft = Main.tile[i - 1, j];
+                     //if (origin.HasTile && Main.tileSolid[origin.TileType]) continue;
+                     //if (ceiling.HasTile && Main.tileSolid[ceiling.TileType] && ceiling.TileType == floorType || 
+                     //      ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorType || 
+                     //      right.HasTile && Main.tileSolid[right.TileType] && right.TileType == floorType || 
+                     //      ieft.HasTile && Main.tileSolid[ieft.TileType] && ieft.TileType == floorType)
+                     //{
+                     //      if (count < tiles.Length)
+                     //      {
+                     //         tiles[count] = new Vector2(i, j);
+                     //         count++;
+                     //      }
+                     //}
                   }
          return tiles;
       }
@@ -1497,48 +1497,48 @@ namespace cotf.Base
                for (int i = (int)region.X; i < (int)region.X + width; i++)
                   for (int j = (int)region.Y; j < (int)region.Y + height; j++)
                   {
-                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                     if (overflow & WorldGen.genRand.Next(5) == 0) continue;
-                     Tile floor = Main.tile[i, j];
-                     Tile ground = Main.tile[i, j + 1];
-                     if (floor.HasTile && Main.tileSolid[floor.TileType]) continue;
-                     if (ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorType)
-                     {
-                           if (count < tiles.Length)
-                           {
-                              tiles[count] = new Vector2(i, j);
-                              count++;
-                           }
-                     }
+                     //if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     //if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                     //Tile floor = Main.tile[i, j];
+                     //Tile ground = Main.tile[i, j + 1];
+                     //if (floor.HasTile && Main.tileSolid[floor.TileType]) continue;
+                     //if (ground.HasTile && Main.tileSolid[ground.TileType] && ground.TileType == floorType)
+                     //{
+                     //      if (count < tiles.Length)
+                     //      {
+                     //         tiles[count] = new Vector2(i, j);
+                     //         count++;
+                     //      }
+                     //}
                   }
          return tiles;
       }
       public static Vector2[] GetFloor(int i, int j, int width, int height, ushort floorType)
       {
-         if (!ArchaeaWorld.Inbounds(i, j))
-         {
-               return new Vector2[] { Vector2.Zero };
-         }
+         //if (!ArchaeaWorld.Inbounds(i, j))
+         //{
+         //      return new Vector2[] { Vector2.Zero };
+         //}
          List<Vector2> list = new List<Vector2>();
          for (int m = i; m < i + width; m++)
          {
                for (int n = j; n < j + height; n++)
                {
-                  if (!ArchaeaWorld.Inbounds(i, j))
-                  {
-                     if (list.Count == 0)
-                     { 
-                           return new Vector2[] { Vector2.Zero };
-                     }
-                     else return list.ToArray();
-                  }
-                  if (Main.tile[m, n].TileType != 0)
-                  {
-                     if (!Main.tile[m, n - 1].HasTile)
-                     { 
-                           list.Add(new Vector2(m, n));
-                     }
-                  }
+                  //if (!ArchaeaWorld.Inbounds(i, j))
+                  //{
+                  //   if (list.Count == 0)
+                  //   { 
+                  //         return new Vector2[] { Vector2.Zero };
+                  //   }
+                  //   else return list.ToArray();
+                  //}
+                  //if (Main.tile[m, n].TileType != 0)
+                  //{
+                  //   if (!Main.tile[m, n - 1].HasTile)
+                  //   { 
+                  //         list.Add(new Vector2(m, n));
+                  //   }
+                  //}
                }
          }
          return list.ToArray();
@@ -1551,19 +1551,19 @@ namespace cotf.Base
          for (int i = (int)region.X - radius; i < (int)region.X + radius; i++)
                for (int j = (int)region.Y - radius; j < (int)region.Y + radius; j++)
                {
-                  if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                  if (overflow & WorldGen.genRand.Next(5) == 0) continue;
-                  Tile roof = Main.tile[i, j];
-                  Tile ceiling = Main.tile[i, j + 1];
-                  if (ceiling.HasTile && Main.tileSolid[ceiling.TileType]) continue;
-                  if (roof.HasTile && Main.tileSolid[roof.TileType] && roof.TileType == tileType)
-                  {
-                     if (count < tiles.Length)
-                     {
-                           tiles[count] = new Vector2(i, j);
-                           count++;
-                     }
-                  }
+                  //if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                  //if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                  //Tile roof = Main.tile[i, j];
+                  //Tile ceiling = Main.tile[i, j + 1];
+                  //if (ceiling.HasTile && Main.tileSolid[ceiling.TileType]) continue;
+                  //if (roof.HasTile && Main.tileSolid[roof.TileType] && roof.TileType == tileType)
+                  //{
+                  //   if (count < tiles.Length)
+                  //   {
+                  //         tiles[count] = new Vector2(i, j);
+                  //         count++;
+                  //   }
+                  //}
                }
          return tiles;
       }
@@ -1573,13 +1573,13 @@ namespace cotf.Base
          for (int i = (int)region.X; i < width; i++)
                for (int j = (int)region.Y; j < height; j++)
                {
-                  if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                  if (overflow & WorldGen.genRand.Next(5) == 0) continue;
-                  Tile roof = Main.tile[i, j];
-                  Tile ceiling = Main.tile[i, j + 1];
-                  if (ceiling.HasTile && Main.tileSolid[ceiling.TileType]) continue;
-                  if (roof.HasTile && Main.tileSolid[roof.TileType] && roof.TileType == tileType)
-                     tiles.Add(new Vector2(i, j + 1));
+                  //if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                  //if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                  //Tile roof = Main.tile[i, j];
+                  //Tile ceiling = Main.tile[i, j + 1];
+                  //if (ceiling.HasTile && Main.tileSolid[ceiling.TileType]) continue;
+                  //if (roof.HasTile && Main.tileSolid[roof.TileType] && roof.TileType == tileType)
+                  //   tiles.Add(new Vector2(i, j + 1));
                }
          return tiles.ToArray();
       }
@@ -1592,12 +1592,12 @@ namespace cotf.Base
                for (int i = (int)region.X; i < (int)region.X + width; i++)
                   for (int j = (int)region.Y; j < (int)region.Y + height; j++)
                   {
-                     if (count >= tiles.Length) continue;
-                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                     if (attach && Main.tile[i, j].TileType != tileType) continue;
-                     if (overflow & WorldGen.genRand.Next(5) == 0) continue;
-                     tiles[count] = new Vector2(i, j);
-                     count++;
+                     //if (count >= tiles.Length) continue;
+                     //if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     //if (attach && Main.tile[i, j].TileType != tileType) continue;
+                     //if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                     //tiles[count] = new Vector2(i, j);
+                     //count++;
                   }
          return tiles;
       }
@@ -1610,25 +1610,25 @@ namespace cotf.Base
                for (int i = (int)region.X; i < (int)region.X + width; i++)
                   for (int j = (int)region.Y; j < (int)region.Y + height; j++)
                   {
-                     if (count >= tiles.Length) continue;
-                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                     if (overflow & WorldGen.genRand.Next(5) == 0) continue;
-                     Tile tile = Main.tile[i, j];
-                     Tile wallL = Main.tile[i - 1, j];
-                     Tile wallR = Main.tile[i + 1, j];
-                     if (wallL.HasTile && Main.tileSolid[wallL.TileType])
-                           if (!tile.HasTile || !Main.tileSolid[tile.TileType])
-                           {
-                              if (attach && wallL.TileType != tileType) continue;
-                              tiles[count] = new Vector2(i, j);
-                           }
-                     if (wallR.HasTile && Main.tileSolid[wallR.TileType])
-                           if (!tile.HasTile || !Main.tileSolid[tile.TileType])
-                           {
-                              if (attach && wallR.TileType != tileType) continue;
-                              tiles[count] = new Vector2(i, j);
-                           }
-                     count++;
+                     //if (count >= tiles.Length) continue;
+                     //if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     //if (overflow & WorldGen.genRand.Next(5) == 0) continue;
+                     //Tile tile = Main.tile[i, j];
+                     //Tile wallL = Main.tile[i - 1, j];
+                     //Tile wallR = Main.tile[i + 1, j];
+                     //if (wallL.HasTile && Main.tileSolid[wallL.TileType])
+                     //      if (!tile.HasTile || !Main.tileSolid[tile.TileType])
+                     //      {
+                     //         if (attach && wallL.TileType != tileType) continue;
+                     //         tiles[count] = new Vector2(i, j);
+                     //      }
+                     //if (wallR.HasTile && Main.tileSolid[wallR.TileType])
+                     //      if (!tile.HasTile || !Main.tileSolid[tile.TileType])
+                     //      {
+                     //         if (attach && wallR.TileType != tileType) continue;
+                     //         tiles[count] = new Vector2(i, j);
+                     //      }
+                     //count++;
                   }
          return tiles;
       }
@@ -1640,18 +1640,18 @@ namespace cotf.Base
                for (int i = x; i < width; i++)
                   for (int j = y; j < width; j++)
                   {
-                     if (!ArchaeaWorld.Inbounds(i, j))
-                           continue;
-                     if (radius != -1 && Vicinity(new Vector2(i, j), radius, tileType))
-                           continue;
-                     Tile up = Main.tile[i, j - 1];
-                     Tile left = Main.tile[i - 1, j];
-                     Tile right = Main.tile[i + 1, j];
-                     if ((left.TileType == tileType || right.TileType == tileType) && !up.HasTile)
-                     {
-                           list.Add(new Vector2(i, j));
-                           count++;
-                     }
+                     //if (!ArchaeaWorld.Inbounds(i, j))
+                     //      continue;
+                     //if (radius != -1 && Vicinity(new Vector2(i, j), radius, tileType))
+                     //      continue;
+                     //Tile up = Main.tile[i, j - 1];
+                     //Tile left = Main.tile[i - 1, j];
+                     //Tile right = Main.tile[i + 1, j];
+                     //if ((left.TileType == tileType || right.TileType == tileType) && !up.HasTile)
+                     //{
+                     //      list.Add(new Vector2(i, j));
+                     //      count++;
+                     //}
                   }
          return list.ToArray();
       }
@@ -1662,9 +1662,9 @@ namespace cotf.Base
          for (int i = x - radius; i < x + radius; i++)
                for (int j = y - radius; j < y + radius; j++)
                {
-                  if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                  if (Main.tile[i, j].TileType == tileType)
-                     return true;
+               //   if (!ArchaeaWorld.Inbounds(i, j)) continue;
+               //   if (Main.tile[i, j].TileType == tileType)
+               //      return true;
                }
          return false;
       }
@@ -1678,13 +1678,13 @@ namespace cotf.Base
                for (int i = x - radius; i < x + radius; i++)
                   for (int j = y - radius; j < y + radius; j++)
                   {
-                     if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                     foreach (ushort type in tileType)
-                           if (Main.tile[i, j].TileType == type && Main.tile[i, j].HasTile)
-                           {
-                              tiles++;
-                              break;
-                           }
+                     //if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                     //foreach (ushort type in tileType)
+                     //      if (Main.tile[i, j].TileType == type && Main.tile[i, j].HasTile)
+                     //      {
+                     //         tiles++;
+                     //         break;
+                     //      }
                   }
                return tiles;
          };
@@ -1700,16 +1700,16 @@ namespace cotf.Base
                foreach (ushort type in tileType)
                {
                   tiles = 0;
-                  for (int i = x - radius; i < x + radius; i++)
-                     for (int j = y - radius; j < y + radius; j++)
-                     {
-                           if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                           if (Main.tile[i, j].TileType == type && Main.tile[i, j].HasTile)
-                           {
-                              if (tiles++ > limit)
-                                 return true;
-                           }
-                     }
+                  //for (int i = x - radius; i < x + radius; i++)
+                  //   for (int j = y - radius; j < y + radius; j++)
+                  //   {
+                  //         if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                  //         if (Main.tile[i, j].TileType == type && Main.tile[i, j].HasTile)
+                  //         {
+                  //            if (tiles++ > limit)
+                  //               return true;
+                  //         }
+                  //   }
                }
                return false;
          };
@@ -1723,16 +1723,16 @@ namespace cotf.Base
          for (int i = x - radius; i < x + radius; i++)
                for (int j = y - radius; j < y + radius; j++)
                {
-                  if (!ArchaeaWorld.Inbounds(i, j)) continue;
-                  Tile tile = Main.tile[i, j];
-                  if (tile.TileType == tileType)
-                     count++;
+                  //if (!ArchaeaWorld.Inbounds(i, j)) continue;
+                  //Tile tile = Main.tile[i, j];
+                  //if (tile.TileType == tileType)
+                  //   count++;
                }
          return count;
       }
       public static bool ActiveAndSolid(int i, int j)
       {
-         return Main.tile[i, j].HasTile && Main.tileSolid[Main.tile[i, j].TileType];
+         return Main.tile[i, j].Active;
       }
    }
 }

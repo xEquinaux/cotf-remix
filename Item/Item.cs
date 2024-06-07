@@ -138,12 +138,14 @@ namespace cotf
             {
                 if (Main.rand.NextBool(2))
                 { 
+                    suffix = new Suffix();
                     suffix.Apply(suffix.RollTrait(false));
                     borderColor = Color.Purple;
                     enchanted = false;
                 }
                 if (Main.rand.NextBool(2))
                 {
+                    prefix = new Prefix();
                     prefix.Apply(prefix.RollTrait(false));
                     borderColor = Color.Purple;
                     enchanted = false;
