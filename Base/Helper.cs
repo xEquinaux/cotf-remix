@@ -813,6 +813,17 @@ namespace cotf.Base
             { 
                 using (Graphics gfx = Graphics.FromImage(bitmap))
                 {
+                    if (ent.frameCount > 1)
+                    {
+                        gfx.DrawImage(texture, new Rectangle(0, 0, ent.width, ent.height), new Rectangle(0, ent.frameHeight * ent.frame, ent.width, ent.frameHeight), GraphicsUnit.Pixel);
+                        ent.colorTransform = Drawing.SetColor(Ext.AdditiveV2(ent.color, ent.defaultColor));
+                        if (ent.inShadow)
+                        {
+                            ent.colorTransform.SetGamma(gamma);
+                        }
+                        graphics.DrawImage(bitmap, hitbox, 0, 0, ent.width, ent.height, GraphicsUnit.Pixel, ent.colorTransform);
+                        return;
+                    }
                     gfx.DrawImage(texture, new Rectangle(0, 0, ent.width, ent.height));
                     //graphics.DrawImage(bitmap, hitbox);                    
                     ent.colorTransform = Drawing.SetColor(Ext.AdditiveV2(ent.color, ent.defaultColor));

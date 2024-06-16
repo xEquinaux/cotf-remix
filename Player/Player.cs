@@ -27,7 +27,7 @@ namespace cotf
         public Player()
         {
             active = true;
-            width = 26;
+            width = 42;
             height = 42;
             lifeMax = 100;
             statMaxMana = 10;
@@ -90,9 +90,9 @@ namespace cotf
                 }
             }
             //EndMapInit:
-            width = 28;
+            width = 42;
             height = 42;
-            TextureName = "temp";
+            TextureName = "Sky_boss";
             texture = preTexture = Asset<Bitmap>.Request(TextureName);
             statMana = statMaxMana;
             defaultColor = Color.Gray;

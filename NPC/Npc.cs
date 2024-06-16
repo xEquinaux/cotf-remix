@@ -28,6 +28,7 @@ namespace cotf
         bool flag;
         Direction direction;
         public List<Npc> collideObj = new List<Npc>();
+   
         public Npc()
         {
             SetDefaults();
@@ -167,6 +168,39 @@ namespace cotf
                     color = color.Transparency(iFrames % 4 == 0 ? 1f : 0f);
                 }
                 Drawing.LightmapHandling(texture, this, gamma, graphics);
+            }
+        }
+        public virtual void Draw(Graphics graphics, ref int frameTicks, int interval)
+        {
+            if (active && discovered)
+            {
+                this.PostFX();
+                if (iFrames > 0)
+                {
+                    iFrames--;
+                    color = color.Transparency(iFrames % 4 == 0 ? 1f : 0f);
+                }
+                FrameAnimate(ref frameTicks, interval);
+                Drawing.LightmapHandling(texture, this, gamma, graphics);
+            }
+        }
+
+        public virtual void FrameAnimate(ref int frameTicks, int interval)
+        {
+            if (interval == 0) return;
+            if (frameCount > 1)
+            { 
+                if (frameTicks++ < int.MaxValue)
+                {
+                    if (frameTicks % interval == 0)
+                    {
+                        if (++frame >= frameCount)
+                        {
+                            frame = 0;
+                        }
+                    }
+                }
+                else frameTicks = 0;
             }
         }
         public virtual bool NpcItemHit(Item item)

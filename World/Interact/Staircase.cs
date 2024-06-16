@@ -74,6 +74,13 @@ namespace cotf.World
             if (!active || !discovered || texture == null)
                 return;
             graphics.DrawImage(texture, hitbox);
+            { 
+                StringFormat format = new StringFormat();
+                format = StringFormat.GenericTypographic;
+                format.Alignment = StringAlignment.Near;
+                format.Trimming = StringTrimming.Word;
+                graphics.DrawString(direction.ToString(), Main.DefaultFont, Brushes.LightBlue, new Rectangle(X, Y + height, width * 2, height), format);
+            }
         }
         public static int NewStaircase(int x, int y, StaircaseDirection direction)
         {

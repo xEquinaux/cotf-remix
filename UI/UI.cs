@@ -424,7 +424,8 @@ namespace cotf
         public Vector2 mouseScreen => Main.MouseScreen;
         public static bool showDateTime = false;
         public static bool showFloorNum = false;
-        public static bool showDeathCount = false;
+        public static bool showDeathCount = true;
+        public static bool showKeybindings = false;
         private const int ActiveY = 150;
         protected static Thumbnail selectedIndex;
         protected string[] uiText = new string[]
@@ -463,8 +464,8 @@ namespace cotf
                     showDeathCount = !showDeathCount;
                     break;
                 case Type.Restart:
-                    var textBox = new UI.Textbox("", Vector2.Zero, new Rectangle(Main.ScreenWidth / 10 - 5, Main.ScreenHeight / 2 - 80, 0, 0), Main.ScreenWidth / 2, ButtonStyle.YesNoCancel, true, Main.myPlayer.whoAmI);
-                    textBox.text = "Reset from floor one?";
+                    //var textBox = new UI.Textbox("", Vector2.Zero, new Rectangle(Main.ScreenWidth / 10 - 5, Main.ScreenHeight / 2 - 80, 0, 0), Main.ScreenWidth / 2, ButtonStyle.YesNoCancel, true, Main.myPlayer.whoAmI);
+                    //textBox.text = "Reset from floor one?";
                     
                     Entity ent2 = Entity.None;
                     ent2.SetSuffix(Main.setMapName("_map", 1));
@@ -474,6 +475,7 @@ namespace cotf
                     }
                     break;
                 case Type.Options:
+                    showKeybindings = !showKeybindings;
                     break;
                 case Type.Melee:
                     break;

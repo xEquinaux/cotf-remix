@@ -31,6 +31,7 @@ using System.Drawing.Imaging;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using Bitmap = System.Drawing.Bitmap;
 using System.Reflection.Metadata;
+using System.ComponentModel;
 
 namespace cotf
 {
@@ -259,6 +260,7 @@ namespace cotf
             {
                 graphics.FillRectangle(Brushes.Black, new Rectangle(0, 0, ScreenWidth, ScreenHeight));
                 graphics.DrawString("Alpha", System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Red, 10, 30);
+                graphics.DrawString("Press spacebar to continue...", System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Red, 10, 50);
             }
         }
         public new void Initialize()
@@ -507,6 +509,10 @@ namespace cotf
             {
                 if (npc[i] != null)
                 {
+                    if (npc[i].frameCount > 1)
+                    {
+                        npc[i].Draw(graphics, ref npc[i].frameTicks, npc[i].frameInterval);
+                    }
                     npc[i].Draw(graphics);
                 }
             }
@@ -772,13 +778,6 @@ namespace cotf
                     scenery[i].Draw(graphics);
                 }
             }
-            for (int i = 0; i < staircase.Length; i++)
-            {
-                if (staircase[i] != null)
-                {
-                    staircase[i].Draw(graphics);
-                }
-            }
             for (int i = 0; i < tile.GetLength(0); i++)
             {
                 for (int j = 0; j < tile.GetLength(1); j++)
@@ -805,6 +804,13 @@ namespace cotf
                 if (item[i] != null && item[i].active && item[i].type > ItemID.None && !myPlayer.inventory.Contains(item[i]))
                 {
                     item[i].Draw(graphics);
+                }
+            }
+            for (int i = 0; i < staircase.Length; i++)
+            {
+                if (staircase[i] != null)
+                {
+                    staircase[i].Draw(graphics);
                 }
             }
             for (int i = 0; i < lamp.Length; i++)
@@ -840,6 +846,15 @@ namespace cotf
             if (Thumbnail.showDeathCount)
             {
                 graphics.DrawString($"Death count: " + Main.myPlayer.deathCounter, System.Drawing.SystemFonts.DialogFont, Brushes.White, 0f, 18f);
+            }
+            if (Thumbnail.showKeybindings)
+            {
+                graphics.DrawString($"Keybinds:\n" +
+                    $"O : Open Inventory\n" +
+                    $"Spacebar : enter stairwell\n" +
+                    $"[Hold] R : Rest\n" +
+                    $"Spacebar : Wait\n" +
+                    $"Left click : interaction and attack", System.Drawing.SystemFonts.DialogFont, Brushes.White, 0f, 600f - 100f);
             }
 
             thumbnail.DrawUI(graphics);

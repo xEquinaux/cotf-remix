@@ -17,19 +17,45 @@ namespace cotf
 {
     public class Kobold : Npc
     {
+        int frameTicks;
         public override void SetDefaults()
         {
             base.SetDefaults();
             name = "Kobold";
-            width = 18;
-            height = 32;
+            width = 24;
+            height = 42;
             speed = 10f;
             lifeMax = 50;
             iFramesMax = 60;
             damage = 2;
             hostile = true;
             knockBack = 1.2f;
-            defaultColor = Color.BurlyWood;
+            defaultColor = Color.White;//Color.BurlyWood;
+            frameCount = 4;
+            frameHeight = 48;
+            frame = Main.rand.Next(4);
+            if (Main.rand.NextBool())
+            { 
+                texture = Assets.Asset<Bitmap>.Request("Sky_1");
+            }
+            else
+            {
+                int rand = Main.rand.Next(3) + 1;
+                string result = "_1";
+                switch (rand)
+                { 
+                    default:
+                    case 1:
+                        break;
+                    case 2:
+                        result = "_2";
+                        break;
+                    case 3:
+                        result = "_3";
+                        break;
+                }
+                texture = Assets.Asset<Bitmap>.Request("Sky_1" + result);
+            }
         }
         public override void AI()
         {
