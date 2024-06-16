@@ -316,6 +316,7 @@ namespace cotf.Base
                 int tileLen = 0;
                 bw.Write(Main.tile.Length);
                 for (int k = 0; k < Main.tile.GetLength(0); k++)
+                { 
                     for (int l = 0; l < Main.tile.GetLength(1); l++)
                     {
                         Tile item1 = Main.tile[k, l];
@@ -333,6 +334,7 @@ namespace cotf.Base
                             tileLen++;
                         }
                     }
+                }
                 int bgLen = 0;
                 bw.Write(Main.background.Length);
                 foreach (Background item2 in Main.background)
@@ -468,7 +470,7 @@ namespace cotf.Base
                 foreach (Trap trap in Main.trap)
                 {
                     if (trap != null && trap.active)
-                    {
+                    {   
                         string name = $"trap{trapLen}";
                         bw.Write(trap.whoAmI);
                         bw.Write(trap.position);
@@ -482,6 +484,7 @@ namespace cotf.Base
                         trapLen++;
                     }
                 }
+                return;
                 int stashLen = 0;
                 bw.Write(Main.stash.Count(t => t != null && t.active));
                 foreach (cotf.Collections.Stash stash in Main.stash)
@@ -515,7 +518,7 @@ namespace cotf.Base
                                 //    bw.Write(i.purse);
                                 //}
                                 //else 
-                                    bw.Write(new Purse(0));
+                                    //bw.Write(new Purse(0));
                                 contentLen++;
                             }
                         }
@@ -532,7 +535,7 @@ namespace cotf.Base
                 int num = 0;
                 for (int k = 0; k < size; k++)
                     for (int l = 0; l < size; l++)
-                    {
+                    {                                                   
                         string name = $"tile{num}";
                         Main.tile[k, l] = new Tile(k, l);
                         Main.tile[k, l].whoAmI = br.ReadInt32();
@@ -656,9 +659,9 @@ namespace cotf.Base
                     int o = br.ReadInt32();
                     Color c = br.ReadColor();
                     short t = br.ReadInt16();
-                    var s = br.ReadPurse();
+                    //var s = br.ReadPurse();
                     int index = Item.NewItem(v2.X, v2.Y, w, h, t, (byte)o);
-                    Main.item[index].purse = s;
+                    //Main.item[index].purse = s;
                 }
                 int trapLen = br.ReadInt32();
                 for (int i = 0; i < trapLen; i++)
@@ -675,6 +678,7 @@ namespace cotf.Base
                     float r = br.ReadSingle();
                     Trap.NewTrap(v2.X, v2.Y, w, h, t, active: a);
                 }
+                return;
                 int stashLen = br.ReadInt32();
                 for (int i = 0; i < stashLen; i++)
                 {
@@ -700,7 +704,7 @@ namespace cotf.Base
                             content[j].height = br.ReadInt32();
                             content[j].defaultColor = br.ReadColor();
                             content[j].type = br.ReadInt16();
-                            content[j].purse = br.ReadPurse();
+                            //content[j].purse = br.ReadPurse();
                         }
                         cotf.Collections.Stash.NewStash((int)v2.X, (int)v2.Y, 0, content);
                     }

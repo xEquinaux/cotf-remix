@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ using cotf.Assets;
 using cotf.Base;
 using cotf.World;
 using Microsoft.Xna.Framework;
+using static System.Windows.Forms.Design.AxImporter;
 using Color = System.Drawing.Color;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
@@ -27,7 +29,10 @@ namespace cotf
         Equip,
         Drop,
         Pickup,
-        Unequip
+        Unequip,
+        High,
+        Medium,
+        Low
     }
     public enum ButtonStyle
     {
@@ -38,7 +43,8 @@ namespace cotf
         YesNoCancel,
         EquipDropCancel,
         PickupCancel,
-        UnequipCancel
+        UnequipCancel,
+        GraphicsOptions
     }
     public class UI
     {
@@ -59,8 +65,8 @@ namespace cotf
             internal int index = 0;
             public override int X => (int)position.X;
             public override int Y => (int)position.Y;
-            public static int offX => -Main.myPlayer.width;
-            public static int offY => -Main.myPlayer.height;
+            public static int offX => -Main.myPlayer.width + 16;
+            public static int offY => -Main.myPlayer.height + 18;
             private Font font = System.Drawing.SystemFonts.DialogFont;
             private new Rectangle box => new Rectangle(parent.padded.Right - (Button.Width + 10) * (index + 1), parent.padded.Bottom + Button.Height, Width, Height);
             private Rectangle padded => new Rectangle(box.X - margin.Left, box.Y - margin.Top, box.Width + margin.Right * 2, box.Height + margin.Bottom * 2);
@@ -177,7 +183,7 @@ namespace cotf
             readonly ButtonStyle style = ButtonStyle.None;
             private Image heading;
             public Item item;
-            private Button[] option = new Button[3];
+            private Button[] option = new Button[4];
             Rectangle Center => new Rectangle(Main.WorldZero.X + Main.ScreenWidth / 3, Main.WorldZero.Y + Main.ScreenHeight / 2, width, height);
             private Rectangle rect;
             internal int i, j;
@@ -253,6 +259,13 @@ namespace cotf
                         option[1] = new Button(this, ButtonOption.Unequip, true);
                         option[0] = new Button(this, ButtonOption.Cancel, true);
                         goto default;
+                    case ButtonStyle.GraphicsOptions:
+                        //  TODO: set up options
+                        option[3] = new Button(this, ButtonOption.High, true);
+                        option[2] = new Button(this, ButtonOption.Medium, true);
+                        option[1] = new Button(this, ButtonOption.Low, true);
+                        option[0] = new Button(this, ButtonOption.Cancel, true);
+                        break;
                     default:
                         break;
                 }
@@ -273,8 +286,8 @@ namespace cotf
                 this.Init(graphics);
                 if (active)
                 { 
-                    int offX = Main.ScreenX - Main.myPlayer.width;
-                    int offY = Main.ScreenY - Main.myPlayer.height;
+                    int offX = Main.ScreenX;// - Main.myPlayer.width;
+                    int offY = Main.ScreenY;// - Main.myPlayer.height;
                     Rectangle _padded = new Rectangle(padded.X + offX, padded.Y + offY, padded.Width, padded.Height);
                     if (heading != null)
                     {
@@ -381,8 +394,8 @@ namespace cotf
             }
             internal static void MouseInteract(Scroll bar)
             {
-                int offX = Main.myPlayer.width;
-                int offY = Main.myPlayer.height;
+                int offX = 0;
+                int offY = 0;
                 if (Main.mouseLeft && bar.hitbox.Contains((int)Main.MouseWorld.X - offX, (int)Main.MouseWorld.Y - offY))
                     bar.clicked = true;
                 bar.flag = Main.LeftMouse();
@@ -406,26 +419,71 @@ namespace cotf
         public new Rectangle hitbox => PlaceUI();
         public new Rectangle box => new Rectangle((int)anchor.X, (int)anchor.Y, width, height);
         public Image image;
+        public Image ui, ui2;
         public Vector2 mouseWorld => Main.MouseWorld;
         public Vector2 mouseScreen => Main.MouseScreen;
         public static bool showDateTime = false;
+        public static bool showFloorNum = false;
+        public static bool showDeathCount = false;
         private const int ActiveY = 150;
         protected static Thumbnail selectedIndex;
+        protected string[] uiText = new string[]
+        {
+            "Inventory",
+            "Floor Number",
+		    "Deaths Counter",
+            "Reset",
+            "Options",
+            "Melee",
+            "Ranged",
+            "Mage",
+            "Summoner",
+            "Brawler"
+        };
         public Thumbnail()
         {
             scale = 0.5f;
             width = 48;
             height = 48;
             image = Asset<Image>.Request("temp");
+            ui  = Asset<Image>.Request("config_icons");
+            ui2 = Asset<Image>.Request("ClassIcon_UI");
         }
         public void Click()
         {
             switch (type)
             {
-                case Type.None:
+                case Type.Inventory:
+                    Main.myPlayer.OpenInventory(true);
                     break;
-                case Type.Generic:
-                    showDateTime = !showDateTime;
+                case Type.FloorNum:
+                    showFloorNum = !showFloorNum;
+                    break;
+                case Type.DeathCounter:
+                    showDeathCount = !showDeathCount;
+                    break;
+                case Type.Restart:
+                    var textBox = new UI.Textbox("", Vector2.Zero, new Rectangle(Main.ScreenWidth / 10 - 5, Main.ScreenHeight / 2 - 80, 0, 0), Main.ScreenWidth / 2, ButtonStyle.YesNoCancel, true, Main.myPlayer.whoAmI);
+                    textBox.text = "Reset from floor one?";
+                    
+                    Entity ent2 = Entity.None;
+                    ent2.SetSuffix(Main.setMapName("_map", 1));
+                    using (TagCompound tag = new TagCompound(ent2, SaveType.Map))
+                    {
+                        tag.WorldMap(TagCompound.Manager.Load);
+                    }
+                    break;
+                case Type.Options:
+                    break;
+                case Type.Melee:
+                    break;
+                case Type.Ranged:
+                    break;
+                case Type.Mage:
+                    break;
+                case Type.Summoner:
+                    break;
+                case Type.Brawler:
                     break;
             }
             selectedIndex = this;
@@ -456,9 +514,9 @@ namespace cotf
                     if (item.ticks == 0)
                         item.flag = false;
                 }
-                int offset = 20;
-                int offsetHalf = 10;
-                Rectangle box = new Rectangle(item.box.X - Main.ScreenX - offsetHalf, item.box.Y - Main.ScreenY - offsetHalf, item.box.Width + offset, item.box.Height + offset);
+                int offset = 10;
+                int offsetHalf = 5;
+                Rectangle box = new Rectangle(item.box.X - Main.ScreenX - item.box.Width / 2, item.box.Y - Main.ScreenY, item.box.Width, item.box.Height * 2);
                 if (Main.mouseLeft && box.Contains((int)mouseWorld.X, (int)mouseWorld.Y))
                 {
                     item.Click();
@@ -481,7 +539,7 @@ namespace cotf
                 icon[i] = new Thumbnail();
                 icon[i].anchor = new Vector2(index * (half + icon[i].width + 4) + uiWidth / 2 + icon[i].width / 2, 60);
                 icon[i].whoAmI = i;
-                icon[i].type = 1;
+                icon[i].type = (short)i;
             }
         }
         public void DrawUI(Graphics graphics)
@@ -491,7 +549,17 @@ namespace cotf
             for (int i = 0; i < icon.Length; i++)
             {
                 Rectangle h = new Rectangle(icon[i].hitbox.X + Main.ScreenX - offX, icon[i].hitbox.Y + Main.ScreenY - offY, icon[i].hitbox.Width, icon[i].hitbox.Height);
-                graphics.DrawImage(image, h);
+                if (i < 5)
+                    graphics.DrawImage(ui, h, new Rectangle(i * 44, 0, 44, 44), GraphicsUnit.Pixel);
+                else 
+                    graphics.DrawImage(ui2, h, new Rectangle((i - 5) * 44, 0, 44, 44), GraphicsUnit.Pixel);
+                {// UI text
+                    StringFormat format = new StringFormat();
+                    format = StringFormat.GenericTypographic;
+                    format.Alignment = StringAlignment.Center;
+                    format.Trimming = StringTrimming.Word;
+                    graphics.DrawString(uiText[i], Main.DefaultFont, Brushes.LightBlue, new Rectangle(h.X, h.Y + h.Height, h.Width, h.Height), format);
+                }
                 if (icon[i].color != default || selectedIndex == icon[i])
                 {
                     Pen pen = new Pen(Brushes.Firebrick);
@@ -514,8 +582,16 @@ namespace cotf
         public sealed class Type
         {
             public const short
-                None = 0,
-                Generic = 1;
+                Inventory = 0,
+                FloorNum = 1,
+                DeathCounter = 2,
+                Restart = 3,
+                Options = 4,
+                Melee = 5,
+                Ranged = 6,
+                Mage = 7,
+                Summoner = 8,
+                Brawler = 9;
         }
     }
 }

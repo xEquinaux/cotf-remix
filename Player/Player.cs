@@ -68,9 +68,14 @@ namespace cotf
         public bool cursed;
         private Margin BaseMargin => new Margin(32);
         public Rectangle Proximity(Margin margin) => new Rectangle(box.X - margin.Left, box.Y - margin.Top, box.Width + margin.Right, box.Height + margin.Bottom);
+        int travelTicks = 0;
+        public int deathCounter = 0;
 
         public void Init()
         {
+            //  TODO -- bypassing floor loading for the time being
+            //Map.GenerateFloor(new Margin(3000));
+            //goto EndMapInit;
             if (!Main.DoesMapExist("_map", Main.FloorNum))
             {
                 Map.GenerateFloor(new Margin(3000));
@@ -84,6 +89,7 @@ namespace cotf
                     tag.WorldMap(Manager.Load);
                 }
             }
+            //EndMapInit:
             width = 28;
             height = 42;
             TextureName = "temp";
@@ -120,6 +126,7 @@ namespace cotf
                 tag.SaveValue(name + "_mana", statMana);
                 tag.SaveValue(name + "_manaMax", statMaxMana);
                 tag.SaveValue(name + "_position", position);
+                tag.SaveValue(name + "_count", deathCounter);
                 int num = 0;
                 for (int i = 0; i < equipment.Length; i++)
                 {
@@ -128,7 +135,7 @@ namespace cotf
                 }
                 for (int i = 0; i < inventory.Count; i++)
                 {
-
+                    
                 }
             }
         }
@@ -149,7 +156,7 @@ namespace cotf
             //  Inventory interaction
             if (Main.open)
             {
-                Point offset = new System.Drawing.Point(mouse.X + UI.Button.offX, mouse.Y + UI.Button.offY);
+                Point offset = new System.Drawing.Point(mouse.X/* + UI.Button.offX*/, mouse.Y/* + UI.Button.offY*/);
                 if (itemTextBox == null || !itemTextBox.active)
                 { 
                     for (int i = 0; i < Item.nearby.Count; i++)
@@ -181,6 +188,7 @@ namespace cotf
                         if (inventory[i].hitbox.Contains(offset))
                         {
                             itemTextBox = new UI.Textbox(inventory[i], inventory[i].texture, inventory[i].ToolTip.name, inventory[i].Text(), Main.InventoryCenter, (int)Main.InventoryCenter.X / 2, ButtonStyle.EquipDropCancel, true, whoAmI);
+                            itemTextBox.text = "Damage: " + inventory[i].damage;
                             return;
                         }
                     }
@@ -198,6 +206,7 @@ namespace cotf
                         if (equipment[i] != null && equipment[i].active && equipment[i].equipped && Main.mouseLeft && equipment[i].hitbox.Contains(mouse))
                         {
                             itemTextBox = new UI.Textbox(equipment[i], equipment[i].texture, equipment[i].ToolTip.name, equipment[i].Text(), Main.InventoryCenter, (int)Main.InventoryCenter.X / 2, ButtonStyle.UnequipCancel, true, whoAmI);
+                            itemTextBox.text = "Damage: " + equipment[i].damage;
                             return;
                         }
                     }
@@ -287,10 +296,15 @@ namespace cotf
                 }
             }
 
-            //  Staircases
-            var stair = Main.staircase.FirstOrDefault(t => t != null && t.InProximity(this, Sight / 2));
-            if (stair != default(Staircase) && Main.mouseLeft && stair.hitbox.Contains(Main.MouseWorld))
+            if (KeyUp(Keys.Space))
             {
+                travelTicks = 0;
+            }
+            //  Staircases
+            var stair = Main.staircase.FirstOrDefault(t => t != null && t.InProximity(this, Sight));
+            if (travelTicks == 0 && stair != default(Staircase) && KeyDown(Keys.Space) && stair.hitbox.IntersectsWith(this.hitbox()))
+            {
+                travelTicks = 1;
                 switch (stair.direction)
                 {
                     case StaircaseDirection.None:
@@ -385,6 +399,17 @@ namespace cotf
             }
             #endregion
 
+            while (Main.tile[(X - 1) / Tile.Size, (Y - 1) / Tile.Size].Active)
+            {
+                position.X++;
+                position.Y++;
+            }
+            while (Main.tile[(X + width + 1) / Tile.Size, (Y + height + 1) / Tile.Size].Active)
+            {   
+                position.X--;
+                position.Y--;
+            }
+
             //  Skill interaction
             activeSkill.Update();
             activeSkill.OnCooldown();
@@ -393,6 +418,7 @@ namespace cotf
                 activeSkill.Cast(this);
             }
             //  DEBUG
+            return;
             Staircase _s = Main.staircase.FirstOrDefault(t => t != null && t.direction == StaircaseDirection.LeadingDown);
             if (_s != default && KeyDown(Keys.D1))
             {
@@ -402,7 +428,7 @@ namespace cotf
             {
                 //position = Main.lamp[2].position + new Vector2(10, 10);
                 //var debug = Main.item.First(t => t != null && t.active && t.type == ItemID.Broadsword);
-                var debug = Main.trap.LastOrDefault(t => t != null && t.active && t.type > 0);
+                var debug = Main.staircase.LastOrDefault(t => t != null && t.active && t.direction == StaircaseDirection.LeadingDown);
                 if (debug != null)
                 {
                     position = debug.position;
@@ -453,6 +479,7 @@ namespace cotf
             if (life <= 0)
             {
                 //  TODO Requires home location
+                deathCounter++;
             }
         }
         public void Heal(int amount)

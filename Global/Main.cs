@@ -383,6 +383,7 @@ namespace cotf
             //EscState = Keyboard.GetState().IsKeyDown(Keys.Escape);
             timeSpan = TimeSpan.FromMilliseconds(time.ElapsedMilliseconds);
             var point = System.Windows.Forms.Cursor.Position;
+            point = new System.Drawing.Point(point.X - myPlayer.width / 2, point.Y - myPlayer.height / 2);
             MouseScreen = new Vector2(Math.Max(point.X - (float)Game.Position.X, 0f), Math.Max(point.Y - (float)Game.Position.Y, 0f));//  -7 to X coord, -30 to Y coord due to WPF factor
             MouseWorld = MouseScreen + new Vector2(WorldZero.X, WorldZero.Y);
             pressO = ticks3++ == 1 && myPlayer.KeyDown(Keys.O);
@@ -529,12 +530,6 @@ namespace cotf
             foreach (Room room in EntityHelper.RoomWhile(t => t != null))
             {
                 room.Draw(graphics);
-            }
-            return;
-            //  DEBUG: UI interaction check flag
-            if (Thumbnail.showDateTime)
-            {
-                graphics.DrawString(DateTime.Now.ToString(), System.Drawing.SystemFonts.DialogFont, Brushes.White, 0f, 0f);
             }
         }
         public void PostDraw(SpriteBatch sb)
@@ -836,6 +831,17 @@ namespace cotf
                     textbox[i].Draw(graphics);
                 }
             }
+
+            //  DEBUG: UI interaction check flag
+            if (Thumbnail.showFloorNum)
+            {
+                graphics.DrawString($"Floor number: " + Main.FloorNum, System.Drawing.SystemFonts.DialogFont, Brushes.White, 0f, 0f);
+            }
+            if (Thumbnail.showDeathCount)
+            {
+                graphics.DrawString($"Death count: " + Main.myPlayer.deathCounter, System.Drawing.SystemFonts.DialogFont, Brushes.White, 0f, 18f);
+            }
+
             thumbnail.DrawUI(graphics);
         }
         bool flag = false;
