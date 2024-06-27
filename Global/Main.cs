@@ -576,13 +576,9 @@ namespace cotf
                     g.FillEllipse(new SolidBrush(Main.Mask), new Rectangle(Main.ScreenWidth / 2 - (int)range, Main.ScreenHeight / 2 - (int)range, (int)range * 2, (int)range * 2));
                     // TODO: apply a textured brush
                     bmp.MakeTransparent(Main.Mask);
-                    using (MemoryStream stream = new MemoryStream())
-                    {
-                        bmp.Save(stream, ImageFormat.Png);
-                        Texture2D surface = Texture2D.FromStream(sb.GraphicsDevice, stream);
-                        sb.Draw(surface, Vector2.Zero, Microsoft.Xna.Framework.Color.White);
-                        surface.Dispose();
-                    }
+                    Texture2D surface = bmp.BitmapToTex2D(Game.Instance.GraphicsDevice);
+                    sb.Draw(surface, Vector2.Zero, Microsoft.Xna.Framework.Color.White);
+                    surface.Dispose();
                 }
             }
         }

@@ -35,6 +35,7 @@ namespace cotf
 		}
 		static BufferedGraphicsContext context = BufferedGraphicsManager.Current;
 
+		bool init = false;
 		private int _portX => _viewport.X;
 		private int _portY => _viewport.Y;
 		private Rectangle _size => new Rectangle(0, 0, _bounds.Width, _bounds.Height);
@@ -140,6 +141,11 @@ namespace cotf
 			else
 			{
 				Main.KeyPressTimer = 0;
+			}
+			if (!init)
+			{
+				Instance = this;
+				init = true;
 			}
 			Update();
 		}
@@ -277,7 +283,6 @@ namespace cotf
 				Main.Instance.Draw(graphics);
 			}
 		}
-		bool init = false;
 		private void Update()
 		{
 			Main.keyboard = Keyboard.GetState();
