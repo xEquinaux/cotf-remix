@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cotf-Tests", "..\cotf-Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArchaeaMod-service", "..\ArchaeaMod-service-1.4.4-port\ArchaeaMod-service.csproj", "{99BFFB3B-4525-4AE8-8685-7791152AC7AF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoundationR", "..\FoundationR\FoundationR.csproj", "{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MonoGame.Framework.WindowsDX", "..\MonoGame\MonoGame.Framework\MonoGame.Framework.WindowsDX.csproj", "{F7435322-C99D-4767-B752-85510302269C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,22 @@ Global
 		{99BFFB3B-4525-4AE8-8685-7791152AC7AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99BFFB3B-4525-4AE8-8685-7791152AC7AF}.Release|x86.ActiveCfg = Release|Any CPU
 		{99BFFB3B-4525-4AE8-8685-7791152AC7AF}.Release|x86.Build.0 = Release|Any CPU
+		{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}.Debug|x86.Build.0 = Debug|Any CPU
+		{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}.Release|x86.ActiveCfg = Release|Any CPU
+		{4E6E1704-7E99-4841-939B-4DEA3D93EDD0}.Release|x86.Build.0 = Release|Any CPU
+		{F7435322-C99D-4767-B752-85510302269C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7435322-C99D-4767-B752-85510302269C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7435322-C99D-4767-B752-85510302269C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F7435322-C99D-4767-B752-85510302269C}.Debug|x86.Build.0 = Debug|Any CPU
+		{F7435322-C99D-4767-B752-85510302269C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7435322-C99D-4767-B752-85510302269C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7435322-C99D-4767-B752-85510302269C}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7435322-C99D-4767-B752-85510302269C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

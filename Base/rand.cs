@@ -1,5 +1,4 @@
-﻿using SharpDX;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,7 +43,8 @@ namespace cotf
         }
         public float NextFloat(float a, float b)
         {
-            return random.NextFloat(a, b);
+            return 1f;
+            //return random.Next(a, b);
         }
     }
 }

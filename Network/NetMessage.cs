@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32.SafeHandles;
-using SharpDX.MediaFoundation.DirectX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

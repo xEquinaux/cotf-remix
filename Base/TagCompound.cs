@@ -7,7 +7,6 @@ using System.Text;
 using cotf.World;
 using cotf.World.Traps;
 using Microsoft.Xna.Framework;
-using SharpDX.MediaFoundation;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Color = System.Drawing.Color;

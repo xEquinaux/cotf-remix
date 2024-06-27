@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
@@ -11,6 +11,7 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+	<MonoGamePlatform>WindowsDX</MonoGamePlatform>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Item\Prefix\**" />
@@ -24,8 +25,11 @@
     <None Remove="WorldGen\Factory\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
+    <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.5" />
 	  <Referece Include="System.Drawing.Common">
 		  <HintPath>C:\Program Files (x86)\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.6\System.Drawing.Common.dll</HintPath>
@@ -34,6 +38,9 @@
   <ItemGroup>
     <Reference Include="CirclePrefect">
       <HintPath>lib\CirclePrefect.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\MonoGame\Artifacts\MonoGame.Framework\WindowsDX\Debug\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Native">
       <HintPath>..\..\..\Downloads\Native.dll</HintPath>
