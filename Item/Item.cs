@@ -210,8 +210,8 @@ namespace cotf
                     myPlayer.UnequipTorch(this);
                     break;
                 case ItemID.Purse:
-                    //drop = ((Purse)myPlayer.equipment[equipType]).DeepClone(true);
-                    //((Purse)myPlayer.equipment[equipType]).Content = new RUDD.Stash();
+                    drop = ((Purse)myPlayer.equipment[equipType]).DeepClone(true);
+                    ((Purse)myPlayer.equipment[equipType]).Content = new CirclePrefect.Native.Stash();
                     break;
                 default:
                     break;
@@ -347,7 +347,7 @@ namespace cotf
                     int newX = X;
                     int newY = Y;
                     if (Y > y + height - 80)
-                    { 
+                    {
                         newX = inventory.Right - Item.DrawSize - 4;
                         index = -8;
                         newY = y + 25 + (Item.DrawSize + 4) * (i + index);

@@ -56,45 +56,5 @@ namespace cotf
         {
             base.Draw(graphics);
         }
-
-        public int Quality(Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Cursed(Item item, bool cursed)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Enchanted(Item item, bool enchanted)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveEffect(Player player)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetName(Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Apply(ITrait trait)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Effect(Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Effect(Player player)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -385,7 +385,6 @@ namespace cotf
             //EscState = Keyboard.GetState().IsKeyDown(Keys.Escape);
             timeSpan = TimeSpan.FromMilliseconds(time.ElapsedMilliseconds);
             var point = System.Windows.Forms.Cursor.Position;
-            point = new System.Drawing.Point(point.X - myPlayer.width / 2, point.Y - myPlayer.height / 2);
             MouseScreen = new Vector2(Math.Max(point.X - (float)Game.Position.X, 0f), Math.Max(point.Y - (float)Game.Position.Y, 0f));//  -7 to X coord, -30 to Y coord due to WPF factor
             MouseWorld = MouseScreen + new Vector2(WorldZero.X, WorldZero.Y);
             pressO = ticks3++ == 1 && myPlayer.KeyDown(Keys.O);

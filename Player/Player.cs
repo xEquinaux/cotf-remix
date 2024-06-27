@@ -156,7 +156,7 @@ namespace cotf
             //  Inventory interaction
             if (Main.open)
             {
-                Point offset = new System.Drawing.Point(mouse.X/* + UI.Button.offX*/, mouse.Y/* + UI.Button.offY*/);
+                Point offset = new System.Drawing.Point(mouse.X - Main.myPlayer.width, mouse.Y - Main.myPlayer.height);
                 if (itemTextBox == null || !itemTextBox.active)
                 { 
                     for (int i = 0; i < Item.nearby.Count; i++)
@@ -203,7 +203,7 @@ namespace cotf
                     for (int i = 0; i < equipment.Length; i++)
                     {
                         equipment[i]?.Update(this);
-                        if (equipment[i] != null && equipment[i].active && equipment[i].equipped && Main.mouseLeft && equipment[i].hitbox.Contains(mouse))
+                        if (equipment[i] != null && equipment[i].active && equipment[i].equipped && Main.mouseLeft && equipment[i].hitbox.Contains(offset))
                         {
                             itemTextBox = new UI.Textbox(equipment[i], equipment[i].texture, equipment[i].ToolTip.name, equipment[i].Text(), Main.InventoryCenter, (int)Main.InventoryCenter.X / 2, ButtonStyle.UnequipCancel, true, whoAmI);
                             itemTextBox.text = "Damage: " + equipment[i].damage;

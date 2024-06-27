@@ -65,17 +65,16 @@ namespace cotf
             internal int index = 0;
             public override int X => (int)position.X;
             public override int Y => (int)position.Y;
-            public static int offX => -Main.myPlayer.width + 16;
-            public static int offY => -Main.myPlayer.height + 18;
             private Font font = System.Drawing.SystemFonts.DialogFont;
             private new Rectangle box => new Rectangle(parent.padded.Right - (Button.Width + 10) * (index + 1), parent.padded.Bottom + Button.Height, Width, Height);
             private Rectangle padded => new Rectangle(box.X - margin.Left, box.Y - margin.Top, box.Width + margin.Right * 2, box.Height + margin.Bottom * 2);
             private Margin margin = new Margin(2);
             private StringFormat format;
             private Pen outline = Pens.SlateBlue;
-            private Vector2 mouse => Main.MouseWorld;
-            private bool clicked() => Main.mouseLeft && box.Contains((int)Main.MouseWorld.X + offX, (int)Main.MouseWorld.Y + offY);
-            private bool hover() => padded.Contains((int)Main.MouseWorld.X + offX, (int)Main.MouseWorld.Y + offY);
+            int offX = Main.myPlayer.width;
+            int offY = Main.myPlayer.height;
+            private bool clicked() => Main.mouseLeft && box.Contains((int)Main.MouseWorld.X - offX, (int)Main.MouseWorld.Y - offY);
+            private bool hover() => box.Contains((int)Main.MouseWorld.X - offX, (int)Main.MouseWorld.Y - offY);
             #endregion
             public static event EventHandler<ButtonEventArgs> ButtonClickEvent;
             public Button(Textbox parent, ButtonOption option, bool active = false)
@@ -340,9 +339,7 @@ namespace cotf
             internal static void DrawItems(IList<Item> list, Scroll bar, Graphics graphics)
             {
                 const int offset = 6;
-                int offX = 0;
-                int offY = 0;
-                int c = (int)bar.parent.X + offset + offX, r = (int)bar.parent.Y + offset + offY;
+                int c = (int)bar.parent.X + offset, r = (int)bar.parent.Y + offset;
                 foreach (Item i in list)
                 {
                     if (i == null) continue;
@@ -371,6 +368,8 @@ namespace cotf
             private bool 
                 clicked,
                 flag;
+            int offX = Main.myPlayer.width;
+            int offY = Main.myPlayer.height;
             internal static void KbInteract(Scroll bar)
             {
                 if (bar.parent.Contains((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y))
@@ -394,16 +393,14 @@ namespace cotf
             }
             internal static void MouseInteract(Scroll bar)
             {
-                int offX = 0;
-                int offY = 0;
-                if (Main.mouseLeft && bar.hitbox.Contains((int)Main.MouseWorld.X - offX, (int)Main.MouseWorld.Y - offY))
+                if (Main.mouseLeft && bar.hitbox.Contains((int)Main.MouseWorld.X - bar.offX, (int)Main.MouseWorld.Y - bar.offY))
                     bar.clicked = true;
                 bar.flag = Main.LeftMouse();
                 if (!Main.LeftMouse())
                     bar.clicked = false;
                 if (bar.clicked && bar.flag)
                 { 
-                    Vector2 mouse = new Vector2(Main.MouseWorld.X, Main.MouseWorld.Y - bar.parent.Top - Height / 2 - offY);
+                    Vector2 mouse = new Vector2(Main.MouseWorld.X, Main.MouseWorld.Y - bar.parent.Top - Height * 2);
                     bar.value = Math.Max(0f, Math.Min(mouse.Y / bar.parent.Height, 1f));
                 }
             }
@@ -490,6 +487,7 @@ namespace cotf
             }
             selectedIndex = this;
         }
+        Rectangle box2 = Rectangle.Empty;
         public void Update(int length = 10)
         {
             for (int i = 0; i < icon?.Length; i++)
@@ -509,17 +507,14 @@ namespace cotf
                         item.ticks++;
                     }
                     if (!proximity && item.ticks > 0)
-                    { 
+                    {
                         item.anchor.X -= index;
                         item.ticks--;
                     } 
                     if (item.ticks == 0)
                         item.flag = false;
                 }
-                int offset = 10;
-                int offsetHalf = 5;
-                Rectangle box = new Rectangle(item.box.X - Main.ScreenX - item.box.Width / 2, item.box.Y - Main.ScreenY, item.box.Width, item.box.Height * 2);
-                if (Main.mouseLeft && box.Contains((int)mouseWorld.X, (int)mouseWorld.Y))
+                if (Main.mouseLeft && icon[i].box2.Contains((int)mouseScreen.X, (int)mouseScreen.Y))
                 {
                     item.Click();
                     item.color = Color.Firebrick;
@@ -562,6 +557,7 @@ namespace cotf
                     format.Trimming = StringTrimming.Word;
                     graphics.DrawString(uiText[i], Main.DefaultFont, Brushes.LightBlue, new Rectangle(h.X, h.Y + h.Height, h.Width, h.Height), format);
                 }
+                icon[i].box2 = h;
                 if (icon[i].color != default || selectedIndex == icon[i])
                 {
                     Pen pen = new Pen(Brushes.Firebrick);

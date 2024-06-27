@@ -9,6 +9,7 @@ using System.Windows.Input;
 using cotf.Base;
 using cotf.World;
 using ToolTip = cotf.Base.ToolTip;
+using CirclePrefect.Native;
 
 namespace cotf
 {
@@ -16,14 +17,14 @@ namespace cotf
     {
         protected override Color rarity => Color.White;
         public override ToolTip ToolTip => toolTip = new ToolTip(name, text, rarity);
-        //public Stash Content;
+        public Stash Content;
         public Purse(uint copper)
         {
-            //Content = Stash.DoConvert(copper);
+            Content = Stash.DoConvert(copper);
         }
         protected override void Init()
         {
-            //value = purse.Content.TotalCopper();
+            value = purse.Content.TotalCopper();
         }
         public override void SetDefaults()
         {
@@ -39,11 +40,11 @@ namespace cotf
         }
         public override void Update()
         {
-            //text = //$"Iron: {Content.iron}\n" +
-            //       $"Copper: {Content.copper}\n" +
-            //       $"Silver: {Content.silver}\n" +
-            //       $"Gold: {Content.gold}\n" +
-            //       $"Platinum: {Content.platinum}";
+            text = $"Iron: {0}\n" +
+                   $"Copper: {Content.copper}\n" +
+                   $"Silver: {Content.silver}\n" +
+                   $"Gold: {Content.gold}\n" +
+                   $"Platinum: {Content.platinum}";
             base.Update();
         }
         public override string Text()
