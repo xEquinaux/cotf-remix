@@ -99,7 +99,11 @@ namespace cotf
             iFramesMax = 60;
             color = defaultColor;
             //  Need to reorient draw init positions
-            FindRandomTile();
+            if (!TagCompound.Exists(SaveType.Player, name))
+            { 
+                FindRandomTile();
+            }
+            else Load();
             int item = Item.NewItem(X, Y, 32, 32, ItemID.Torch, (byte)this.whoAmI);
             EquipTorch(Main.item[item]);
             //PickupItem(ref Main.item[item]);
@@ -120,22 +124,41 @@ namespace cotf
         {
             using (TagCompound tag = new TagCompound(this, SaveType.Player))
             {
-                tag.SaveValue(name + "_name", name);
+                tag.SaveValue("_name", name);
                 tag.SaveValue(name + "_life", life);
                 tag.SaveValue(name + "_lifeMax", lifeMax);
                 tag.SaveValue(name + "_mana", statMana);
                 tag.SaveValue(name + "_manaMax", statMaxMana);
                 tag.SaveValue(name + "_position", position);
                 tag.SaveValue(name + "_count", deathCounter);
-                int num = 0;
                 for (int i = 0; i < equipment.Length; i++)
                 {
-                    //tag.SaveValue($"{name}_equip{num}", )
-                    num++;
+                    tag.SaveValue($"{name}_equip{i}", equipment[i]);
                 }
                 for (int i = 0; i < inventory.Count; i++)
                 {
-                    
+                    tag.SaveValue($"{name}_inv{i}", inventory[i]);
+                }
+            }
+        }
+        public void Load()
+        {
+            using (TagCompound tag = new TagCompound(this, SaveType.Player))
+            {
+                name         = tag.GetString("_name");
+                life         = tag.GetInt32(name + "_life");
+                lifeMax      = tag.GetInt32(name + "_lifeMax");
+                statMana     = tag.GetInt32(name + "_mana");
+                statMaxMana  = tag.GetInt32(name + "_manaMax");
+                position     = tag.GetVector2(name + "_position");
+                deathCounter = tag.GetInt32(name + "_count");
+                for (int i = 0; i < equipment.Length; i++)
+                {
+                    equipment[i] = tag.GetItem($"{name}_equip{i}");
+                }
+                for (int i = 0; i < inventory.Count; i++)
+                {
+                    inventory[i] = tag.GetItem($"{name}_inv{i}");
                 }
             }
         }

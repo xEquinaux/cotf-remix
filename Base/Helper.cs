@@ -232,10 +232,32 @@ namespace cotf.Base
         }
         public static void Write(this BinaryWriter bw, Purse purse)
         {
-            //bw.Write(purse.Content.copper);
-            //bw.Write(purse.Content.silver);
-            //bw.Write(purse.Content.gold);
-            //bw.Write(purse.Content.platinum);
+            bw.Write(purse.Content.copper);
+            bw.Write(purse.Content.silver);
+            bw.Write(purse.Content.gold);
+            bw.Write(purse.Content.platinum);
+        }
+        public static void Write(this BinaryWriter bw, Item item)
+        {
+            if (item == null) return;
+            bw.Write(item.position);
+            bw.Write(item.whoAmI);
+            bw.Write(item.type);
+            bw.Write(item.owner);
+            bw.Write(item.color);
+            bw.Write(item.enchanted);
+            bw.Write(item.cursed);
+            bw.Write(item.equipType);
+            bw.Write(item.equipped);
+            bw.Write(item.active);
+            bw.Write(item.width);
+            bw.Write(item.height);
+            if (item.purse != null && item.purse.Content != null)
+            { 
+                bw.Write('p');
+                bw.Write(item.purse);
+            }
+            else bw.Write('n');
         }
         public static Vector2 ReadVector2(this BinaryReader br)
         {
@@ -259,11 +281,32 @@ namespace cotf.Base
             int g = br.ReadInt32();
             int p = br.ReadInt32();
             Purse purse = new Purse(0);
-            //purse.Content.copper = c;
-            //purse.Content.silver = s;
-            //purse.Content.gold = g;
-            //purse.Content.platinum = p;
+            purse.Content.copper = c;
+            purse.Content.silver = s;
+            purse.Content.gold = g;
+            purse.Content.platinum = p;
             return purse;
+        }
+        public static Item ReadItem(this BinaryReader br)
+        {
+            Item item = new Item();
+            item.position = br.ReadVector2();
+            item.whoAmI = br.ReadInt32();
+            item.type = br.ReadInt16();
+            item.owner = br.ReadInt32();
+            item.color = br.ReadColor();
+            item.enchanted = br.ReadBoolean();
+            item.cursed = br.ReadBoolean();
+            item.equipType = br.ReadInt32();
+            item.equipped = br.ReadBoolean();
+            item.active = br.ReadBoolean();
+            item.width = br.ReadInt32();
+            item.height = br.ReadInt32();
+            if (br.ReadChar() == 'p')
+            {
+                item.purse= br.ReadPurse();
+            }
+            return item;
         }
     }
     public static class Helper

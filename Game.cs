@@ -20,6 +20,7 @@ using System.Timers;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Timer = System.Timers.Timer;
+using cotf.World;
 
 namespace cotf
 {
@@ -130,12 +131,16 @@ namespace cotf
 					Main.KeyPressTimer++;
 					if (!Main.open)
 					{
-						//for (int i = 0; i < Main.player.Length; i++)
-						//{
-						//    Main.player[i]?.Save(false);
-						//}
+						Main.myPlayer.Save(true);
+						Entity ent = Entity.None;
+						ent.SetSuffix(Main.setMapName("_map", Main.FloorNum));
+						using (TagCompound tag = new TagCompound(ent, SaveType.Map))
+						{
+							tag.WorldMap(TagCompound.Manager.Save);
+						}
 						Exit();
 					}
+					else Main.open = false;
 				}
 			}
 			else

@@ -24,7 +24,7 @@ namespace cotf.Base
 		}
 		public string SetSuffix(string suffix)
 		{
-			return Name = Name.Substring(0, NameLen) + suffix;
+			return name = Name = Name.Substring(0, NameLen) + suffix;
 		}
 		public bool active = false;
 		public bool

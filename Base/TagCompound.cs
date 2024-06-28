@@ -33,7 +33,7 @@ namespace cotf.Base
         {
             this.subject = subject;
             this.type = type;
-            Init(subject.Name);
+            Init(subject.name);
         }
         private static string 
             psPath, 
@@ -44,6 +44,18 @@ namespace cotf.Base
         private BinaryReader br;
         private BinaryWriter bw;
         private string content;
+        internal static bool Exists(SaveType type, string name)
+        {
+            switch (type)
+            {
+                case SaveType.Player:
+                    return File.Exists(Path.Combine(psPath, name));
+                case SaveType.World:
+                    return false;
+                default:
+                    return false;
+            }
+        }
         internal static void SetPaths(string playerSavePath, string mapSavePath)   //  Called in Game.Initialize
         {
             psPath = playerSavePath;
@@ -147,27 +159,15 @@ namespace cotf.Base
                             }
                             else if (type == typeof(Vector2))
                             {
-                                float x = br.ReadSingle();
-                                float y = br.ReadSingle();
-                                return value = new Vector2(x, y);
+                                return value = br.ReadVector2();
                             }
                             else if (type == typeof(Color))
                             {
-                                byte a = br.ReadByte();
-                                byte r = br.ReadByte();
-                                byte g = br.ReadByte();
-                                byte b = br.ReadByte();
-                                return value = Color.FromArgb(a, r, g, b);
+                                return value = br.ReadColor();
                             }
                             else if (type == typeof(Purse))
                             {
-                                Purse purse = new Purse(0);
-                                //purse.Content = new Stash();
-                                //purse.Content.copper = br.ReadUInt32();
-                                //purse.Content.silver = br.ReadInt32();
-                                //purse.Content.gold = br.ReadInt32();
-                                //purse.Content.platinum = br.ReadInt32();
-                                return value = purse;
+                                return value = br.ReadPurse();
                             }
                         }
                     }
@@ -235,27 +235,19 @@ namespace cotf.Base
             }
             else if (type == typeof(Vector2))
             {
-                float x = br.ReadSingle();
-                float y = br.ReadSingle();
-                return value = new Vector2(x, y);
+                return value = br.ReadVector2();
             }
             else if (type == typeof(Color))
             {
-                byte a = br.ReadByte();
-                byte r = br.ReadByte();
-                byte g = br.ReadByte();
-                byte b = br.ReadByte();
-                return value = Color.FromArgb(a, r, g, b);
+                return value = br.ReadColor();
             }
             else if (type == typeof(Purse))
             {
-                Purse purse = new Purse(0);
-                //purse.Content = new Stash();
-                //purse.Content.copper = br.ReadUInt32();
-                //purse.Content.silver = br.ReadInt32();
-                //purse.Content.gold = br.ReadInt32();
-                //purse.Content.platinum = br.ReadInt32();
-                return value = purse;
+                return value = br.ReadPurse();
+            }
+            else if (type == typeof(Item))
+            {
+                return value = br.ReadItem();
             }
             else return value;
         }
@@ -321,7 +313,7 @@ namespace cotf.Base
                         Tile item1 = Main.tile[k, l];
                         if (item1 != null)
                         {
-                            string name = $"tile{tileLen}";
+                            string name = $"tile{tileLen++}";
                             bw.Write(item1.whoAmI);
                             bw.Write(item1.position);
                             bw.Write(item1.Active);
@@ -330,7 +322,6 @@ namespace cotf.Base
                             bw.Write(item1.width);
                             bw.Write(item1.height);
                             bw.Write(item1.color);
-                            tileLen++;
                         }
                     }
                 }
@@ -340,7 +331,7 @@ namespace cotf.Base
                 {
                     if (item2 != null)
                     {
-                        string name = $"background{bgLen}";
+                        string name = $"background{bgLen++}";
                         bw.Write(item2.whoAmI);
                         bw.Write(item2.position);
                         bw.Write(item2.active);
@@ -348,7 +339,6 @@ namespace cotf.Base
                         bw.Write(item2.width);
                         bw.Write(item2.height);
                         bw.Write(item2.color);
-                        bgLen++;
                     }
                 }
                 int roomLen = 0;
@@ -358,14 +348,13 @@ namespace cotf.Base
                     Room item3 = Main.room[i];
                     if (item3 != null)
                     {
-                        string name = $"room{roomLen}";
+                        string name = $"room{roomLen++}";
                         //bw.Write(i);
                         bw.Write(item3.bounds.X);
                         bw.Write(item3.bounds.Y);
                         bw.Write(item3.bounds.Width);
                         bw.Write(item3.bounds.Height);
                         bw.Write(item3.type);
-                        roomLen++;
                     }
                 }
                 int stairLen = 0;
@@ -374,13 +363,12 @@ namespace cotf.Base
                 {
                     if (s != null && s.active)
                     {
-                        string name = $"stair{stairLen}";
+                        string name = $"stair{stairLen++}";
                         bw.Write(s.whoAmI);
                         bw.Write(s.position);
                         bw.Write(s.discovered);
                         bw.Write((byte)s.direction);
                         bw.Write(Tile.Size);
-                        stairLen++;
                     }
                 }
                 int sceneryLen = 0;
@@ -389,7 +377,7 @@ namespace cotf.Base
                 {
                     if (scenery != null && scenery.active)
                     {
-                        string name = $"scenery{sceneryLen}";
+                        string name = $"scenery{sceneryLen++}";
                         bw.Write(scenery.whoAmI);
                         bw.Write(scenery.position);
                         bw.Write(scenery.active);
@@ -398,7 +386,6 @@ namespace cotf.Base
                         bw.Write(scenery.width);
                         bw.Write(scenery.height);
                         bw.Write(scenery.type);
-                        sceneryLen++;
                     }
                 }
                 int lampLen = 0;
@@ -407,7 +394,7 @@ namespace cotf.Base
                 {
                     if (lamp != null && lamp.active)
                     {
-                        string name = $"lamp{lampLen}";
+                        string name = $"lamp{lampLen++}";
                         bw.Write(lamp.whoAmI);
                         bw.Write(lamp.position);
                         bw.Write(lamp.active);
@@ -417,7 +404,6 @@ namespace cotf.Base
                         bw.Write(lamp.owner);
                         bw.Write(lamp.lampColor);
                         bw.Write(lamp.range);
-                        lampLen++;
                     }
                 }
                 int npcLen = 0;
@@ -426,7 +412,7 @@ namespace cotf.Base
                 {
                     if (npc != null && npc.active)
                     {
-                        string name = $"npc{npcLen}";
+                        string name = $"npc{npcLen++}";
                         bw.Write(npc.whoAmI);
                         bw.Write(npc.position);
                         bw.Write(npc.active);
@@ -438,7 +424,6 @@ namespace cotf.Base
                         bw.Write(npc.type);
                         //  If cursed or enchanted, save -- or if items carried are such and so on
                         //  Look into saving items carried
-                        npcLen++;
                     }
                 }
                 int itemLen = 0;
@@ -447,21 +432,7 @@ namespace cotf.Base
                 {
                     if (item != null && item.active)
                     {
-                        string name = $"item{itemLen}";
-                        bw.Write(item.whoAmI);
-                        bw.Write(item.position);
-                        bw.Write(item.active);
-                        bw.Write(item.width);
-                        bw.Write(item.height);
-                        bw.Write(item.owner);
-                        bw.Write(item.defaultColor);
-                        bw.Write(item.type);
-                        //if (item.purse == null || item.purse.Content == null)
-                        //{
-                        //    item.purse = new Purse(0);
-                        //}
-                        bw.Write(item.purse);
-                        itemLen++;
+                        bw.Write(item);
                     }
                 }
                 int trapLen = 0;
@@ -470,7 +441,7 @@ namespace cotf.Base
                 {
                     if (trap != null && trap.active)
                     {   
-                        string name = $"trap{trapLen}";
+                        string name = $"trap{trapLen++}";
                         bw.Write(trap.whoAmI);
                         bw.Write(trap.position);
                         bw.Write(trap.active);
@@ -480,7 +451,6 @@ namespace cotf.Base
                         bw.Write(trap.defaultColor);
                         bw.Write(trap.type);
                         bw.Write(trap.rotation);
-                        trapLen++;
                     }
                 }
                 return;
@@ -624,7 +594,11 @@ namespace cotf.Base
                     int o = br.ReadInt32();
                     Color c = br.ReadColor();
                     float r = br.ReadSingle();
-                    Lamp.NewLamp(v2, r, c, Entity.None, statLamp);
+                    Lamp lamp = Main.lamp[Lamp.NewLamp(v2, r, c, Entity.None, statLamp)];
+                    lamp.owner = o;
+                    lamp.width = w;
+                    lamp.height = h;
+                    lamp.active = a;
                 }
                 int npcLen = br.ReadInt32();
                 for (int i = 0; i < npcLen; i++)
@@ -649,18 +623,7 @@ namespace cotf.Base
                 int itemLen = br.ReadInt32();
                 for (int i = 0; i < itemLen; i++)
                 {
-                    string name = $"item{i}";
-                    int id = br.ReadInt32();
-                    Vector2 v2 = br.ReadVector2();
-                    bool a = br.ReadBoolean();
-                    int w = br.ReadInt32();
-                    int h = br.ReadInt32();
-                    int o = br.ReadInt32();
-                    Color c = br.ReadColor();
-                    short t = br.ReadInt16();
-                    //var s = br.ReadPurse();
-                    int index = Item.NewItem(v2.X, v2.Y, w, h, t, (byte)o);
-                    //Main.item[index].purse = s;
+                    Main.item[i] = br.ReadItem();
                 }
                 int trapLen = br.ReadInt32();
                 for (int i = 0; i < trapLen; i++)
@@ -822,10 +785,19 @@ namespace cotf.Base
                 //throw new Exception($"Tag, {tag}, already exists");
                 bw.Write(tag);
             }
-            //bw.Write(value.Content.copper);
-            //bw.Write(value.Content.silver);
-            //bw.Write(value.Content.gold);
-            //bw.Write(value.Content.platinum);
+            bw.Write(value.Content.copper);
+            bw.Write(value.Content.silver);
+            bw.Write(value.Content.gold);
+            bw.Write(value.Content.platinum);
+        }
+        public void SaveValue(string tag, Item item)
+        {
+            if (!TagExists(tag))
+            {
+                //throw new Exception($"Tag, {tag}, already exists");
+                bw.Write(tag);
+            }
+            bw.Write(item);
         }
         #endregion
         #region variable retrieve
@@ -939,17 +911,28 @@ namespace cotf.Base
                 return default;
             }
         }
-        //public Stash GetStash(string name)
-        //{
-        //    try
-        //    { 
-        //        return (Stash)GetValue(name, typeof(Stash));
-        //    }
-        //    catch
-        //    {
-        //        return default;
-        //    }
-        //}
+        public CirclePrefect.Native.Stash GetStash(string name)
+        {
+            try
+            { 
+                return (CirclePrefect.Native.Stash)GetValue(name, typeof(CirclePrefect.Native.Stash));
+            }
+            catch
+            {
+                return default;
+            }
+        }
+        public Item GetItem(string name)
+        {
+            try
+            { 
+                return (Item)GetValue(name, typeof(Item));
+            }
+            catch
+            {
+                return default;
+            }
+        }
         #endregion
         public void Dispose()
         {
