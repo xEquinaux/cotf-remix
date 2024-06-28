@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using cotf.Base;
 using cotf.World;
+using Microsoft.Xna.Framework.Graphics;
 using ToolTip = cotf.Base.ToolTip;
 
 namespace cotf
@@ -36,6 +37,7 @@ namespace cotf
             useStyle = UseStyle.Swing;
             equipType = EquipType.MainHand;
             defaultColor = Color.LightSlateGray;
+            texture = Main.cinnabar;
         }
         protected override void Init()
         {
@@ -52,9 +54,9 @@ namespace cotf
         {
             base.Update(myPlayer);
         }
-        public override void Draw(Graphics graphics)
+        public override void Draw(Graphics graphics, SpriteBatch sb)
         {
-            base.Draw(graphics);
+            base.Draw(graphics, sb);
         }
     }
 }

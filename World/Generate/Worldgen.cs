@@ -96,6 +96,36 @@ namespace cotf.World
             //if (Main.rand.NextBool()) Main.tile = Worldgen.Instance.CastleGen(size, width, height, maxNodes, range, nodeDistance);
             //else                         Main.tile = Worldgen.Instance.DungeonGen(size, width, height, maxNodes, range);
         }
+        public static void InitFillMap(int size, int width, int height)
+        {
+            //  Construct arrays
+            Main.tile = new Tile[width / size, height / size];
+            Main.background = new Background[width / size, height / size];
+
+            //  Filling entire space with background
+            for (int j = 0; j < height; j += size)
+            {
+                for (int i = 0; i < width; i += size)
+                {
+                    if (i / size < Main.background.GetLength(0) && j / size < Main.background.GetLength(1))
+                    {
+                        Main.background[i / size, j / size] = new Background(i / size, j / size, size);
+                    }
+                }
+            }
+
+            //  Filling entire space with brushes
+            for (int j = 1; j < height; j += size)
+            {
+                for (int i = 1; i < width; i += size)
+                {
+                    if (i / size < Main.tile.GetLength(0) && j / size < Main.tile.GetLength(1))
+                    { 
+                        Main.tile[i / size, j / size] = new Tile(i, j);
+                    }
+                }
+            }
+        }
         public Tile[,] CastleGen(int size, int width, int height, int maxNodes = 5, float range = 300f, float nodeDistance = 800f)
         {
             //  Constructing values
@@ -518,7 +548,7 @@ namespace cotf.World
                                     break;
                                 case TileID.Chest:
                                     if (numChests++ < 3)
-                                        Stash.NewStash((int)(randv2.X + randv2.X % Tile.Size + Tile.Size / 10), (int)(randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10), 0, Item.FillStash((int)randv2.X, (int)randv2.Y, Main.rand.Next(3, 12)));
+                                        cotf.Collections.Unused.Stash.NewStash((int)(randv2.X + randv2.X % Tile.Size + Tile.Size / 10), (int)(randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10), 0, Item.FillStash((int)randv2.X, (int)randv2.Y, Main.rand.Next(3, 12)));
                                     break;
                                 case TileID.StairsDown:
                                     break;

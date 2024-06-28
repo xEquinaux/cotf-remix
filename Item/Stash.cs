@@ -11,7 +11,7 @@ using cotf.World;
 using Microsoft.Xna.Framework;
 using Color = System.Drawing.Color;
 
-namespace cotf.Collections
+namespace cotf.Collections.Unused
 {
     public class Stash : Entity
     {
@@ -47,7 +47,7 @@ namespace cotf.Collections
             }
             if (Main.mouseLeft && this.hitbox.Contains((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y) && InProximity(Main.myPlayer, LootRange))
             {
-                Item.stash = this;
+                //Item.stash = this;
                 open = true;
                 ticks = 1;
             }

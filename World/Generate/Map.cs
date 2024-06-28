@@ -1,6 +1,7 @@
 ﻿using cotf.Base;
 using cotf.Collections;
 using cotf.World.Traps;
+using cotf.WorldGen;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace cotf.World
 {
     public static class Map
     {
+        public static EventWaitHandle MapLoad = new EventWaitHandle(true, EventResetMode.ManualReset);
         public static void NewMap()
         {
             Main.tile = new Tile[,] { };
@@ -27,7 +29,7 @@ namespace cotf.World
             Main.npc = new Npc[128];
             Main.item = new Item[256];
             Main.trap = new Trap[101];
-            Main.stash = new Stash[101];
+            Main.stash = new cotf.Collections.Unused.Stash[101];
         }
         public static void Unload()
         {
@@ -62,5 +64,40 @@ namespace cotf.World
             Main.tile = Main.worldgen.CastleGen(Tile.Size, width, height, width / 250, 300f, 600f);
             Room.ConstructAllRooms();
         }
+        //  TODO: finish DungeonID switch
+        public static void GenerateFloor(DungeonID id, Margin margin)
+        {
+            int width = margin.Right;
+            int height = margin.Bottom;
+            Main.WorldWidth = width;
+            Main.WorldHeight = height;
+            new Lighting().Init(width, height);
+            switch (id)
+            { 
+                default:
+                case DungeonID.BottomOfTheWell:
+                case DungeonID.Fortress:
+                case DungeonID.Halls:
+                case DungeonID.Overworld:
+                case DungeonID.Castle:
+                    Main.tile = Main.worldgen.CastleGen(Tile.Size, width, height, width / 250, 300f, 600f);
+                    Room.ConstructAllRooms();
+                    break;
+                case DungeonID.Factory:
+        			Worldgen.InitFillMap(cotf.World.Tile.Size, width, height);
+                    Factory.CastleGen(Main.tile, Main.background, width, height);
+                    break;
+            }
+            MapLoad.Set();
+        }
+    }
+    public enum DungeonID
+    {
+        BottomOfTheWell,
+        Castle,
+        Fortress,
+        Halls,
+        Factory,
+        Overworld
     }
 }

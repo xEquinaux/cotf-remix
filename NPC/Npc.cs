@@ -190,7 +190,7 @@ namespace cotf
             if (interval == 0) return;
             if (frameCount > 1)
             { 
-                if (frameTicks++ < int.MaxValue)
+                if (frameTicks < int.MaxValue)
                 {
                     if (frameTicks % interval == 0)
                     {

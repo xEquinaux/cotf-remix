@@ -82,5 +82,11 @@ namespace cotf
             velocity.Y = MathHelper.Clamp(velocity.Y, -1f, 1f);
             velocity *= Main.TimeScale;
         }
-    }
+        int ticks = 0;
+		public override void Draw(Graphics graphics, ref int frameTicks, int interval)
+		{
+            ticks++;
+			base.Draw(graphics, ref ticks, 5);
+		}
+	}
 }

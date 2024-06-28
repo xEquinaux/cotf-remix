@@ -26,21 +26,21 @@ namespace cotf.WorldGen
 		internal static int
 			Top => /*Main.UnderworldLayer -*/ Height;
 		public static short
-			Air = 1,
-			Tile = 0,//ArchaeaWorld.factoryBrick,
-			Wall = 0,//ArchaeaWorld.factoryBrickWallUnsafe,
-			Tile2 = 0,//ArchaeaWorld.Ash,
-			ConveyerL = TileID.ConveyorBeltLeft,
-			ConveyerR = TileID.ConveyorBeltRight,
+			Air = 0,
+			Tile = 1,//ArchaeaWorld.factoryBrick,
+			Wall = 1,//ArchaeaWorld.factoryBrickWallUnsafe,
+			Tile2 = 1,//ArchaeaWorld.Ash,
+			ConveyerL = 0,//TileID.ConveyorBeltLeft,
+			ConveyerR = 0,//TileID.ConveyorBeltRight,
 			Door = 0;//ArchaeaWorld.factoryMetalDoor;
 		public static IList<Room> room = new List<Room>();
-		public void CastleGen(out Tile[,] tile, out ushort[,] background, int width, int height, int size = 4, int maxNodes = 50, float nodeDistance = 60)
+		public static void CastleGen(Tile[,] brush, Background[,] background, int width, int height, int size = 4, int maxNodes = 50, float nodeDistance = 60, bool clearCenterColumn = false)
 		{
+			//	TODO: generation might be too big (clearly) without this
+			//width /= cotf.World.Tile.Size;
+			//height /= cotf.World.Tile.Size;
 			Width = width;
 			Height = height;
-
-			var brush = Main.tile;//new Tile[width + size * 2, height + size * 2];
-			background = new ushort[width, height];
 
 			Vector2[] nodes = new Vector2[maxNodes];
 			int numNodes = 0;
@@ -95,6 +95,7 @@ namespace cotf.WorldGen
 								{
 									if (i < brush.GetLength(0) && j < brush.GetLength(1))
 									{
+										if (brush[i, j] == null) continue;
 										brush[i, j].type = Air;
 										if (i <= X1 || i >= X2 || j <= Y1 || j >= Y2)
 										{
@@ -192,7 +193,6 @@ namespace cotf.WorldGen
 					while (X++ <= end.X + size)
 					{
 						CarveHall(ref brush, ref background, X, Y, 6);
-
 					}
 				}
 				else if (start.X > end.X && start.Y > end.Y)
@@ -287,7 +287,6 @@ namespace cotf.WorldGen
 					while (X++ <= (start.X + end.X) / 2 + size)
 					{
 						CarveHall(ref brush, ref background, X, Y, 6);
-
 					}
 					while (Y++ <= end.Y + size)
 					{
@@ -304,23 +303,35 @@ namespace cotf.WorldGen
 			}
 
 			//  Clear center column
-			for (int i = 0; i < brush.GetLength(0); i++)
+			if (clearCenterColumn)
 			{
-				for (int j = 0; j < brush.GetLength(1); j++)
+				for (int i = 0; i < brush.GetLength(0); i++)
 				{
-					int cx = brush.GetLength(0) / 2 - 10;
-					int cx2 = brush.GetLength(0) / 2 + 10;
-					if (i >= cx && i <= cx2)
+					for (int j = 0; j < brush.GetLength(1); j++)
 					{
-						brush[i, j].type = Air;
+						int cx = brush.GetLength(0) / 2 - 10;
+						int cx2 = brush.GetLength(0) / 2 + 10;
+						if (i >= cx && i <= cx2)
+						{
+							brush[i, j].type = Air;
+						}
 					}
 				}
 			}
 
 			//  Return value
-			tile = brush;
+			//tile = brush;
+
+			//	Clear the empty tiles (air)
+			foreach (var item in Main.tile)
+			{
+				if (item.type == Air || item.type == Door || item.type == ConveyerL || item.type == ConveyerR)
+				{
+					item.active(false);
+				}
+			}
 		}
-		private void CarveHall(ref Tile[,] tile, ref ushort[,] wall, int x, int y, int size = 10)
+		private static void CarveHall(ref Tile[,] tile, ref Background[,] wall, int x, int y, int size = 10)
 		{
 			int border = 4;
 			bool flag = Main.rand.NextBool(8);
@@ -329,15 +340,16 @@ namespace cotf.WorldGen
 			{
 				for (int j = -border; j < size + border; j++)
 				{
-					int X = Math.Max(0, Math.Min(x + i, Width - 1));
-					int Y = Math.Max(0, Math.Min(y + j, Height - 1));
+					int X = Math.Max(0, Math.Min(x + i, Width - 1)) / cotf.World.Tile.Size;
+					int Y = Math.Max(0, Math.Min(y + j, Height - 1)) / cotf.World.Tile.Size;
 					//TODO
 					//var r = room.FirstOrDefault(t => t.bound.Intersects(new Rectangle(X, Y, size + border, size + border)));
 					//if (r != default)
 					//{
 					//    continue;
 					//}
-					if (wall[X, Y] != Wall)
+					if (wall[X, Y] == null || tile[X, Y] == null) continue;
+					if (wall[X, Y].type != Wall)
 					{
 						tile[X, Y].type = Tile;
 					}
@@ -351,10 +363,10 @@ namespace cotf.WorldGen
 			{
 				for (int i = 0; i < size; i++)
 				{
-					int X = Math.Max(0, Math.Min(x + i, Width - 1));
-					int Y = Math.Max(0, Math.Min(y + j, Height - 1));
+					int X = Math.Max(0, Math.Min(x + i, Width - 1)) / cotf.World.Tile.Size;
+					int Y = Math.Max(0, Math.Min(y + j, Height - 1)) / cotf.World.Tile.Size;
 
-					if (!GetSafely(X, Y - 1).Active && GetSafely(X, Y + 1).Active && (tile[X, Y].type == ConveyerL || tile[X, Y].type == ConveyerR))
+					if (GetSafely(X, Y) == null || !GetSafely(X, Y - 1).Active && GetSafely(X, Y + 1).Active)// && (tile[X, Y].type == ConveyerL || tile[X, Y].type == ConveyerR))
 					{
 						continue;
 					}
@@ -364,7 +376,10 @@ namespace cotf.WorldGen
 					{
 						for (int l = 0; l < 6; l++)
 						{
-							tile[X, Y + l].type = Door;
+							if (Y + l < tile.GetLength(1))
+							{
+								tile[X, Y + l].type = Door;
+							}
 						}
 					}
 				}

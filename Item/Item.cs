@@ -7,12 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using cotf.Base;
 using cotf.World;
-using cotf.Collections;
+using cotf.Collections.Unused;
 using cotf.Assets;
 using ToolTip = cotf.Base.ToolTip;
 using Microsoft.Xna.Framework;
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace cotf
 {
@@ -80,6 +81,11 @@ namespace cotf
         {
             SetToolTip();
             color = defaultColor;
+
+            CirclePrefect.Native.Stash.CopperCoin = 1;
+            CirclePrefect.Native.Stash.SilverCoin = 100;
+            CirclePrefect.Native.Stash.GoldCoin = 10000;
+            CirclePrefect.Native.Stash.PlatinumCoin = 1000000;
         }
         public virtual ToolTip SetToolTip()
             => toolTip = new ToolTip(name, text, color);
@@ -393,18 +399,27 @@ namespace cotf
             if (worldItem != null && worldItem.item != null && (worldItem.item.owner != 255 || !worldItem.item.equipped || !worldItem.item.active))
                 worldItem.Dispose();
         }
-        public virtual void Draw(Graphics graphics)
+        public virtual void Draw(Graphics graphics, SpriteBatch sb)
         {
             if ((active && owner == 255) || inUse)
             {
                 if (equipped)
                 {
                     if (holdStyle == HoldStyle.HoldOut)
-                        Drawing.DrawRotate(texture, box, new Rectangle(0, 0, width, height), Helper.ToDegrees(angle) + 135f, new PointF(width / 2, height / 2), defaultColor, Color.Black, RotateType.GraphicsTransform, graphics);
+                    { 
+                        //sb.Draw(texture.BitmapToTex2D(Game.Instance.GraphicsDevice), new Microsoft.Xna.Framework.Rectangle(box.X, box.Y, box.Width, box.Height), null, new Microsoft.Xna.Framework.Color((uint)defaultColor.ToArgb()), Helper.ToDegrees(angle) + 135f, Main.myPlayer.Center, SpriteEffects.None, 0);
+                        Drawing.DrawRotate(texture, box, new Rectangle(0, 0, width, height), Helper.ToDegrees(angle) + 45f, new PointF(width / 2, height / 2), defaultColor, Color.Black, RotateType.GraphicsTransform, graphics);
+                    }
                     else if (useStyle == UseStyle.Stab)
-                        Drawing.DrawRotate(texture, hurtbox, new Rectangle(0, 0, width, height), Helper.ToDegrees(AngleTo(Main.myPlayer.Center, Center)) + 135f, new PointF(width / 2, height / 2), defaultColor, Color.Black, RotateType.MatrixTransform, graphics);
-                    else if (inUse) 
-                        Drawing.DrawRotate(texture, hurtbox, new Rectangle(0, 0, width, height), Helper.ToDegrees(AngleTo(Main.myPlayer.Center, Center)) + 135f, new PointF(width / 2, height / 2), defaultColor, Color.Black, RotateType.MatrixTransform, graphics);
+                    { 
+                        //sb.Draw(texture.BitmapToTex2D(Game.Instance.GraphicsDevice), new Microsoft.Xna.Framework.Rectangle(hurtbox.X, hurtbox.Y, hurtbox.Width, hurtbox.Height), null, new Microsoft.Xna.Framework.Color((uint)defaultColor.ToArgb()), Helper.ToDegrees(AngleTo(Main.myPlayer.Center, Center)) + 135f, new Vector2(0, height), SpriteEffects.None, 0);
+                        Drawing.DrawRotate(texture, hurtbox, new Rectangle(0, 0, width, height), Helper.ToDegrees(AngleTo(Main.myPlayer.Center, Center)) + 45f, new PointF(width / 2, height / 2), defaultColor, Color.Black, RotateType.MatrixTransform, graphics);
+                    }
+                    else if (inUse)
+                    {
+                        //sb.Draw(texture.BitmapToTex2D(Game.Instance.GraphicsDevice), new Microsoft.Xna.Framework.Rectangle(hurtbox.X, hurtbox.Y, hurtbox.Width, hurtbox.Height), null, new Microsoft.Xna.Framework.Color((uint)defaultColor.ToArgb()), Helper.ToDegrees(AngleTo(Main.myPlayer.Center, Center)) + 135f, new Vector2(0, height), SpriteEffects.None, 0);
+                        Drawing.DrawRotate(texture, hurtbox, new Rectangle(0, 0, width, height), Helper.ToDegrees(AngleTo(Main.myPlayer.Center, Center)) + 45f, new PointF(width / 2, height / 2), defaultColor, Color.Black, RotateType.MatrixTransform, graphics);
+                    }
                 }
                 else if (discovered && !inPile && !inStash)
                 {
@@ -465,7 +480,7 @@ namespace cotf
                 case ItemID.Purse:
                     if (value == 0)
                     {
-                        //value = (uint)Main.rand.Next(100, RUDD.Stash.GoldCoin);
+                        value = (uint)Main.rand.Next(100, CirclePrefect.Native.Stash.GoldCoin);
                     }
                     Main.item[num] = new Purse(value);
                     Main.item[num].value = value;
@@ -599,8 +614,8 @@ namespace cotf
         }
         public void Dispose(bool check = false)
         {
-            if (check && Main.item[whoAmI].owner < 255)
-                return;
+            if (Main.item[whoAmI] == null) return;
+            if (check && Main.item[whoAmI].owner < 255) return;
             Main.item[whoAmI].active = false;
             Main.item[whoAmI].position = Vector2.Zero;
             Main.item[whoAmI].lamp?.Dispose();

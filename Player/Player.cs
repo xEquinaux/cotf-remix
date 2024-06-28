@@ -9,6 +9,7 @@ using System.Windows.Input;
 using cotf.Assets;
 using cotf.Base;
 using cotf.World;
+using cotf.Collections.Unused;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
@@ -19,6 +20,8 @@ using Color = System.Drawing.Color;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using static cotf.Base.TagCompound;
 using Point = System.Drawing.Point;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 
 namespace cotf
 {
@@ -64,26 +67,28 @@ namespace cotf
         int debug = 0;
         public Skill activeSkill = Skill.SetActive(SkillID.Melee);
         public Skill[] skill = new Skill[SkillID.Total];
-        public Purse Purse => (Purse)equipment[EquipType.Purse];
+        public Item Purse => equipment[EquipType.Purse];
+        public Item Torch => equipment[EquipType.OffHand];
         public bool cursed;
         private Margin BaseMargin => new Margin(32);
         public Rectangle Proximity(Margin margin) => new Rectangle(box.X - margin.Left, box.Y - margin.Top, box.Width + margin.Right, box.Height + margin.Bottom);
         int travelTicks = 0;
         public int deathCounter = 0;
+        public DungeonID dungeonId = DungeonID.Factory;
 
         public void Init()
         {
             //  TODO -- bypassing floor loading for the time being
             //Map.GenerateFloor(new Margin(3000));
             //goto EndMapInit;
-            if (!Main.DoesMapExist("_map", Main.FloorNum))
+            if (!Main.DoesMapExist($"_{dungeonId}_map", Main.FloorNum))
             {
-                Map.GenerateFloor(new Margin(3000));
+                Map.GenerateFloor(DungeonID.Factory, new Margin(3000));
             }
             else
             {
                 Entity ent2 = Entity.None;
-                ent2.SetSuffix(Main.setMapName("_map", Main.FloorNum));
+                ent2.SetSuffix(Main.setMapName($"_{dungeonId}_map", Main.FloorNum));
                 using (TagCompound tag = new TagCompound(ent2, SaveType.Map))
                 {
                     tag.WorldMap(Manager.Load);
@@ -104,8 +109,12 @@ namespace cotf
                 FindRandomTile();
             }
             else Load();
-            int item = Item.NewItem(X, Y, 32, 32, ItemID.Torch, (byte)this.whoAmI);
-            EquipTorch(Main.item[item]);
+            if (hasTorch())
+            {
+                UnequipTorch(Torch);
+            }
+            //int item = Item.NewItem(X, Y, 32, 32, ItemID.Torch, (byte)this.whoAmI);
+            //EquipTorch(Main.item[item]);
             //PickupItem(ref Main.item[item]);
             //lamp.active = false;
             //inventory[3] = item;
@@ -154,17 +163,32 @@ namespace cotf
                 deathCounter = tag.GetInt32(name + "_count");
                 for (int i = 0; i < equipment.Length; i++)
                 {
-                    equipment[i] = tag.GetItem($"{name}_equip{i}");
+                    var item = tag.GetItem($"{name}_equip{i}");
+                    if (item != null && item.active && item.equipped)
+                    {
+                        item.EquipItem(this);
+                    }
                 }
                 for (int i = 0; i < inventory.Count; i++)
                 {
-                    inventory[i] = tag.GetItem($"{name}_inv{i}");
+                    var item = tag.GetItem($"{name}_inv{i}");
+                    PickupItem(ref item);
                 }
             }
         }
         public override void Update()
         {
             base.Update();
+
+			//  Empty equipment slots fix
+			for (int i = 0; i < equipment.Length; i++)
+			{
+                if (equipment[i] != null && (!equipment[i].active || !equipment[i].equipped))
+                {
+                    equipment[i].equipped = false;
+                    equipment[i].active = false;
+                }
+            }
 
             //  DEBUG active skill swapping
             activeSkill = Skill.SetActive(SkillID.Melee);
@@ -422,16 +446,21 @@ namespace cotf
             }
             #endregion
 
-            while (Main.tile[(X - 1) / Tile.Size, (Y - 1) / Tile.Size].Active)
-            {
-                position.X++;
-                position.Y++;
+            //  DEBUG: possible getting-stuck fix
+            if (Tile.GetSafely((int)Center.X / Tile.Size, (int)Center.Y / Tile.Size).Active)
+            { 
+                FindRandomTile();
             }
-            while (Main.tile[(X + width + 1) / Tile.Size, (Y + height + 1) / Tile.Size].Active)
-            {   
-                position.X--;
-                position.Y--;
-            }
+            //while (Tile.GetSafely((float)X - 1, (float)Y - 1).Active)
+            //{
+            //    position.X++;
+            //    position.Y++;
+            //}
+            //while (Tile.GetSafely((float)X + width + 1, (float)Y + height + 1).Active)
+            //{   
+            //    position.X--;
+            //    position.Y--;
+            //}
 
             //  Skill interaction
             activeSkill.Update();
@@ -441,6 +470,11 @@ namespace cotf
                 activeSkill.Cast(this);
             }
             //  DEBUG
+
+            if (KeyDown(Keys.Q))
+            {
+                Item.NewItem(Center.X, Center.Y, 32, 32, ItemID.Torch);
+            }
             return;
             Staircase _s = Main.staircase.FirstOrDefault(t => t != null && t.direction == StaircaseDirection.LeadingDown);
             if (_s != default && KeyDown(Keys.D1))
@@ -475,6 +509,7 @@ namespace cotf
         public void EquipTorch(Item item)
         {
             lamp = item.lamp;
+            if (lamp == null) return;
             item.lamp.active = true;
             item.lamp.range = myPlayer.lightRange;
             item.lamp.lampColor = Lamp.TorchLight;
@@ -501,9 +536,14 @@ namespace cotf
             velocity += Helper.AngleToSpeed(angle, knockBack);
             if (life <= 0)
             {
-                //  TODO Requires home location
+                //  TODO Does the player respawn in the Overworld
+                Respawn(1);
                 deathCounter++;
             }
+        }
+        public void Respawn(int floornum)
+        {
+            Main.LoadFloor(DungeonID.Castle, floornum, true);
         }
         public void Heal(int amount)
         {

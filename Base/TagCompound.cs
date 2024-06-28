@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using cotf.World;
 using cotf.World.Traps;
+using cotf.Collections.Unused;
 using Microsoft.Xna.Framework;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -338,7 +339,6 @@ namespace cotf.Base
                         bw.Write(item2.discovered);
                         bw.Write(item2.width);
                         bw.Write(item2.height);
-                        bw.Write(item2.color);
                     }
                 }
                 int roomLen = 0;
@@ -456,7 +456,7 @@ namespace cotf.Base
                 return;
                 int stashLen = 0;
                 bw.Write(Main.stash.Count(t => t != null && t.active));
-                foreach (cotf.Collections.Stash stash in Main.stash)
+                foreach (Stash stash in Main.stash)
                 {
                     if (stash != null && stash.active)
                     {
@@ -501,6 +501,8 @@ namespace cotf.Base
                 int tileLen = br.ReadInt32();
                 int size = (int)Math.Sqrt(tileLen);
                 Main.tile = new Tile[size, size];
+                Main.WorldWidth = size;
+                Main.WorldHeight = size;
                 int num = 0;
                 for (int k = 0; k < size; k++)
                     for (int l = 0; l < size; l++)
@@ -525,7 +527,7 @@ namespace cotf.Base
                 for (int k = 0; k < size; k++)
                     for (int l = 0; l < size; l++)
                     {
-                        string name = $"background{num2}";
+                        string name = $"background{num2++}";
                         Main.background[k, l] = new Background(k, l, Tile.Size);
                         Main.background[k, l].whoAmI = br.ReadInt32();
                         Main.background[k, l].position = br.ReadVector2();
@@ -533,8 +535,6 @@ namespace cotf.Base
                         Main.background[k, l].discovered = br.ReadBoolean();
                         Main.background[k, l].width = br.ReadInt32();
                         Main.background[k, l].height = br.ReadInt32();
-                        Main.background[k, l].color = br.ReadColor();
-                        num2++;
                     }
                 int roomLen = br.ReadInt32();
                 int num3 = 0;
@@ -586,19 +586,16 @@ namespace cotf.Base
                 {
                     string name = $"lamp{i}";
                     int id = br.ReadInt32();
-                    Vector2 v2 = br.ReadVector2();
-                    bool a = br.ReadBoolean();
-                    bool statLamp = br.ReadBoolean();
-                    int w = br.ReadInt32();
-                    int h = br.ReadInt32();
-                    int o = br.ReadInt32();
-                    Color c = br.ReadColor();
-                    float r = br.ReadSingle();
-                    Lamp lamp = Main.lamp[Lamp.NewLamp(v2, r, c, Entity.None, statLamp)];
-                    lamp.owner = o;
-                    lamp.width = w;
-                    lamp.height = h;
-                    lamp.active = a;
+                    Main.lamp[id] = new Lamp(0);
+                    Main.lamp[id].whoAmI = id;
+                    Main.lamp[id].position = br.ReadVector2();
+                    Main.lamp[id].active = br.ReadBoolean();
+                    Main.lamp[id].staticLamp = br.ReadBoolean();
+                    Main.lamp[id].width = br.ReadInt32();
+                    Main.lamp[id].height = br.ReadInt32();
+                    Main.lamp[id].owner = br.ReadInt32();
+                    Main.lamp[id].color = br.ReadColor();
+                    Main.lamp[id].range = br.ReadSingle();
                 }
                 int npcLen = br.ReadInt32();
                 for (int i = 0; i < npcLen; i++)
@@ -668,7 +665,7 @@ namespace cotf.Base
                             content[j].type = br.ReadInt16();
                             //content[j].purse = br.ReadPurse();
                         }
-                        cotf.Collections.Stash.NewStash((int)v2.X, (int)v2.Y, 0, content);
+                        Stash.NewStash((int)v2.X, (int)v2.Y, 0, content);
                     }
                     else continue;
                 }

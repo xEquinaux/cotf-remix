@@ -63,6 +63,9 @@
     <None Update="Textures\chain.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\cinnabar_dagger.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\ClassIcon_UI.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

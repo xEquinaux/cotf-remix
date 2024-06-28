@@ -169,11 +169,11 @@ namespace cotf
 				using (BufferedGraphics buffered = context.Allocate(graphics, new System.Drawing.Rectangle(0, 0, _bounds.Width, _bounds.Height)))
 				{
 					SetQuality(buffered.Graphics, new System.Drawing.Rectangle(0, 0, _bounds.Width, _bounds.Height));
-					graphics.Clear(System.Drawing.Color.CornflowerBlue);
+					graphics.Clear(System.Drawing.Color.Black);
 					{
 						this.Camera(buffered.Graphics, CAMERA);
 						this.PreDraw(buffered.Graphics);
-						this.Draw(buffered.Graphics);
+						this.Draw(buffered.Graphics, _spriteBatch);
 						this.TitleScreen(buffered.Graphics);
 					}
 					buffered.Render();
@@ -251,6 +251,7 @@ namespace cotf
 		#region methods
 		private void LoadResources()
 		{
+			Main.cinnabar = Asset<Image>.Request("cinnabar_dagger");
 			Main.bg = Asset<Image>.Request("bg");
 			Main.texture = Asset<Image>.Request("temp");
 			Main.texture90 = Asset<Image>.Request("temp90");
@@ -281,11 +282,11 @@ namespace cotf
 		{
 			Main.Graphics = graphics;
 		}
-		private void Draw(Graphics graphics)
+		private void Draw(Graphics graphics, SpriteBatch sb)
 		{
 			if (!Main.mainMenu && Main.Instance.PreDraw(graphics))
 			{
-				Main.Instance.Draw(graphics);
+				Main.Instance.Draw(graphics, sb);
 			}
 		}
 		private void Update()
@@ -329,12 +330,12 @@ namespace cotf
 		}
 		#endregion
 		#region quality settings
-		public CompositingQuality compositingQuality = CompositingQuality.AssumeLinear;
+		public CompositingQuality compositingQuality = CompositingQuality.HighQuality;
 		public CompositingMode compositingMode = CompositingMode.SourceOver;
-		public InterpolationMode interpolationMode = InterpolationMode.HighQualityBicubic;
+		public InterpolationMode interpolationMode = InterpolationMode.NearestNeighbor;
 		public TextRenderingHint textRenderHint = TextRenderingHint.ClearTypeGridFit;
 		public GraphicsUnit graphicsUnit = GraphicsUnit.Pixel;
-		public SmoothingMode smoothingMode = SmoothingMode.Default;
+		public SmoothingMode smoothingMode = SmoothingMode.AntiAlias;
 		private void SetQuality(Graphics graphics, System.Drawing.Rectangle bounds)
 		{
 			graphics.CompositingQuality = compositingQuality;

@@ -32,6 +32,7 @@ using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using Bitmap = System.Drawing.Bitmap;
 using System.Reflection.Metadata;
 using System.ComponentModel;
+using static cotf.Base.TagCompound;
 
 namespace cotf
 {
@@ -125,7 +126,8 @@ namespace cotf
             grass,
             ground,
             wall,
-            bg0;
+            bg0,
+            cinnabar;
         public static Image[] trapTexture = new Image[TrapID.Sets.Total];
         public static Image[] chainTexture = new Image[1];
         public static Image[] wallTexture = new Image[4];
@@ -161,7 +163,7 @@ namespace cotf
         //  Fix
         internal static Dictionary<int, Room> room = new Dictionary<int, Room>();
         internal static Loot[] loot = new Loot[101];
-        internal static Stash[] stash = new Stash[101];
+        internal static cotf.Collections.Unused.Stash[] stash = new cotf.Collections.Unused.Stash[101];
         internal static WorldObject[] wldObject = new WorldObject[20];
         internal static Staircase[] staircase = new Staircase[6];
         internal static List<Floor> floor = new List<Floor>();
@@ -367,6 +369,33 @@ namespace cotf
                 }
             }
         }
+        public static void LoadFloor(DungeonID id, int floornum, bool unload = true)
+        {
+            if (unload)
+            {
+                Map.Unload();
+            }
+            if (!Main.DoesMapExist($"_{id}_map", floornum))
+            {
+                Map.GenerateFloor(id, new Margin(3000));
+                return;
+            }
+            Entity ent2 = Entity.None;
+			ent2.SetSuffix(Main.setMapName($"_{id}_map", floornum));
+			using (TagCompound tag = new TagCompound(ent2, SaveType.Map))
+            {
+                tag.WorldMap(Manager.Load);
+            }
+        }
+        public static void SaveFloor(DungeonID id, int floornum)
+        {
+            Entity ent = Entity.None;
+			ent.SetSuffix(Main.setMapName($"_{id}_map", floornum));
+			using (TagCompound tag = new TagCompound(ent, SaveType.Map))
+			{
+				tag.WorldMap(TagCompound.Manager.Save);
+			}
+        }
         public void Update()
         {
             if (!init)
@@ -382,6 +411,7 @@ namespace cotf
                 init = true; 
                 return;
             }
+            //Map.MapLoad.WaitOne();
             //EscState = Keyboard.GetState().IsKeyDown(Keys.Escape);
             timeSpan = TimeSpan.FromMilliseconds(time.ElapsedMilliseconds);
             var point = System.Windows.Forms.Cursor.Position;
@@ -472,7 +502,7 @@ namespace cotf
             }
             return false;
         }
-        public void Draw(Graphics graphics)
+        public void Draw(Graphics graphics, SpriteBatch sb)
         {
             for (int i = 0; i < background.GetLength(0); i++)
             {
@@ -482,7 +512,7 @@ namespace cotf
                 }
             }
             Worldgen.UpdateLampMaps();  //  Lighting priority (LightSurface/Brush?)
-            DrawBackground(graphics);
+            DrawBackground(graphics, sb);
             for (int i = 0; i < trap.Length; i++)
             {
                 if (trap[i] != null && trap[i].active)
@@ -743,14 +773,14 @@ namespace cotf
                 Item.nearby.Clear();
                 for (int i = 0; i < Main.item.Length; i++)
                 {
-                    if (Main.item[i] != null && Main.item[i].owner == 255 && Main.item[i].type > ItemID.None && Main.item[i].active && item[i].InProximity(myPlayer, Stash.LootRange))
+                    if (Main.item[i] != null && Main.item[i].owner == 255 && Main.item[i].type > ItemID.None && Main.item[i].active && item[i].InProximity(myPlayer, cotf.Collections.Unused.Stash.LootRange))
                     {
                         Item.nearby.Add(Main.item[i]);
                     }
                 }
                 if (Item.stash != null)
                 {
-                    if (Item.stash.InProximity(myPlayer, Stash.LootRange))
+                    if (Item.stash.InProximity(myPlayer, cotf.Collections.Unused.Stash.LootRange))
                     {
                         //  Refresh contents to negate automatic refilling
                         Item.stash.item.Clear();
@@ -764,7 +794,7 @@ namespace cotf
             }
             Item.nearby.RemoveAll(t => t == null || !t.active || string.IsNullOrWhiteSpace(t.name));
         }
-        private void DrawBackground(Graphics graphics)
+        private void DrawBackground(Graphics graphics, SpriteBatch sb)
         {
             for (int i = 0; i < scenery.Length; i++)
             {
@@ -798,7 +828,7 @@ namespace cotf
             {
                 if (item[i] != null && item[i].active && item[i].type > ItemID.None && !myPlayer.inventory.Contains(item[i]))
                 {
-                    item[i].Draw(graphics);
+                    item[i].Draw(graphics, sb);
                 }
             }
             for (int i = 0; i < staircase.Length; i++)

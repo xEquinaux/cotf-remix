@@ -10,6 +10,7 @@ using System.Windows.Input;
 using ToolTip = cotf.Base.ToolTip;
 using cotf.Base;
 using cotf.World;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace cotf
 {
@@ -57,9 +58,9 @@ namespace cotf
             //lamp.active = update;
             //lamp.position = position;
         }
-        public override void Draw(Graphics graphics)
+        public override void Draw(Graphics graphics, SpriteBatch sb)
         {
-            base.Draw(graphics);
+            base.Draw(graphics, sb);
         }
     }
 }
