@@ -165,7 +165,7 @@ namespace cotf
             int num = Main.lamp.Length - 1;
             for (int i = 0; i < Main.lamp.Length; i++)
             {
-                if (Main.lamp[i] == null)
+                if (Main.lamp[i] == null || !Main.lamp[i].active)
                 {
                     num = i;
                     break;
@@ -180,7 +180,7 @@ namespace cotf
             int num = Main.lamp.Length - 1;
             for (int i = 0; i < Main.lamp.Length; i++)
             {
-                if (Main.lamp[i] == null)
+                if (Main.lamp[i] == null || !Main.lamp[i].active)
                 {
                     num = i;
                     break;
@@ -266,6 +266,16 @@ namespace cotf
                 return;
             if (Main.lamp[whoAmI]?.itemLink?.owner < 255)
                 return;
+            if (Main.lamp[whoAmI] != null)
+            { 
+                Main.lamp[whoAmI].active = false;
+                Main.lamp[whoAmI].position = Vector2.Zero;
+                Main.lamp[whoAmI] = null;
+            }
+        }
+        public void Dispose(bool absolute)
+        {
+            if (absolute)
             if (Main.lamp[whoAmI] != null)
             { 
                 Main.lamp[whoAmI].active = false;

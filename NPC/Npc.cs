@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using cotf.Assets;
 using cotf.Base;
+using cotf.NPC;
 using cotf.World;
 using Microsoft.Xna.Framework;
 
@@ -35,7 +36,6 @@ namespace cotf
         }
         public virtual void SetDefaults()
         {
-            TextureName = $"npc{type}";
             texture = preTexture = Asset<Bitmap>.Request(TextureName);
         }
         protected virtual void Init()
@@ -170,7 +170,7 @@ namespace cotf
                 Drawing.LightmapHandling(texture, this, gamma, graphics);
             }
         }
-        public virtual void Draw(Graphics graphics, ref int frameTicks, int interval)
+        public virtual void Draw(Graphics graphics, ref int frameTicks, int interval, int startFrame)
         {
             if (active && discovered)
             {
@@ -180,12 +180,12 @@ namespace cotf
                     iFrames--;
                     color = color.Transparency(iFrames % 4 == 0 ? 1f : 0f);
                 }
-                FrameAnimate(ref frameTicks, interval);
+                FrameAnimate(ref frameTicks, interval, startFrame);
                 Drawing.LightmapHandling(texture, this, gamma, graphics);
             }
         }
 
-        public virtual void FrameAnimate(ref int frameTicks, int interval)
+        public virtual void FrameAnimate(ref int frameTicks, int interval, int startFrame)
         {
             if (interval == 0) return;
             if (frameCount > 1)
@@ -196,7 +196,7 @@ namespace cotf
                     {
                         if (++frame >= frameCount)
                         {
-                            frame = 0;
+                            frame = startFrame;
                         }
                     }
                 }
@@ -334,7 +334,7 @@ namespace cotf
                     break;
             }
         }
-        public static int NewNPC(float x, float y, short type)
+        public static int NewNPC(float x, float y, int type)
         {
             int num = Main.npc.Length - 1;
             for (int i = 0; i < Main.npc.Length; i++)
@@ -352,6 +352,9 @@ namespace cotf
                 case NpcType.Kobold:
                     Main.npc[num] = new Kobold();
                     break;
+                case NpcType.Hawk:
+                    Main.npc[num] = new Hawk();
+                    break;
                 default:
                     Main.npc[num] = new Npc();
                     break;
@@ -362,6 +365,7 @@ namespace cotf
             Main.npc[num].whoAmI = num;
             Main.npc[num].Init();
             Main.npc[num].SetDefaults();
+            Factory.NpcF.Mutate(Main.npc[num]);
             return num;
         }
         public bool NpcSight(Entity target)
@@ -395,7 +399,8 @@ namespace cotf
     {
         public const short
             None = 0,
-            Kobold = 1;
+            Kobold = 1,
+            Hawk = 2;
     }
     public enum IdleBehavior
     {

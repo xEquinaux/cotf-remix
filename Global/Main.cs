@@ -154,7 +154,7 @@ namespace cotf
         internal static Background[,] background = new Background[,] { };
         //public static Lighting[,] fog = new Lighting[,] { };
         internal static Lightmap[,] lightmap = new Lightmap[,] { };
-        internal static Lamp[] lamp = new Lamp[10];
+        internal static Lamp[] lamp = new Lamp[101];
         internal static Projectile[] projectile = new Projectile[256];
         internal static Npc[] npc = new Npc[128];
         internal static Door[] door = new Door[51];
@@ -540,7 +540,7 @@ namespace cotf
                 {
                     if (npc[i].frameCount > 1)
                     {
-                        npc[i].Draw(graphics, ref npc[i].frameTicks, npc[i].frameInterval);
+                        npc[i].Draw(graphics, ref npc[i].frameTicks, npc[i].frameInterval, 0);
                     }
                     npc[i].Draw(graphics);
                 }

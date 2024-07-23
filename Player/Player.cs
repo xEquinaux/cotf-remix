@@ -75,6 +75,7 @@ namespace cotf
         int travelTicks = 0;
         public int deathCounter = 0;
         public DungeonID dungeonId = DungeonID.Factory;
+        bool init;
 
         public void Init()
         {
@@ -83,16 +84,11 @@ namespace cotf
             //goto EndMapInit;
             if (!Main.DoesMapExist($"_{dungeonId}_map", Main.FloorNum))
             {
-                Map.GenerateFloor(DungeonID.Factory, new Margin(3000));
+                Map.GenerateFloor(DungeonID.Castle, new Margin(3000));
             }
             else
             {
-                Entity ent2 = Entity.None;
-                ent2.SetSuffix(Main.setMapName($"_{dungeonId}_map", Main.FloorNum));
-                using (TagCompound tag = new TagCompound(ent2, SaveType.Map))
-                {
-                    tag.WorldMap(Manager.Load);
-                }
+                Main.LoadFloor(dungeonId, Main.FloorNum, false);
             }
             //EndMapInit:
             width = 42;
@@ -180,14 +176,21 @@ namespace cotf
         {
             base.Update();
 
-			//  Empty equipment slots fix
-			for (int i = 0; i < equipment.Length; i++)
-			{
-                if (equipment[i] != null && (!equipment[i].active || !equipment[i].equipped))
-                {
-                    equipment[i].equipped = false;
-                    equipment[i].active = false;
+            if (!init)
+            { 
+                if (equipment == null)
+                    return;
+			    //  Empty equipment slots fix
+			    for (int i = 0; i < equipment.Length; i++)
+			    {
+                    if (equipment[i]?.active is false || equipment[i]?.equipped is false)
+                    {
+                        equipment[i].equipped = false;
+                        equipment[i].active = false;
+                        equipment[i] = null;
+                    }
                 }
+                init = true;
             }
 
             //  DEBUG active skill swapping
@@ -521,8 +524,11 @@ namespace cotf
         }
         public void UnequipTorch(Item item)
         {
-            item.lamp.active = false;
-            lamp = null;
+            if (item.lamp != null)
+            { 
+                item.lamp.active = false;
+                lamp = null;
+            }
         }
         public void ApplyCurse(Item item)
         {
@@ -616,13 +622,15 @@ namespace cotf
             item.owner = whoAmI;
             if (clone.lamp != null)
             {
-                //clone.lamp.active = false;
+                clone.lamp.active = false;
                 clone.lamp.owner = item.owner;
                 clone.lamp.itemLink = clone;
             }
             clone.width = item.width;
             clone.height = item.height;
             clone.owner = Main.myPlayer.whoAmI;
+            item.lamp?.Dispose(true);
+            item.Dispose();
             inventory.Add(clone);
         }
         public bool PickupItem(ref Item item)

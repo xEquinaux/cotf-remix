@@ -12,49 +12,30 @@ using cotf.Base;
 using cotf.World;
 using Microsoft.Xna.Framework;
 using Color = System.Drawing.Color;
+using System.Diagnostics.Eventing.Reader;
 
 namespace cotf
 {
-    public class Kobold : Npc
+    public class Hawk : Npc
     {
         int frameTicks;
         public override void SetDefaults()
         {
-            name = "Kobold";
-            width = 24;
-            height = 42;
-            speed = 10f;
-            lifeMax = 50;
-            iFramesMax = 60;
-            damage = 2;
+            TextureName = "Sky_3";
+            name = "Hawk";
+            width = 64;
+            height = 58;
+            speed = 12f;
+            lifeMax = 65;
+            iFramesMax = 40;
+            damage = 4;
             hostile = true;
-            knockBack = 1.2f;
-            defaultColor = Color.White;//Color.BurlyWood;
-            frameCount = 4;
-            frameHeight = 48;
+            knockBack = 1.5f;
+            defaultColor = Color.White;
+            frameCount = 10;
+            frameHeight = 58;
             frame = Main.rand.Next(4);
-            if (Main.rand.NextBool())
-            { 
-                texture = Assets.Asset<Bitmap>.Request("Sky_1");
-            }
-            else
-            {
-                int rand = Main.rand.Next(3) + 1;
-                string result = "_1";
-                switch (rand)
-                { 
-                    default:
-                    case 1:
-                        break;
-                    case 2:
-                        result = "_2";
-                        break;
-                    case 3:
-                        result = "_3";
-                        break;
-                }
-                texture = Assets.Asset<Bitmap>.Request("Sky_1" + result);
-            }
+            texture = Assets.Asset<Bitmap>.Request("Sky_3");
         }
         public override void AI()
         {
@@ -88,7 +69,7 @@ namespace cotf
             {
                 ticks = 0;
             }
-			base.Draw(graphics, ref ticks, 5, 0);
+			base.Draw(graphics, ref ticks, 4, 2);
 		}
 	}
 }

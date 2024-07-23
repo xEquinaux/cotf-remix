@@ -15,6 +15,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using ArchaeaMod;
 using ArchaeaMod.Structure;
 using TileID = ArchaeaMod.TileID;
+using Microsoft.Xna.Framework.Content;
 
 namespace cotf.WorldGen
 {
@@ -330,6 +331,21 @@ namespace cotf.WorldGen
 					item.active(false);
 				}
 			}
+
+			//	Add map boundaries
+			for (int i = 0; i < brush.GetLength(0); i++)
+			{
+				for (int j = 0; j < brush.GetLength(1); j++)
+				{
+					if (i == 0 || i == brush.GetLength(0) - 1 || j == 0 || j == brush.GetLength(1) - 1)
+					{
+						brush[i, j].active(true);
+					}
+				}
+			}
+
+			//	Add objects to the map
+			Worldgen.CreateMapObjects(ref brush, width, height, cotf.World.Tile.Size, 100f);
 		}
 		private static void CarveHall(ref Tile[,] tile, ref Background[,] wall, int x, int y, int size = 10)
 		{

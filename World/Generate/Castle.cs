@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using cotf.Base;
@@ -11,6 +12,7 @@ using cotf.ID;
 using cotf.World;
 using cotf.World.Traps;
 using Microsoft.Xna.Framework;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace cotf.World
@@ -484,8 +486,142 @@ namespace cotf.World
                 break;
             }
 
-            #region TODO placing world objects
-            int num = 0;
+            CreateMapObjects(ref brush, nodes, width, height, size, range);
+            return brush;
+        }
+
+        /// <summary>
+        /// Main decoration and map-object creation method without using nodes and omits background initialization.
+        /// </summary>
+        public static void CreateMapObjects(ref Tile[,] brush, int width, int height, int size, float range)
+        {
+             #region TODO placing world objects
+            int randX = 0, randY = 0;
+            int index = 0;
+            int numTraps = 0;
+            int numDown = 0, numUp = 0;
+            int numChests = 0;
+            int numItems = 0;
+            int numNPCs = 0;
+            int numTorches = 0;
+            //SquareBrush.InitializeArray(brush.Length);
+            while (numTorches < maxTorches || numItems < maxItems)
+            {
+                foreach (var b in brush)
+                {
+                    //  Adding tile objects
+                    if (!b.Active)
+                    {
+						Vector2 randv2 = Vector2.Zero;
+						do
+                        {
+                            randX = Main.rand.Next(size, width - size);
+							randY = Main.rand.Next(size, height - size);
+                            randv2 = new Vector2(randX, randY);
+                        } while (brush[randX / size, randY / size].Active);
+                        int rand = Main.rand.Next(8);
+                        randv2.X -= randv2.X % size;
+                        randv2.Y -= randv2.Y % size;
+                        switch (rand)
+                        {
+                            case TileID.Empty:
+                                break;
+                            case TileID.Item:
+                                if (numItems++ < 12)
+                                { 
+                                    Item.NewItem(randv2.X, randv2.Y, 32, 32, (short)(Main.rand.Next(9) + 1));
+                                }
+                                break;
+                            case TileID.Torch:
+                                //  Unoptimized: causes large slowdown
+                                if (numTorches++ < maxTorches)
+                                {
+                                    int offsetX = Main.rand.Next(Tile.Size);
+                                    int offsetY = Main.rand.Next(Tile.Size);
+                                    index = Lamp.NewLamp(new Vector2(randv2.X + offsetX, randv2.Y + offsetY), 200f, Lamp.RandomLight(), b, true);
+									Main.lamp[index].active = true;
+                                    Main.lamp[index].owner = 255;
+                                    //b.lamp = Main.lamp[index];
+                                }
+                                break;
+                            case TileID.Monster:
+                                if (numNPCs++ < 12)
+                                    Npc.NewNPC((int)randv2.X + randv2.X % Tile.Size + Tile.Size / 10, (int)randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10, NpcType.Kobold + Main.rand.Next(2));
+                                break;
+                            case TileID.Trap:
+                                if (numTraps++ < 10)
+                                    Trap.NewTrap((int)randv2.X, (int)randv2.Y, size, size, (short)(Main.rand.Next(TrapID.Sets.Total - 1) + 1));
+                                break;
+                            case TileID.Chest:
+                                if (numChests++ < 3)
+                                    cotf.Collections.Unused.Stash.NewStash((int)(randv2.X + randv2.X % Tile.Size + Tile.Size / 10), (int)(randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10), 0, Item.FillStash((int)randv2.X, (int)randv2.Y, Main.rand.Next(3, 12)));
+                                break;
+                            case TileID.StairsDown:
+                                break;
+                            case TileID.StairsUp:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            #endregion
+            //  Pre lighting random rooms
+            for (int k = 0; k < Main.room.Count; k++)
+            {
+                Room room = Main.room[k];
+                if (Main.rand.NextFloat() > 0.33f)
+                    continue;
+                for (int i = room.bounds.Left; i < room.bounds.Right + Tile.Size; i += Tile.Size)
+                {
+                    for (int j = room.bounds.Top; j < room.bounds.Bottom + Tile.Size; j += Tile.Size)
+                    {
+                        Background bg = Background.GetSafely(i / Tile.Size, j / Tile.Size);
+                        if (bg == null || !bg.active)
+                            continue;
+                        bg.lit = true;
+                    }
+                }
+            }
+            while (numDown < 1)
+            {
+                Vector2 randv2 = Vector2.Zero;
+                do
+				{
+                    randX = Main.rand.Next(size, width - size);
+                    randY = Main.rand.Next(size, height - size);
+					randv2 = new Vector2(randX, randY);
+                } while (brush[randX / size, randY / size].Active);
+                randv2.X -= randv2.X % size;
+                randv2.Y -= randv2.Y % size;
+                if (!PlaceDownStairs(ref numDown, randv2, range))
+                    continue;
+            }
+            while (numUp < 1)
+            {
+                Vector2 randv2 = Vector2.Zero;
+                do
+                {
+                    randX = Main.rand.Next(size, width - size);
+                    randY = Main.rand.Next(size, height - size);
+                    randv2 = new Vector2(randX, randY);
+                } while (brush[randX / size, randY / size].Active);
+                randv2.X -= randv2.X % size;
+                randv2.Y -= randv2.Y % size;
+                if (!PlaceUpStairs(ref numUp, randv2, range))
+                    continue;
+            }
+        }
+        
+        /// <summary>
+        /// Main decoration and map-object creation method using nodes and has background initialization where there are no tile objects in the array.
+        /// </summary>
+        public static void CreateMapObjects(ref Tile[,] brush, Vector2[] nodes, int width, int height, int size, float range)
+        {
+             #region TODO placing world objects
+            int randX = 0, randY = 0;
+            int index = 0;
             int numTraps = 0;
             int numDown = 0, numUp = 0;
             int numChests = 0;
@@ -506,11 +642,11 @@ namespace cotf.World
                     {
                         if (!b.Active && Main.Distance(nodes[k], b.Center) < range * mult)
                         {
-                            Vector2 randv2 = Vector2.Zero;
-                            do
+							Vector2 randv2 = Vector2.Zero;
+							do
                             {
                                 randX = Main.rand.Next(size, width - size);
-                                randY = Main.rand.Next(size, height - size);
+								randY = Main.rand.Next(size, height - size);
                                 randv2 = new Vector2(randX, randY);
                             } while (brush[randX / size, randY / size].Active);
                             int rand = Main.rand.Next(8);
@@ -533,14 +669,14 @@ namespace cotf.World
                                         int offsetX = Main.rand.Next(Tile.Size);
                                         int offsetY = Main.rand.Next(Tile.Size);
                                         index = Lamp.NewLamp(new Vector2(randv2.X + offsetX, randv2.Y + offsetY), 200f, Lamp.RandomLight(), b, true);
-                                        Main.lamp[index].active = true;
+										Main.lamp[index].active = true;
                                         Main.lamp[index].owner = 255;
                                         //b.lamp = Main.lamp[index];
                                     }
                                     break;
                                 case TileID.Monster:
                                     if (numNPCs++ < 12)
-                                        Npc.NewNPC((int)randv2.X + randv2.X % Tile.Size + Tile.Size / 10, (int)randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10, NpcType.Kobold);
+                                        Npc.NewNPC((int)randv2.X + randv2.X % Tile.Size + Tile.Size / 10, (int)randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10, NpcType.Kobold + Main.rand.Next(2));
                                     break;
                                 case TileID.Trap:
                                     if (numTraps++ < 10)
@@ -583,10 +719,10 @@ namespace cotf.World
             {
                 Vector2 randv2 = Vector2.Zero;
                 do
-                {
+				{
                     randX = Main.rand.Next(size, width - size);
                     randY = Main.rand.Next(size, height - size);
-                    randv2 = new Vector2(randX, randY);
+					randv2 = new Vector2(randX, randY);
                 } while (brush[randX / size, randY / size].Active);
                 randv2.X -= randv2.X % size;
                 randv2.Y -= randv2.Y % size;
@@ -607,9 +743,8 @@ namespace cotf.World
                 if (!PlaceUpStairs(ref numUp, randv2, range))
                     continue;
             }
-            return brush;
         }
-        private bool PlaceDownStairs(ref int numDown, Vector2 randv2, float range)
+        private static bool PlaceDownStairs(ref int numDown, Vector2 randv2, float range)
         {
             if (numDown < 1)
             { 
@@ -635,7 +770,7 @@ namespace cotf.World
             }
             return false;
         }
-        private bool PlaceUpStairs(ref int numUp, Vector2 randv2, float range)
+        private static bool PlaceUpStairs(ref int numUp, Vector2 randv2, float range)
         {
             if (numUp < 1)
             {

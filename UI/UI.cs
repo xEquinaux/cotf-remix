@@ -463,13 +463,7 @@ namespace cotf
                 case Type.Restart:
                     //var textBox = new UI.Textbox("", Vector2.Zero, new Rectangle(Main.ScreenWidth / 10 - 5, Main.ScreenHeight / 2 - 80, 0, 0), Main.ScreenWidth / 2, ButtonStyle.YesNoCancel, true, Main.myPlayer.whoAmI);
                     //textBox.text = "Reset from floor one?";
-                    
-                    Entity ent2 = Entity.None;
-                    ent2.SetSuffix(Main.setMapName("_map", 1));
-                    using (TagCompound tag = new TagCompound(ent2, SaveType.Map))
-                    {
-                        tag.WorldMap(TagCompound.Manager.Load);
-                    }
+                    Main.LoadFloor(Main.myPlayer.dungeonId, 1);
                     break;
                 case Type.Options:
                     showKeybindings = !showKeybindings;

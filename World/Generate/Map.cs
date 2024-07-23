@@ -84,8 +84,9 @@ namespace cotf.World
                     Room.ConstructAllRooms();
                     break;
                 case DungeonID.Factory:
-        			Worldgen.InitFillMap(cotf.World.Tile.Size, width, height);
-                    Factory.CastleGen(Main.tile, Main.background, width, height);
+                    return;
+        			Worldgen.InitFillMap(cotf.World.Tile.Size, width * 3, height);
+                    Factory.CastleGen(Main.tile, Main.background, width * 3, height);
                     break;
             }
             MapLoad.Set();

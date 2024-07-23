@@ -64,7 +64,7 @@ namespace cotf.Base
 			private set;
 		}
 		public const int LootRange = 50;
-		public short type;
+		public int type;
 		public float scale;
 		public float alpha = 0f;
 		public float knockBack = 1f;

@@ -173,6 +173,7 @@ namespace cotf
         }
         public bool EquipItem(Player myPlayer)
         {
+            if (equipType > 50) return false;
             if (myPlayer.equipment[equipType] == null || !myPlayer.equipment[equipType].active || !myPlayer.equipment[equipType].equipped)
             {
                 OnEquip(myPlayer);
@@ -451,7 +452,7 @@ namespace cotf
         {
             return type == ItemID.Torch;
         }
-        public static int NewItem(float x, float y, int width, int height, short type, byte owner = 255, uint value = 0, int stack = 1)
+        public static int NewItem(float x, float y, int width, int height, int type, byte owner = 255, uint value = 0, int stack = 1)
         {
             int num = Main.item.Length - 1;
             for (int i = 0; i < Main.item.Length; i++)

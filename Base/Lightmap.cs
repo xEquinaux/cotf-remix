@@ -64,7 +64,7 @@ namespace cotf.Base
         public void LampEffect(Lamp lamp)
         {
             float num = 0;
-            if (!onScreen || !active)
+            if (!onScreen || !active || lamp == null || !lamp.active)
                 return;
             // Ignore world lamps due to prerendered lighting
             if (lamp.owner == 255 && parent != null && parent.GetType() == typeof(Background))
