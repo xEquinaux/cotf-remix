@@ -11,7 +11,11 @@ namespace cotf.Base
 	public class Entity : Object, IDisposable
 	{
 		public string TextureName;
-		public string Name { get; private set; }
+		public string Name 
+		{ 
+			get;
+			private set; 
+		}
 		public string name = "";
 		public string text = "";
 		public virtual string Text()

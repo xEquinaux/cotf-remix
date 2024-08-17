@@ -42,8 +42,9 @@ namespace cotf.World
 
         public static void UpdateLampMaps()
         {
-            foreach (Lamp lamp in Main.lamp)
+            for (int n = 0; n < Main.lamp.Length; n++)
             {
+                Lamp lamp = Main.lamp[n];
                 if (lamp == null || !lamp.active) continue;
                 int radius = (int)lamp.range / 2;
                 for (int i = (int)lamp.Center.X - radius; i <= lamp.Center.X + radius; i += Tile.Size)

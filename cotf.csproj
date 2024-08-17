@@ -31,7 +31,8 @@
     <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
     <PackageReference Include="SharpDX.MediaFoundation" Version="4.2.0" />
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.5" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
+    <ProjectReference Include="..\FoundationR\FoundationR.csproj" />
 	  <Referece Include="System.Drawing.Common">
 		  <HintPath>C:\Program Files (x86)\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.6\System.Drawing.Common.dll</HintPath>
 	  </Referece>
@@ -45,9 +46,6 @@
     </Reference>
     <Reference Include="Native">
       <HintPath>..\..\..\Downloads\Native.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing.Common">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\tModLoader\Libraries\system.drawing.common\6.0.0\lib\net6.0\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="tUserInterface">
       <HintPath>..\..\..\Downloads\tUserInterface.dll</HintPath>

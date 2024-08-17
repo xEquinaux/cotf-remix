@@ -27,7 +27,9 @@ namespace cotf.NPC
 			public static Npc Mutate(Npc n)
 			{
 				var array = mutation.GetNumber(Main.rand.Next(10));
-				decimal grade = (decimal)Math.Max(0.1f, Main.FloorNum / (array[Main.rand.Next(8)] / 100f));
+				decimal grade = Math.Max(0.1M, Main.FloorNum / (array[Main.rand.Next(8)] / 100M));
+				if (grade == 0)
+					grade = 0.1M;
 				n.lifeMax = (int)(n.lifeMax * grade);
 				n.life = n.lifeMax;
 				n.knockBack = (float)((decimal)n.knockBack * grade);

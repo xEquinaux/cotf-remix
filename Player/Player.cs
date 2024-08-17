@@ -450,8 +450,9 @@ namespace cotf
             #endregion
 
             //  DEBUG: possible getting-stuck fix
-            if (Tile.GetSafely((int)Center.X / Tile.Size, (int)Center.Y / Tile.Size).Active)
-            { 
+            Tile _tile = Tile.GetSafely((int)Center.X / Tile.Size, (int)Center.Y / Tile.Size);
+            if (_tile != null && _tile.Active)
+            {
                 FindRandomTile();
             }
             //while (Tile.GetSafely((float)X - 1, (float)Y - 1).Active)
@@ -549,6 +550,7 @@ namespace cotf
         }
         public void Respawn(int floornum)
         {
+            life = lifeMax;
             Main.LoadFloor(DungeonID.Castle, floornum, true);
         }
         public void Heal(int amount)

@@ -807,7 +807,7 @@ namespace cotf
             {
                 for (int j = 0; j < tile.GetLength(1); j++)
                 {
-                    tile[i, j].Draw(graphics);
+                    tile[i, j]?.Draw(graphics);
                 }
             }
             //for (int i = 0; i < lightmap.GetLength(0); i++)
@@ -889,7 +889,7 @@ namespace cotf
         {
             if (init && !flag)
             {
-                LightPass.PreProcessing();
+                LightPass.PreProcessing(Main.tile, Main.background, Main.lamp);
                 //  DEBUG: textbox
                 //textbox[0].Init(graphics);
                 flag = true;

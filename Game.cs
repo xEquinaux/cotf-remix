@@ -55,6 +55,8 @@ namespace cotf
 		public static string PlayerSavePath => Path.Combine(SavePath, "Players");
 		public static string WorldSavePath => Path.Combine(SavePath, "World");
 
+		public static Lamp playerLamp;
+
 		public Game()
 		{
 			_graphicsMngr = new GraphicsDeviceManager(this);
@@ -124,6 +126,9 @@ namespace cotf
 
 		protected override void Update(GameTime gameTime)
 		{
+			//	TODO: player realtime light
+			//playerLamp = Main.lamp[0] = new Lamp(150) { position = Main.myPlayer.Center, lampColor = Lamp.TorchLight, staticLamp = true, active = true, name = "PlrLamp" };
+			
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 			{
 				if (Main.KeyPressTimer == 0)
@@ -155,11 +160,6 @@ namespace cotf
 			Update();
 		}
 
-		int seconds = 0;
-		long average = 0;
-		List<long> elapsed = new List<long>(10);
-		Stopwatch watch = new Stopwatch();
-		Timer timer = new Timer();
 		protected override void Draw(GameTime gameTime)
 		{
 			if (GraphicsDevice == null) return;
@@ -285,7 +285,16 @@ namespace cotf
 		private void Draw(Graphics graphics, SpriteBatch sb)
 		{
 			if (!Main.mainMenu && Main.Instance.PreDraw(graphics))
-			{
+			{	
+				// Realtime player light
+				//LightPass.PreProcessing(
+				//	Main.tile,
+				//	Main.background, 
+				//	new List<Lamp>() 
+				//	{
+				//		Main.lamp[0]
+				//	}
+				//);
 				Main.Instance.Draw(graphics, sb);
 			}
 		}
