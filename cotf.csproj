@@ -33,6 +33,7 @@
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
     <ProjectReference Include="..\FoundationR\FoundationR.csproj" />
+    <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.WindowsDX.csproj" />
 	  <Referece Include="System.Drawing.Common">
 		  <HintPath>C:\Program Files (x86)\dotnet\shared\Microsoft.WindowsDesktop.App\6.0.6\System.Drawing.Common.dll</HintPath>
 	  </Referece>
@@ -41,8 +42,8 @@
     <Reference Include="CirclePrefect">
       <HintPath>lib\CirclePrefect.dll</HintPath>
     </Reference>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\MonoGame\Artifacts\MonoGame.Framework\WindowsDX\Debug\MonoGame.Framework.dll</HintPath>
+    <Reference Include="dotnet">
+      <HintPath>lib\dotnet.dll</HintPath>
     </Reference>
     <Reference Include="Native">
       <HintPath>..\..\..\Downloads\Native.dll</HintPath>

@@ -544,8 +544,9 @@ namespace cotf
             if (life <= 0)
             {
                 //  TODO Does the player respawn in the Overworld
-                Respawn(1);
+                //Respawn(1);
                 deathCounter++;
+                life = lifeMax;
             }
         }
         public void Respawn(int floornum)

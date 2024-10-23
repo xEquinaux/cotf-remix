@@ -14,6 +14,7 @@ using Color = System.Drawing.Color;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Background = cotf.World.Background;
 using Rectangle = System.Drawing.Rectangle;
+using CirclePrefect.Dotnet;
 
 namespace cotf.Base
 {
@@ -305,6 +306,9 @@ namespace cotf.Base
             file.Position = 0;
             if (manager == Manager.Save)
             {
+                DataStore data = new DataStore(Path.GetFileNameWithoutExtension(file.Name));
+                data.NewBlock(new string[] { Main.tile.Length.ToString() }, new object[] { Main.tile.Length }, "tileLen");
+
                 int tileLen = 0;
                 bw.Write(Main.tile.Length);
                 for (int k = 0; k < Main.tile.GetLength(0); k++)

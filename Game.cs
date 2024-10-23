@@ -114,8 +114,6 @@ namespace cotf
 
 		protected override void LoadContent()
 		{
-			Game.fog = Content.Load<Texture2D>("fow");
-			this.tile = Content.Load<Texture2D>("temp");
 			LoadResources();
 			{
 				_viewport = new Viewport(_portX, _portY, 800, 600);

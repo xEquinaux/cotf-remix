@@ -86,6 +86,7 @@ namespace cotf
 		}
 		public static void PreProcessing(Tile[,] occlude, Background[,] _floor, Lamp[] lamp)
 		{
+			return;
 			for (int n = 0; n < lamp.Length; n++)
 			{
 				Lamp _lamp = lamp[n];
