@@ -15,6 +15,7 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 using Background = cotf.World.Background;
 using Rectangle = System.Drawing.Rectangle;
 using CirclePrefect.Dotnet;
+using static cotf.NPC.Factory;
 
 namespace cotf.Base
 {
@@ -307,10 +308,8 @@ namespace cotf.Base
             if (manager == Manager.Save)
             {
                 DataStore data = new DataStore(Path.GetFileNameWithoutExtension(file.Name));
-                data.NewBlock(new string[] { Main.tile.Length.ToString() }, new object[] { Main.tile.Length }, "tileLen");
-
+                data.NewBlock(new string[] { "tile_len" }, new object[] { Main.tile.Length }, "tileLen");
                 int tileLen = 0;
-                bw.Write(Main.tile.Length);
                 for (int k = 0; k < Main.tile.GetLength(0); k++)
                 { 
                     for (int l = 0; l < Main.tile.GetLength(1); l++)
@@ -319,144 +318,322 @@ namespace cotf.Base
                         if (item1 != null)
                         {
                             string name = $"tile{tileLen++}";
-                            bw.Write(item1.whoAmI);
-                            bw.Write(item1.position);
-                            bw.Write(item1.Active);
-                            bw.Write(item1.discovered);
-                            bw.Write(item1.solid);
-                            bw.Write(item1.width);
-                            bw.Write(item1.height);
-                            bw.Write(item1.color);
+                            data.NewBlock(new string[] 
+                            {
+                                "whoAmI",
+                                "positionX",
+                                "positionY",
+                                "active",
+                                "discovered",
+                                "solid",
+                                "width",
+                                "height",
+                                "colorR",
+                                "colorB",
+                                "colorG"
+                            },
+                            new object[]
+                            {
+                                item1.whoAmI,
+                                item1.position.X,
+                                item1.position.Y,
+                                item1.Active,
+                                item1.discovered,
+                                item1.solid,
+                                item1.width,
+                                item1.height,
+                                item1.color.R,
+                                item1.color.B,
+                                item1.color.G
+                            }, name);
                         }
                     }
                 }
+                data.NewBlock(new string[] { "background_len" }, new object[] { Main.background.Length }, "backgroundLen");
                 int bgLen = 0;
-                bw.Write(Main.background.Length);
                 foreach (Background item2 in Main.background)
                 {
                     if (item2 != null)
                     {
                         string name = $"background{bgLen++}";
-                        bw.Write(item2.whoAmI);
-                        bw.Write(item2.position);
-                        bw.Write(item2.active);
-                        bw.Write(item2.discovered);
-                        bw.Write(item2.width);
-                        bw.Write(item2.height);
+                        data.NewBlock(new string[] 
+                        {
+                            "whoAmI",
+                            "positionX",
+                            "positionY",
+                            "active",
+                            "discovered",
+                            "width",
+                            "height"
+                        },
+                        new object[]
+                        {
+                            item2.whoAmI,
+                            item2.position.X,
+                            item2.position.Y,
+                            item2.active,
+                            item2.discovered,
+                            item2.width,
+                            item2.height
+                        }, name);
                     }
                 }
+                data.NewBlock(new string[] { "room_len" }, new object[] { Main.room.Values.Count(t => t != null) }, "roomLen");
                 int roomLen = 0;
-                bw.Write(Main.room.Values.Count(t => t != null));
                 for (int i = 0; i < Main.room.Count; i++)
                 {
                     Room item3 = Main.room[i];
                     if (item3 != null)
                     {
                         string name = $"room{roomLen++}";
-                        //bw.Write(i);
-                        bw.Write(item3.bounds.X);
-                        bw.Write(item3.bounds.Y);
-                        bw.Write(item3.bounds.Width);
-                        bw.Write(item3.bounds.Height);
-                        bw.Write(item3.type);
+                        data.NewBlock(new string[] 
+                        {
+                            "positionX",
+                            "positionY",
+                            "width",
+                            "height",
+                            "type"
+                        },
+                        new object[]
+                        {
+                            item3.bounds.X,
+                            item3.bounds.Y,
+                            item3.bounds.Width,
+                            item3.bounds.Height,
+                            item3.type
+                        }, name);
                     }
                 }
+                data.NewBlock(new string[] { "stair_len" }, new object[] { Main.staircase.Count(t => t != null && t.active) }, "stairLen");
                 int stairLen = 0;
-                bw.Write(Main.staircase.Count(t => t != null && t.active));
                 foreach (Staircase s in Main.staircase)
                 {
                     if (s != null && s.active)
                     {
                         string name = $"stair{stairLen++}";
-                        bw.Write(s.whoAmI);
-                        bw.Write(s.position);
-                        bw.Write(s.discovered);
-                        bw.Write((byte)s.direction);
-                        bw.Write(Tile.Size);
+                        data.NewBlock(new string[] 
+                        {
+                            "whoAmI",
+                            "positionX",
+                            "positionY",
+                            "discovered",
+                            "direction",
+                            "size"
+                        },
+                        new object[]
+                        {
+                            s.whoAmI,
+                            s.position.X,
+                            s.position.Y,
+                            s.discovered,
+                            (byte)s.direction,
+                            Tile.Size
+                        }, name);
                     }
                 }
+                data.NewBlock(new string[] { "scenery_len" }, new object[] { Main.scenery.Count(t => t != null && t.active) }, "sceneryLen");
                 int sceneryLen = 0;
-                bw.Write(Main.scenery.Count(t => t != null && t.active));
                 foreach (Scenery scenery in Main.scenery)
                 {
                     if (scenery != null && scenery.active)
                     {
                         string name = $"scenery{sceneryLen++}";
-                        bw.Write(scenery.whoAmI);
-                        bw.Write(scenery.position);
-                        bw.Write(scenery.active);
-                        bw.Write(scenery.discovered);
-                        bw.Write(scenery.solid);
-                        bw.Write(scenery.width);
-                        bw.Write(scenery.height);
-                        bw.Write(scenery.type);
+                        data.NewBlock(new string[] 
+                        {
+                            "whoAmI",
+                            "positionX",
+                            "positionY",
+                            "active",
+                            "discovered",
+                            "solid",
+                            "width",
+                            "height",
+                            "type"
+                        },
+                        new object[]
+                        {
+                            scenery.whoAmI,
+                            scenery.position.X,
+                            scenery.position.Y,
+                            scenery.active,
+                            scenery.discovered,
+                            scenery.solid,
+                            scenery.width,
+                            scenery.height,
+                            scenery.type
+                        }, name);
                     }
                 }
+                data.NewBlock(new string[] { "lamp_len" }, new object[] { Main.lamp.Count(t => t != null && t.active) }, "lampLen");
                 int lampLen = 0;
-                bw.Write(Main.lamp.Count(t => t != null && t.active));
                 foreach (Lamp lamp in Main.lamp)
                 {
                     if (lamp != null && lamp.active)
                     {
                         string name = $"lamp{lampLen++}";
-                        bw.Write(lamp.whoAmI);
-                        bw.Write(lamp.position);
-                        bw.Write(lamp.active);
-                        bw.Write(lamp.staticLamp);
-                        bw.Write(lamp.width);
-                        bw.Write(lamp.height);
-                        bw.Write(lamp.owner);
-                        bw.Write(lamp.lampColor);
-                        bw.Write(lamp.range);
+                        data.NewBlock(new string[] 
+                        {
+                            "whoAmI",
+                            "positionX",
+                            "positionY",
+                            "active",
+                            "staticlamp",
+                            "width",
+                            "height",
+                            "colorR",
+                            "colorG",
+                            "colorB",
+                            "range"
+                        },
+                        new object[]
+                        {
+                            lamp.whoAmI,
+                            lamp.position.X,
+                            lamp.position.Y,
+                            lamp.active,
+                            lamp.staticLamp,
+                            lamp.width,
+                            lamp.height,
+                            lamp.owner,
+                            lamp.lampColor.R,
+                            lamp.lampColor.G,
+                            lamp.lampColor.B,
+                            lamp.range
+                        }, name);
                     }
                 }
+                data.NewBlock(new string[] { "npc_len" }, new object[] { Main.npc.Count(t => t != null && t.active) }, "npcLen");
                 int npcLen = 0;
-                bw.Write(Main.npc.Count(t => t != null && t.active));
                 foreach (Npc npc in Main.npc)
                 {
                     if (npc != null && npc.active)
                     {
                         string name = $"npc{npcLen++}";
-                        bw.Write(npc.whoAmI);
-                        bw.Write(npc.position);
-                        bw.Write(npc.active);
-                        bw.Write(npc.width);
-                        bw.Write(npc.height);
-                        bw.Write(npc.life);
-                        bw.Write(npc.defaultColor);
-                        //  If mana value, save here
-                        bw.Write(npc.type);
-                        //  If cursed or enchanted, save -- or if items carried are such and so on
-                        //  Look into saving items carried
+                        data.NewBlock(new string[] 
+                        {
+                            "whoAmI",
+                            "positionX",
+                            "positionY",
+                            "active",
+                            "width",
+                            "height",
+                            "life",
+                            "colorR",
+                            "colorG",
+                            "colorB",
+                            "type"
+                        },
+                        new object[]
+                        {
+                            npc.whoAmI,
+                            npc.position.X,
+                            npc.position.Y,
+                            npc.active,
+                            npc.width,
+                            npc.height,
+                            npc.owner,
+                            npc.defaultColor.R,
+                            npc.defaultColor.G,
+                            npc.defaultColor.B,
+                            npc.type
+                        }, name);
                     }
+                    //  If mana value, save here
+                    //  If cursed or enchanted, save -- or if items carried are such and so on
+                    //  Look into saving items carried
                 }
+                data.NewBlock(new string[] { "item_len" }, new object[] { Main.item.Count(t => t != null && t.active) }, "itemLen");
                 int itemLen = 0;
-                bw.Write(Main.item.Count(t => t != null && t.active));
                 foreach (Item item in Main.item)
                 {
                     if (item != null && item.active)
                     {
-                        bw.Write(item);
+                        string name = $"item{itemLen++}";
+                        data.NewBlock(new string[] 
+                        {
+                            "whoAmI",
+                            "positionX",
+                            "positionY",
+                            "active",
+                            "width",
+                            "height",
+                            "type",
+                            "owner",
+                            "colorR",
+                            "colorG",
+                            "colorB",
+                            "enchanted",
+                            "cursed",
+                            "equipType",
+                            "equipped"
+                        },
+                        new object[]
+						{
+							item.whoAmI,
+                            item.position.X,
+							item.position.Y,
+                            item.active,
+                            item.width,
+                            item.height,
+                            item.type,
+                            item.owner,
+                            item.color.R,
+                            item.color.G,
+                            item.color.B,
+                            item.enchanted,
+                            item.cursed,
+                            item.equipType,
+                            item.equipped
+                        }, name);
+			            //  Write purse handling here
+			            //if (item.purse != null && item.purse.Content != null)
+			            //{
+				        //    bw.Write('p');
+				        //    bw.Write(item.purse);
+			            //}
+			            //else bw.Write('n');
                     }
                 }
+                data.NewBlock(new string[] { "trap_len" }, new object[] { Main.trap.Count(t => t != null && t.active) }, "trapLen");
                 int trapLen = 0;
-                bw.Write(Main.trap.Count(t => t != null && t.active));
                 foreach (Trap trap in Main.trap)
                 {
                     if (trap != null && trap.active)
                     {   
                         string name = $"trap{trapLen++}";
-                        bw.Write(trap.whoAmI);
-                        bw.Write(trap.position);
-                        bw.Write(trap.active);
-                        bw.Write(trap.width);
-                        bw.Write(trap.height);
-                        bw.Write(trap.life);
-                        bw.Write(trap.defaultColor);
-                        bw.Write(trap.type);
-                        bw.Write(trap.rotation);
+                        data.NewBlock(new string[] 
+                        {
+                            "whoAmI",
+                            "positionX",
+                            "positionY",
+                            "active",
+                            "width",
+                            "height",
+                            "life",
+                            "colorR",
+                            "colorG",
+                            "colorB",
+                            "type",
+                            "rotation"
+                        },
+                        new object[]
+						{
+							trap.whoAmI,
+                            trap.position.X,
+							trap.position.Y,
+                            trap.active,
+                            trap.width,
+                            trap.height,
+                            trap.life,
+                            trap.defaultColor.R,
+                            trap.defaultColor.G,
+                            trap.defaultColor.B,
+                            trap.type,
+                            trap.rotation
+                        }, name);
                     }
                 }
+                data.WriteToFile();
                 return;
                 int stashLen = 0;
                 bw.Write(Main.stash.Count(t => t != null && t.active));
@@ -502,144 +679,212 @@ namespace cotf.Base
             else if (manager == Manager.Load)
             {
                 Map.Unload();
-                int tileLen = br.ReadInt32();
-                int size = (int)Math.Sqrt(tileLen);
-                Main.tile = new Tile[size, size];
-                Main.WorldWidth = size;
-                Main.WorldHeight = size;
+                DataStore data = new DataStore(Path.GetFileNameWithoutExtension(file.Name));
+                var b0 = data.GetBlock("tileLen");
+                int tileLen = int.Parse(b0.GetValue("tile_len"));
+                
+                    int size = (int)Math.Sqrt(tileLen);
+                    Main.tile = new Tile[size, size];
+                    Main.WorldWidth = size;
+                    Main.WorldHeight = size;
+                
                 int num = 0;
                 for (int k = 0; k < size; k++)
                     for (int l = 0; l < size; l++)
-                    {                                                   
-                        string name = $"tile{num}";
+                    {
+                        string name = $"tile{num++}";
+                        var _b1 = data.GetBlock(name);
                         Main.tile[k, l] = new Tile(k, l);
-                        Main.tile[k, l].whoAmI = br.ReadInt32();
-                        var v2 = br.ReadVector2();
-                        Main.tile[k, l].X = (int)v2.X;
-                        Main.tile[k, l].Y = (int)v2.Y;
-                        Main.tile[k, l].active(br.ReadBoolean());
-                        Main.tile[k, l].discovered = br.ReadBoolean();
-                        Main.tile[k, l].solid = br.ReadBoolean();
-                        Main.tile[k, l].width = br.ReadInt32();
-                        Main.tile[k, l].height = br.ReadInt32();
-                        Main.tile[k, l].color = br.ReadColor();
-                        num++;
+                        Main.tile[k, l].whoAmI = int.Parse(_b1.GetValue("whoAmI"));
+                        Main.tile[k, l].X = int.Parse(_b1.GetValue("positionX"));
+                        Main.tile[k, l].Y = int.Parse(_b1.GetValue("positionY"));
+                        Main.tile[k, l].active(bool.Parse(_b1.GetValue("active")));
+                        Main.tile[k, l].discovered = bool.Parse(_b1.GetValue("discovered"));
+                        Main.tile[k, l].solid = bool.Parse(_b1.GetValue("solid"));
+                        Main.tile[k, l].width = int.Parse(_b1.GetValue("width"));
+                        Main.tile[k, l].height = int.Parse(_b1.GetValue("height"));
+                        Main.tile[k, l].color = Color.FromArgb
+                        (
+                            int.Parse(_b1.GetValue("colorR")),
+                            int.Parse(_b1.GetValue("colorG")),
+                            int.Parse(_b1.GetValue("colorB"))
+                        );
                     }
                 int num2 = 0;
-                int bgLen = br.ReadInt32();
                 Main.background = new Background[size, size];
                 for (int k = 0; k < size; k++)
                     for (int l = 0; l < size; l++)
                     {
                         string name = $"background{num2++}";
+                        var b1 = data.GetBlock(name);
                         Main.background[k, l] = new Background(k, l, Tile.Size);
-                        Main.background[k, l].whoAmI = br.ReadInt32();
-                        Main.background[k, l].position = br.ReadVector2();
-                        Main.background[k, l].active = br.ReadBoolean();
-                        Main.background[k, l].discovered = br.ReadBoolean();
-                        Main.background[k, l].width = br.ReadInt32();
-                        Main.background[k, l].height = br.ReadInt32();
+                        var b2 = data.GetBlock(name);
+                        Main.background[k, l].whoAmI = int.Parse(b1.GetValue("whoAmI"));
+                        Main.background[k, l].position.X = int.Parse(b1.GetValue("positionX"));
+                        Main.background[k, l].position.Y = int.Parse(b1.GetValue("positionY"));
+                        Main.background[k, l].active = bool.Parse(b1.GetValue("active"));
+                        Main.background[k, l].discovered = bool.Parse(b1.GetValue("discovered"));
+                        Main.background[k, l].width = int.Parse(b1.GetValue("width"));
+                        Main.background[k, l].height = int.Parse(b1.GetValue("height"));
                     }
-                int roomLen = br.ReadInt32();
+                var b3 = data.GetBlock("roomLen");
+                int roomLen = int.Parse(b3.GetValue("room_len"));
                 int num3 = 0;
                 for (int i = 0; i < roomLen; i++)
                 {
                     string name = $"room{i}";
-                    //int id = br.ReadInt32();
-                    int x = br.ReadInt32();
-                    int y = br.ReadInt32();
-                    int width = br.ReadInt32();
-                    int height = br.ReadInt32();
-                    short type = br.ReadInt16();
+                    var b1 = data.GetBlock(name);
+                    int x = int.Parse(b1.GetValue("positionX"));
+                    int y = int.Parse(b1.GetValue("positionY"));
+                    int width = int.Parse(b1.GetValue("width"));
+                    int height = int.Parse(b1.GetValue("height"));
+                    short type = short.Parse(b1.GetValue("type"));
                     Main.room.Add(num3++, new Room(type)    //  TODO: create way to init region (scenery) array on load from file
                     {
                         bounds = new Rectangle(x, y, width, height),
                     });
                 }
-                int stairLen = br.ReadInt32();
+                var b5 = data.GetBlock("stairLen");
+                int stairLen = int.Parse(b5.GetValue("stair_len"));
+                Main.staircase = new Staircase[stairLen];
                 for (int i = 0; i < stairLen; i++)
                 {
                     string name = $"stair{i}";
-                    int whoAmI = br.ReadInt32();
-                    Vector2 v2 = br.ReadVector2();
-                    bool d = br.ReadBoolean();
-                    StaircaseDirection dir = (StaircaseDirection)br.ReadByte();
-                    int index = Staircase.NewStaircase((int)v2.X, (int)v2.Y, dir);
-                    Main.staircase[index].discovered = d;
-                    br.ReadInt32();   //  unused
+                    var b1 = data.GetBlock(name);
+                    int whoAmI = int.Parse(b1.GetValue("whoAmI"));
+                    int x = int.Parse(b1.GetValue("positionX"));
+                    int y = int.Parse(b1.GetValue("positionY"));
+                    bool d = int.Parse(b1.GetValue("direction")) == 2 ? true : false;
+                    StaircaseDirection dir = d ? StaircaseDirection.LeadingDown : StaircaseDirection.LeadingUp;
+                    int index = Staircase.NewStaircase(x, y, dir);
+                    Main.staircase[index].discovered = bool.Parse(b1.GetValue("discovered"));
                 }
-                int sceneryLen = br.ReadInt32();
+                b5 = data.GetBlock("sceneryLen");
+                int sceneryLen = int.Parse(b5.GetValue("scenery_len"));
                 for (int i = 0; i < sceneryLen; i++)
                 {
                     string name = $"scenery{i}";
-                    int whoAmI = br.ReadInt32();
-                    Vector2 v2 = br.ReadVector2();
-                    bool a = br.ReadBoolean();
-                    bool d = br.ReadBoolean();
-                    bool s = br.ReadBoolean();
-                    int w = br.ReadInt32();
-                    int h = br.ReadInt32();
-                    short t = br.ReadInt16();
-                    int j = Scenery.NewScenery((int)v2.X, (int)v2.Y, w, h, t);
+                    var b1 = data.GetBlock(name);
+                    int whoAmI = int.Parse(b1.GetValue("whoAmI"));
+                    float x = float.Parse(b1.GetValue("positionX"));
+                    float y = float.Parse(b1.GetValue("positionY"));
+                    bool a = bool.Parse(b1.GetValue("active"));
+                    bool d = bool.Parse(b1.GetValue("discovered"));
+                    bool s = bool.Parse(b1.GetValue("solid"));
+                    int w = int.Parse(b1.GetValue("width"));
+                    int h = int.Parse(b1.GetValue("height"));
+                    short t = short.Parse(b1.GetValue("type"));
+                    int j = Scenery.NewScenery((int)x, (int)y, w, h, t);
                     Main.scenery[j].active = a;
                     Main.scenery[j].discovered = d;
                     Main.scenery[j].solid = s;
                 }
-                int lampLen = br.ReadInt32();
+                b5 = data.GetBlock("lampLen");
+                int lampLen = int.Parse(b5.GetValue("lamp_len"));
                 for (int i = 0; i < lampLen; i++)
                 {
                     string name = $"lamp{i}";
-                    int id = br.ReadInt32();
+                    var b1 = data.GetBlock(name);
+                    int id = int.Parse(b1.GetValue("whoAmI"));
                     Main.lamp[id] = new Lamp(0);
                     Main.lamp[id].whoAmI = id;
-                    Main.lamp[id].position = br.ReadVector2();
-                    Main.lamp[id].active = br.ReadBoolean();
-                    Main.lamp[id].staticLamp = br.ReadBoolean();
-                    Main.lamp[id].width = br.ReadInt32();
-                    Main.lamp[id].height = br.ReadInt32();
-                    Main.lamp[id].owner = br.ReadInt32();
-                    Main.lamp[id].color = br.ReadColor();
-                    Main.lamp[id].range = br.ReadSingle();
+                    Main.lamp[id].position.X = float.Parse(b1.GetValue("positionX"));
+                    Main.lamp[id].position.Y = float.Parse(b1.GetValue("positionY"));
+                    Main.lamp[id].active = bool.Parse(b1.GetValue("active"));
+                    Main.lamp[id].staticLamp = int.Parse(b1.GetValue("staticLamp")) == 0 ? false : true;
+                    Main.lamp[id].width = int.Parse(b1.GetValue("width"));
+                    Main.lamp[id].height = int.Parse(b1.GetValue("height"));
+                    Main.lamp[id].owner = int.Parse(b1.GetValue("owner"));
+                    byte r = byte.Parse(b1.GetValue("colorR"));
+                    byte g = byte.Parse(b1.GetValue("colorG"));
+                    byte b = byte.Parse(b1.GetValue("colorB"));
+                    Main.lamp[id].color = Color.FromArgb(r, g, b);
+                    Main.lamp[id].range = float.Parse(b1.GetValue("range"));
                 }
-                int npcLen = br.ReadInt32();
+                b5 = data.GetBlock("npcLen");
+                int npcLen = int.Parse(b5.GetValue("npc_len"));
                 for (int i = 0; i < npcLen; i++)
                 {
                     string name = $"npc{i}";
-                    int id = br.ReadInt32();
-                    Vector2 v2 = br.ReadVector2();
-                    bool a = br.ReadBoolean();
-                    int w = br.ReadInt32();
-                    int h = br.ReadInt32();
-                    int l = br.ReadInt32();
-                    Color c = br.ReadColor();
+                    var b1 = data.GetBlock(name);
+                    int id = int.Parse(b1.GetValue("whoAmI"));
+                    float x = float.Parse(b1.GetValue("positionX"));
+                    float y = float.Parse(b1.GetValue("positionY"));
+                    bool a = bool.Parse(b1.GetValue("active"));
+                    int w = int.Parse(b1.GetValue("width"));
+                    int h = int.Parse(b1.GetValue("height"));
+                    int l = int.Parse(b1.GetValue("life"));
+                    byte r, g, b;
+                    r = byte.Parse(b1.GetValue("colorR"));
+                    g = byte.Parse(b1.GetValue("colorG"));
+                    b = byte.Parse(b1.GetValue("colorB"));
+                    Color c = Color.FromArgb(r, g, b);
                     //  If mana value, save here
-                    short t = br.ReadInt16();
+                    short t = short.Parse(b1.GetValue("type"));
                     //  If cursed or enchanted, save -- or if items carried are such and so on
                     //  Look into saving items carried
-                    int j = Npc.NewNPC(v2.X, v2.Y, t);
+                    int j = Npc.NewNPC(x, y, t);
                     Main.npc[j].active = a;
                     Main.npc[j].life = l;
                     Main.npc[j].defaultColor = c;
                 }
-                int itemLen = br.ReadInt32();
+                b5 = data.GetBlock("itemLen");
+                int itemLen = int.Parse(b5.GetValue("item_len"));
                 for (int i = 0; i < itemLen; i++)
                 {
-                    Main.item[i] = br.ReadItem();
+                    string name = $"item{i}";
+                    var b1 = data.GetBlock(name);
+                    int whoAmI = int.Parse(b1.GetValue("whoAmI"));
+			        float x = float.Parse(b1.GetValue("positionX"));
+                    float y = float.Parse(b1.GetValue("positionY"));
+			        short type = short.Parse(b1.GetValue("type"));
+			        bool active = bool.Parse(b1.GetValue("active"));
+			        int width = int.Parse(b1.GetValue("width"));
+			        int height = int.Parse(b1.GetValue("height"));
+			        int owner = int.Parse(b1.GetValue("owner"));
+                    byte r = byte.Parse(b1.GetValue("colorR"));
+                    byte g = byte.Parse(b1.GetValue("colorG"));
+                    byte b = byte.Parse(b1.GetValue("colorB"));
+			        Color color = Color.FromArgb(r, g, b);
+			        bool enchanted = bool.Parse(b1.GetValue("enchanted"));
+			        bool cursed = bool.Parse(b1.GetValue("cursed"));
+			        int equipType = int.Parse(b1.GetValue("equipType"));
+			        bool equipped = bool.Parse(b1.GetValue("equipped"));
+                    int index = Item.NewItem(x, y, width, height, type, (byte)owner);
+                    Main.item[index].equipType = equipType;
+                    Main.item[index].equipped = equipped;
+                    Main.item[index].EquipItem(Main.myPlayer);
+                    Main.item[index].Enchanted(enchanted);
+                    Main.item[index].Cursed(cursed);
+                    Main.item[index].color = color;
+                    if (owner != 255 && !equipped)
+                    {
+                        Main.myPlayer.PickupItem(ref Main.item[index]);
+                    }
                 }
-                int trapLen = br.ReadInt32();
+                b5 = data.GetBlock("trapLen");
+                int trapLen = int.Parse(b5.GetValue("trapLen"));
                 for (int i = 0; i < trapLen; i++)
                 {
                     string name = $"trap{i}";
-                    int id = br.ReadInt32();
-                    Vector2 v2 = br.ReadVector2();
-                    bool a = br.ReadBoolean();
-                    int w = br.ReadInt32();
-                    int h = br.ReadInt32();
-                    int l = br.ReadInt32();
-                    Color c = br.ReadColor();
-                    short t = br.ReadInt16();
-                    float r = br.ReadSingle();
-                    Trap.NewTrap(v2.X, v2.Y, w, h, t, active: a);
+                    var b1 = data.GetBlock(name);
+                    int id = int.Parse(b1.GetValue("whoAmI"));
+                    float x = float.Parse(b1.GetValue("positionX"));
+                    float y = float.Parse(b1.GetValue("positionY"));
+                    bool a = bool.Parse(b1.GetValue("active"));
+                    int w = int.Parse(b1.GetValue("width"));
+                    int h = int.Parse(b1.GetValue("height"));
+                    int l = int.Parse(b1.GetValue("life"));
+                    byte r = byte.Parse(b1.GetValue("colorR"));
+                    byte g = byte.Parse(b1.GetValue("colorG"));
+                    byte b = byte.Parse(b1.GetValue("colorB"));
+                    Color c = Color.FromArgb(r, g, b);
+                    short t = short.Parse(b1.GetValue("type"));
+                    float _r = float.Parse(b1.GetValue("rotation"));
+                    int index = Trap.NewTrap(x, y, w, h, t, active: a);
+                    Main.trap[index].color = c;
+                    Main.trap[index].rotation = _r;
+                    Main.trap[index].life = l;
                 }
                 return;
                 int stashLen = br.ReadInt32();

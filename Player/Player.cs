@@ -638,7 +638,7 @@ namespace cotf
         }
         public bool PickupItem(ref Item item)
         {
-            if (inventory.Count(t => t != null && t.active) >= 24)
+            if (item == null || inventory.Count(t => t != null && t.active) >= 24)
                 return false;
             if (item.GetStash != null && item.GetStash.content != null)
             {

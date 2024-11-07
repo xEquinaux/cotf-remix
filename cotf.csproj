@@ -32,6 +32,7 @@
     <PackageReference Include="SharpDX.MediaFoundation" Version="4.2.0" />
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.8" />
+    <ProjectReference Include="..\dotnet\dotnet.csproj" />
     <ProjectReference Include="..\FoundationR\FoundationR.csproj" />
     <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.WindowsDX.csproj" />
 	  <Referece Include="System.Drawing.Common">
@@ -41,9 +42,6 @@
   <ItemGroup>
     <Reference Include="CirclePrefect">
       <HintPath>lib\CirclePrefect.dll</HintPath>
-    </Reference>
-    <Reference Include="dotnet">
-      <HintPath>lib\dotnet.dll</HintPath>
     </Reference>
     <Reference Include="Native">
       <HintPath>..\..\..\Downloads\Native.dll</HintPath>
