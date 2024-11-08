@@ -672,7 +672,7 @@ namespace cotf
             }
             
             ProcessPickup(ref item);
-            item.TurnToAir();
+            item?.TurnToAir();
             return true;
         }
         public void OpenInventory(bool flag)
