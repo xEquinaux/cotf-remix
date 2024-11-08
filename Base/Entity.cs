@@ -30,6 +30,10 @@ namespace cotf.Base
 		{
 			return name = Name = Name.Substring(0, NameLen) + suffix;
 		}
+		public string SetName(string name)
+		{
+			return Name = name;
+		}
 		public bool active = false;
 		public bool
 			discovered = false,

@@ -21,6 +21,7 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 using Timer = System.Timers.Timer;
 using cotf.World;
+using CirclePrefect.Dotnet;
 
 namespace cotf
 {
@@ -57,6 +58,8 @@ namespace cotf
 
 		public static Lamp playerLamp;
 
+		private DataStore data;
+
 		public Game()
 		{
 			_graphicsMngr = new GraphicsDeviceManager(this);
@@ -69,6 +72,11 @@ namespace cotf
 		{
 			new Main();
 			TagCompound.SetPaths(PlayerSavePath, WorldSavePath);   //  TODO: make relative to player name
+			data = new DataStore("vars_init");
+			if (data.BlockExists("init", out Block block))
+			{
+				Main.FloorNum = int.Parse(block.GetValue("floor_num"));
+			}
 			_Initialize();
 			{
 				_bounds = new Size(800, 600);
@@ -140,6 +148,16 @@ namespace cotf
 						using (TagCompound tag = new TagCompound(ent, SaveType.Map))
 						{
 							tag.WorldMap(TagCompound.Manager.Save);
+							data = new DataStore("vars_init");
+							if (data.BlockExists("init", out Block block))
+							{ 
+								block.WriteValue("floor_num", Main.FloorNum);
+							}
+							else
+							{
+								data.NewBlock([ "floor_num" ], [ Main.FloorNum ], "init");
+							}
+							data.WriteToFile();
 						}
 						Exit();
 					}

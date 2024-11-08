@@ -463,7 +463,18 @@ namespace cotf
                 case Type.Restart:
                     //var textBox = new UI.Textbox("", Vector2.Zero, new Rectangle(Main.ScreenWidth / 10 - 5, Main.ScreenHeight / 2 - 80, 0, 0), Main.ScreenWidth / 2, ButtonStyle.YesNoCancel, true, Main.myPlayer.whoAmI);
                     //textBox.text = "Reset from floor one?";
-                    Main.LoadFloor(Main.myPlayer.dungeonId, 1);
+                    if (Main.FloorNum != 1)
+                    { 
+                        Main.LoadFloor(Main.myPlayer.dungeonId, 1, true);
+                    }
+                    else
+                    {
+                        Tile _tile = Tile.GetSafely((int)Main.myPlayer.Center.X / Tile.Size, (int)Main.myPlayer.Center.Y / Tile.Size);
+                        if (_tile != null && _tile.Active)
+                        {
+                            Main.myPlayer.FindRandomTile();
+                        }
+                    }
                     break;
                 case Type.Options:
                     showKeybindings = !showKeybindings;

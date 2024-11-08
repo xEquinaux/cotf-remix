@@ -48,6 +48,7 @@ namespace cotf
             controlRight,
             controlDown,
             controlLeft;
+        public bool hasLoaded = false;
         public int 
             statMana,
             statMaxMana = 10;
@@ -74,17 +75,19 @@ namespace cotf
         public Rectangle Proximity(Margin margin) => new Rectangle(box.X - margin.Left, box.Y - margin.Top, box.Width + margin.Right, box.Height + margin.Bottom);
         int travelTicks = 0;
         public int deathCounter = 0;
-        public DungeonID dungeonId = DungeonID.Factory;
+        public DungeonID dungeonId = DungeonID.Castle;
         bool init;
 
         public void Init()
         {
+            this.SetName("plr");
             //  TODO -- bypassing floor loading for the time being
             //Map.GenerateFloor(new Margin(3000));
             //goto EndMapInit;
-            if (!Main.DoesMapExist($"_{dungeonId}_map", Main.FloorNum))
+            if (!Main.DoesMapExist($"_map", Main.FloorNum))
             {
                 Map.GenerateFloor(DungeonID.Castle, new Margin(3000));
+                StaircaseTransition(StaircaseDirection.LeadingDown);
             }
             else
             {
@@ -99,12 +102,6 @@ namespace cotf
             defaultColor = Color.Gray;
             iFramesMax = 60;
             color = defaultColor;
-            //  Need to reorient draw init positions
-            if (!TagCompound.Exists(SaveType.Player, name))
-            { 
-                FindRandomTile();
-            }
-            else Load();
             if (hasTorch())
             {
                 UnequipTorch(Torch);
@@ -129,7 +126,10 @@ namespace cotf
         {
             using (TagCompound tag = new TagCompound(this, SaveType.Player))
             {
-                tag.SaveValue("_name", name);
+                //  Name value unstable for some reason (Loading for debugging now takes a default name)
+                name = "plr";
+                //tag.SaveValue("_name", "Player");
+                tag.SaveValue(name + "_saved", true);
                 tag.SaveValue(name + "_life", life);
                 tag.SaveValue(name + "_lifeMax", lifeMax);
                 tag.SaveValue(name + "_mana", statMana);
@@ -150,7 +150,9 @@ namespace cotf
         {
             using (TagCompound tag = new TagCompound(this, SaveType.Player))
             {
-                name         = tag.GetString("_name");
+                name         = "plr";
+                bool flag    = tag.GetBool(name + "_saved");
+                if (!flag) return;
                 life         = tag.GetInt32(name + "_life");
                 lifeMax      = tag.GetInt32(name + "_lifeMax");
                 statMana     = tag.GetInt32(name + "_mana");
@@ -272,21 +274,19 @@ namespace cotf
             //  Stats dynamics
             if (velocity == Vector2.Zero && KeyDown(Keys.R))
             {
-                if (KeyDown(Keys.Space))
-                {
-                    restTicks += 10;
-                }
+                restTicks += 10;
                 if (++restTicks > RestInterval) //++restTicks % RestInterval == 0)
                 {
                     if (life < lifeMax)
-                        life++;
+                        life += 3;
+                    else life = lifeMax;
                     restTicks = 0;    // = 1
                     manaRestTicks++;
                 }
                 if (manaRestTicks > RestInterval / 6) // manaRestTicks % (RestInterval / 6) == 0
                 {
                     if (statMana < statMaxMana)
-                        statMana++;
+                        statMana += 3;
                     manaRestTicks = 0; // = 1
                 }
             }
@@ -450,11 +450,11 @@ namespace cotf
             #endregion
 
             //  DEBUG: possible getting-stuck fix
-            Tile _tile = Tile.GetSafely((int)Center.X / Tile.Size, (int)Center.Y / Tile.Size);
-            if (_tile != null && _tile.Active)
-            {
-                FindRandomTile();
-            }
+            //Tile _tile = Tile.GetSafely((int)Center.X / Tile.Size, (int)Center.Y / Tile.Size);
+            //if (_tile != null && _tile.Active)
+            //{
+            //    FindRandomTile();
+            //}
             //while (Tile.GetSafely((float)X - 1, (float)Y - 1).Active)
             //{
             //    position.X++;
@@ -529,6 +529,24 @@ namespace cotf
             { 
                 item.lamp.active = false;
                 lamp = null;
+            }
+        }
+        public void StaircaseTransition(StaircaseDirection dir)
+        {
+            switch (dir)
+            {
+                case StaircaseDirection.None:
+                    break;
+                case StaircaseDirection.LeadingUp:
+                    var entrance = Main.staircase.FirstOrDefault(t => t != null && t.X != 0 && t.Y != 0 && t.active && t.direction == StaircaseDirection.LeadingDown);
+                    position = entrance.position;
+                    break;
+                case StaircaseDirection.LeadingDown:
+                    var entrance2 = Main.staircase.FirstOrDefault(t => t != null && t.X != 0 && t.Y != 0 && t.active && t.direction == StaircaseDirection.LeadingUp);
+                    position = entrance2.position;
+                    break;
+                default:
+                    break;
             }
         }
         public void ApplyCurse(Item item)

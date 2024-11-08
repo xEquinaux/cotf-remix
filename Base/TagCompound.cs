@@ -34,13 +34,18 @@ namespace cotf.Base
         }
         public TagCompound(Entity subject, SaveType type)
         {
+            string name = string.Empty;
             this.subject = subject;
             this.type = type;
-            Init(subject.name);
+            if (type == SaveType.Player)
+                name = "LocalPlayer";
+            else name = subject.Name.Replace(".dat", "");
+            Init(name);
         }
         private static string 
             psPath, 
             msPath;
+        private string fileName;
         private Entity subject;
         private SaveType type;
         private FileStream file;
@@ -81,6 +86,10 @@ namespace cotf.Base
                     break;
                 case SaveType.Player:
                     name = Path.Combine(psPath, name); //  Has path separator at end
+                    file = new FileStream(name, FileMode.OpenOrCreate);
+                    br = new BinaryReader(file);
+                    bw = new BinaryWriter(file);
+                    content = new StreamReader(file).ReadToEnd();
                     break;
                 case SaveType.Map:
                     name = Path.Combine(msPath, name);
@@ -90,10 +99,7 @@ namespace cotf.Base
                 case SaveType.World:
                     break;
             }
-            file = new FileStream(name, FileMode.OpenOrCreate);
-            br = new BinaryReader(file);
-            bw = new BinaryWriter(file);
-            content = new StreamReader(file).ReadToEnd();
+            fileName = name;
         }
         public void WorldInit(string name)
         {
@@ -304,10 +310,10 @@ namespace cotf.Base
         }
         public void WorldMap(Manager manager)
         {
-            file.Position = 0;
+            //file.Position = 0;
             if (manager == Manager.Save)
             {
-                DataStore data = new DataStore(Path.GetFileNameWithoutExtension(file.Name));
+                DataStore data = new DataStore(fileName);
                 data.NewBlock(new string[] { "tile_len" }, new object[] { Main.tile.Length }, "tileLen");
                 int tileLen = 0;
                 for (int k = 0; k < Main.tile.GetLength(0); k++)
@@ -679,7 +685,7 @@ namespace cotf.Base
             else if (manager == Manager.Load)
             {
                 Map.Unload();
-                DataStore data = new DataStore(Path.GetFileNameWithoutExtension(file.Name));
+                DataStore data = new DataStore(fileName);
                 var b0 = data.GetBlock("tileLen");
                 int tileLen = int.Parse(b0.GetValue("tile_len"));
                 
@@ -1182,9 +1188,9 @@ namespace cotf.Base
         #endregion
         public void Dispose()
         {
-            br.Dispose();
-            bw.Dispose();
-            file.Dispose();
+            br?.Dispose();
+            bw?.Dispose();
+            file?.Dispose();
         }
         public enum Manager
         {

@@ -94,6 +94,7 @@ namespace cotf.World
     }
     public enum DungeonID
     {
+        Null,
         BottomOfTheWell,
         Castle,
         Fortress,

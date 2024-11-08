@@ -229,7 +229,7 @@ namespace cotf
 		}
 		public static bool DoesMapExist(string name, int num)
 		{
-			return File.Exists(Path.Combine(Game.WorldSavePath, $"null{name}{num}"));
+			return File.Exists(Path.Combine(Game.WorldSavePath, $"null{name}{num}.dat"));
 		}
 		private static float timeScale()
 		{
@@ -240,7 +240,7 @@ namespace cotf
 			if (!myPlayer.IsMoving() && myPlayer.KeyDown(Keys.R))
 			{
 				scale = 1.2f;
-				if (myPlayer.KeyDown(Keys.Space))
+				if (myPlayer.KeyDown(Keys.Space) || (myPlayer.KeyDown(Keys.R) && myPlayer.velocity == Vector2.Zero))
 				{
 					scale = 2f;
 				}
@@ -355,7 +355,7 @@ namespace cotf
 			Map.Unload();
 			if (direction == StaircaseDirection.LeadingDown) FloorNum++;
 			else if (direction == StaircaseDirection.LeadingUp) FloorNum--;
-			if (!Main.DoesMapExist("_map", Main.FloorNum))
+			if (!Main.DoesMapExist($"_map", Main.FloorNum))
 			{
 				Map.GenerateFloor(new Margin(3000));
 			}
@@ -375,13 +375,13 @@ namespace cotf
 			{
 				Map.Unload();
 			}
-			if (!Main.DoesMapExist($"_{id}_map", floornum))
+			if (!Main.DoesMapExist($"_map", floornum))
 			{
 				Map.GenerateFloor(id, new Margin(3000));
 				return;
 			}
 			Entity ent2 = Entity.None;
-			ent2.SetSuffix(Main.setMapName($"_{id}_map", floornum));
+			ent2.SetSuffix(Main.setMapName($"_map", floornum));
 			using (TagCompound tag = new TagCompound(ent2, SaveType.Map))
 			{
 				tag.WorldMap(Manager.Load);
@@ -390,7 +390,7 @@ namespace cotf
 		public static void SaveFloor(DungeonID id, int floornum)
 		{
 			Entity ent = Entity.None;
-			ent.SetSuffix(Main.setMapName($"_{id}_map", floornum));
+			ent.SetSuffix(Main.setMapName($"_map", floornum));
 			using (TagCompound tag = new TagCompound(ent, SaveType.Map))
 			{
 				tag.WorldMap(TagCompound.Manager.Save);
@@ -400,6 +400,7 @@ namespace cotf
 		{
 			if (!init)
 			{
+				init = true;
 				int width = 3000;
 				int height = 3000;
 				//  Legacy darkness effect
@@ -408,7 +409,6 @@ namespace cotf
 																				//myPlayer.lamp = lamp[Lamp.NewLamp(myPlayer.Center, myPlayer.lightRange, Lamp.TorchLight, myPlayer, false, 0)];
 				lightmap = worldgen.InitLightmap(width, height);
 				myPlayer.Init();
-				init = true;
 				return;
 			}
 			//Map.MapLoad.WaitOne();
@@ -437,6 +437,11 @@ namespace cotf
 			if (Player.itemTextBox != null && Player.itemTextBox.active)
 				Player.itemTextBox?.Update();
 			UpdateArrays();
+			if (!myPlayer.hasLoaded)
+			{ 
+				myPlayer.hasLoaded = true;
+				myPlayer.Load();
+			}
 		}
 		public bool PreDraw(Graphics graphics)
 		{
@@ -901,7 +906,7 @@ namespace cotf
 			lightmap = worldgen.InitLightmap(width, height);
 			Main.tile = worldgen.CastleGen(Tile.Size, width, height, width / 250, 300f, 600f);
 			Room.ConstructAllRooms();
-			player?.FindRandomTile(randSpawn);
+			player?.StaircaseTransition(StaircaseDirection.LeadingDown);
 		}
 		public static bool LeftMouse()
 		{
