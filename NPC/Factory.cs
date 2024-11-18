@@ -34,7 +34,7 @@ namespace cotf.NPC
 				n.life = n.lifeMax;
 				n.knockBack = (float)((decimal)n.knockBack * grade);
 				n.speed = Math.Max(0.1f, (float)((decimal)n.speed * grade) - 1);
-				n.damage = (int)(n.damage * grade);
+				n.finalDamage = (int)(n.damage * grade);
 				return n;
 			}
 		}

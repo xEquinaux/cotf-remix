@@ -54,6 +54,7 @@ namespace cotf.Base
 		public int ticks;
 		public int whoAmI;
 		public int damage;
+		public int finalDamage;
 		public int
 			life,
 			lifeMax;

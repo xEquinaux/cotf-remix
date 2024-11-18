@@ -368,6 +368,41 @@ namespace cotf
             Factory.NpcF.Mutate(Main.npc[num]);
             return num;
         }
+        public static int NewNPC(float x, float y, int type, int damage)
+        {
+            int num = Main.npc.Length - 1;
+            for (int i = 0; i < Main.npc.Length; i++)
+            {
+                if (Main.npc[i] == null || !Main.npc[i].active)
+                {
+                    num = i;
+                    break;
+                }
+            }
+            switch (type)
+            {
+                case NpcType.None:
+                    goto default;
+                case NpcType.Kobold:
+                    Main.npc[num] = new Kobold();
+                    break;
+                case NpcType.Hawk:
+                    Main.npc[num] = new Hawk();
+                    break;
+                default:
+                    Main.npc[num] = new Npc();
+                    break;
+            }
+            Main.npc[num].damage = damage;
+            Main.npc[num].active = true;
+            Main.npc[num].position = new Vector2(x, y);
+            Main.npc[num].type = type;
+            Main.npc[num].whoAmI = num;
+            Main.npc[num].Init();
+            Main.npc[num].SetDefaults();
+            Factory.NpcF.Mutate(Main.npc[num]);
+            return num;
+        }
         public bool NpcSight(Entity target)
         {
             for (int n = 0; n < Distance(target.Center); n += Tile.Size / 5)

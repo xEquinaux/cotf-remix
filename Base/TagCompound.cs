@@ -527,6 +527,7 @@ namespace cotf.Base
                             "colorR",
                             "colorG",
                             "colorB",
+                            "damage",
                             "type"
                         },
                         new object[]
@@ -541,6 +542,7 @@ namespace cotf.Base
                             npc.defaultColor.R,
                             npc.defaultColor.G,
                             npc.defaultColor.B,
+                            npc.damage,
                             npc.type
                         }, name);
                     }
@@ -824,12 +826,13 @@ namespace cotf.Base
                     r = byte.Parse(b1.GetValue("colorR"));
                     g = byte.Parse(b1.GetValue("colorG"));
                     b = byte.Parse(b1.GetValue("colorB"));
+                    int damage = int.Parse(b1.GetValue("damage"));
                     Color c = Color.FromArgb(r, g, b);
                     //  If mana value, save here
                     short t = short.Parse(b1.GetValue("type"));
                     //  If cursed or enchanted, save -- or if items carried are such and so on
                     //  Look into saving items carried
-                    int j = Npc.NewNPC(x, y, t);
+                    int j = Npc.NewNPC(x, y, t, damage);
                     Main.npc[j].active = a;
                     Main.npc[j].life = l;
                     Main.npc[j].defaultColor = c;

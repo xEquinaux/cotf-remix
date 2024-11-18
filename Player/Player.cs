@@ -272,13 +272,13 @@ namespace cotf
             }
 
             //  Stats dynamics
-            if (velocity == Vector2.Zero && KeyDown(Keys.R))
+            if (velocity == Vector2.Zero && KeyDown(Keys.R) && Main.npc.Where(t => t != null && t.Distance(this.Center) < this.lightRange).Count() == 0)
             {
-                restTicks += 10;
+                restTicks += 1; // 10
                 if (++restTicks > RestInterval) //++restTicks % RestInterval == 0)
                 {
                     if (life < lifeMax)
-                        life += 3;
+                        life += 2;
                     else life = lifeMax;
                     restTicks = 0;    // = 1
                     manaRestTicks++;
@@ -286,7 +286,7 @@ namespace cotf
                 if (manaRestTicks > RestInterval / 6) // manaRestTicks % (RestInterval / 6) == 0
                 {
                     if (statMana < statMaxMana)
-                        statMana += 3;
+                        statMana += 1;
                     manaRestTicks = 0; // = 1
                 }
             }
@@ -562,14 +562,14 @@ namespace cotf
             if (life <= 0)
             {
                 //  TODO Does the player respawn in the Overworld
-                //Respawn(1);
                 deathCounter++;
-                life = lifeMax;
+                Respawn(1);
             }
         }
         public void Respawn(int floornum)
         {
             life = lifeMax;
+            statMana = statMaxMana;
             Main.LoadFloor(DungeonID.Castle, floornum, true);
         }
         public void Heal(int amount)
@@ -612,7 +612,7 @@ namespace cotf
         {
             if (Main.TimeScale > 0 && npc != null && npc.active && npc.hostile && npc.velocity == Vector2.Zero && npc.InProximity(this, Math.Max(height, Math.Max(npc.width, npc.height)) * 2) && iFrames == iFramesMax)
             {
-                Hurt(npc.damage, npc.knockBack, Helper.AngleTo(npc.Center, Center));
+                Hurt(npc.finalDamage, npc.knockBack, Helper.AngleTo(npc.Center, Center));
                 return true;
             }
             return false;
