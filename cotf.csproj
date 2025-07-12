@@ -25,6 +25,56 @@
     <None Remove="WorldGen\Factory\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="REWD-Remix\cotf-remix\build.txt" />
+    <Content Include="REWD-Remix\cotf-remix\Content\fow.png" />
+    <Content Include="REWD-Remix\cotf-remix\Content\temp.png" />
+    <Content Include="REWD-Remix\cotf-remix\cotf.sln" />
+    <Content Include="REWD-Remix\cotf-remix\Icon.ico" />
+    <Content Include="REWD-Remix\cotf-remix\lib\CirclePrefect.dll" />
+    <Content Include="REWD-Remix\cotf-remix\lib\Native.dll" />
+    <Content Include="REWD-Remix\cotf-remix\lib\tUserInterface.dll" />
+    <Content Include="REWD-Remix\cotf-remix\LICENSE.txt" />
+    <Content Include="REWD-Remix\cotf-remix\obj\Debug\net8.0-windows\apphost.exe" />
+    <Content Include="REWD-Remix\cotf-remix\obj\Debug\net8.0-windows\cotf.csproj.FileListAbsolute.txt" />
+    <Content Include="REWD-Remix\cotf-remix\obj\Debug\net8.0-windows\cotf.dll" />
+    <Content Include="REWD-Remix\cotf-remix\obj\Debug\net8.0-windows\cotf.pdb" />
+    <Content Include="REWD-Remix\cotf-remix\obj\Debug\net8.0-windows\refint\cotf.dll" />
+    <Content Include="REWD-Remix\cotf-remix\obj\Debug\net8.0-windows\ref\cotf.dll" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\background.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\bg.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\chain.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\cinnabar_dagger.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\ClassIcon_UI.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\config_icons.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\fow.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\fow50.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Ground\background.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\item0.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\loot0.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\npc0.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\npc1.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\pixel.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\projectile0.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\scenery0.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Sky_1.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Sky_1_1.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Sky_1_2.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Sky_1_3.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Sky_3.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Sky_boss.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\small.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\temp.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\temp90.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\trap0.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Walls\wall1.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Walls\wall2.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Walls\wall3.png" />
+    <Content Include="REWD-Remix\cotf-remix\Textures\Walls\wall4.png" />
+    <Content Include="REWD-Remix\Textures\Backgrounds\MapBGMagno.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
@@ -58,6 +108,99 @@
     </None>
     <None Update="Content\temp.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Content\Sky_boss.rew">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\chain.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\cinnabar_dagger.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\ClassIcon_UI.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\config_icons.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\fow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\fow50.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Ground\background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\item0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\loot0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\npc0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\npc1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\pixel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\projectile0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\scenery0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Sky_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Sky_1_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Sky_1_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Sky_1_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Sky_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Sky_boss.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\temp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\temp90.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\trap0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Walls\wall1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Walls\wall2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Walls\wall3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="REWD-Remix\Textures\Walls\wall4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Textures\background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -149,6 +292,9 @@
     <None Update="Textures\Walls\wall4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="REWD-Remix\cotf-remix\cotf.csproj" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
