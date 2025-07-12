@@ -70,6 +70,15 @@
     <Content Include="REWD-Remix\cotf-remix\Textures\Walls\wall2.png" />
     <Content Include="REWD-Remix\cotf-remix\Textures\Walls\wall3.png" />
     <Content Include="REWD-Remix\cotf-remix\Textures\Walls\wall4.png" />
+    <Content Include="REWD-Remix\lib\Direct2D_Render.dll" />
+    <Content Include="REWD-Remix\lib\MonoGame.Framework.dll" />
+    <Content Include="REWD-Remix\lib\NVorbis.dll" />
+    <Content Include="REWD-Remix\lib\OpenTK.dll" />
+    <Content Include="REWD-Remix\lib\REWD.exe" />
+    <Content Include="REWD-Remix\lib\SharpDX.Direct2D1.dll" />
+    <Content Include="REWD-Remix\lib\SharpDX.Direct3D11.dll" />
+    <Content Include="REWD-Remix\lib\SharpDX.dll" />
+    <Content Include="REWD-Remix\lib\SharpDX.DXGI.dll" />
     <Content Include="REWD-Remix\Textures\Backgrounds\MapBGMagno.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
