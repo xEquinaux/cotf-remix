@@ -16,7 +16,6 @@ using Color = System.Drawing.Color;
 using Point = System.Drawing.Point;
 using Matrix = System.Drawing.Drawing2D.Matrix;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
-using FoundationR.Rew;
 
 namespace cotf.Base
 {
