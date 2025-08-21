@@ -63,7 +63,7 @@ namespace cotf.World
             //Bitmap bmp = new Bitmap(50, 50);
             //using (Graphics gfx = Graphics.FromImage(bmp))
             //    gfx.FillRectangle(Brushes.LightGray, new Rectangle(0, 0, 50, 50));
-            texture = preTexture = (Bitmap)Main.wallTexture[Main.rand.Next(4)];
+            texture = preTexture = (Bitmap)Main.skybrickWallTexture[Main.rand.Next(3)];
 
             return;
             //  Debugging
@@ -82,7 +82,7 @@ namespace cotf.World
         }
         private bool PreUpdate()
         {
-            hitbox = new Rectangle(X, Y, width, height);
+            hitbox = new Rectangle(X - 1, Y - 1, width, height);
             //if (lamp != null)
             //    lamp.position = Center;
             return onScreen =

@@ -127,7 +127,13 @@ namespace cotf
 			ground,
 			wall,
 			bg0,
-			cinnabar;
+			cinnabar,
+			magnoBackground,
+			magnoStone,
+			skyBrick;
+		public static Image[] magnoTexture = new Image[3];
+		public static Image[] skybrickTexture = new Image[3];
+		public static Image[] skybrickWallTexture = new Image[3];
 		public static Image[] trapTexture = new Image[TrapID.Sets.Total];
 		public static Image[] chainTexture = new Image[1];
 		public static Image[] wallTexture = new Image[4];
@@ -261,6 +267,7 @@ namespace cotf
 			if (mainMenu)
 			{
 				graphics.FillRectangle(Brushes.Black, new Rectangle(0, 0, ScreenWidth, ScreenHeight));
+				graphics.DrawImage(Main.magnoBackground, 0, 0, ScreenWidth, ScreenHeight);
 				graphics.DrawString("Alpha", System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Red, 10, 30);
 				graphics.DrawString("Press spacebar to continue...", System.Drawing.SystemFonts.DefaultFont, System.Drawing.Brushes.Red, 10, 50);
 			}

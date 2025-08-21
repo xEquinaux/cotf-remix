@@ -730,8 +730,8 @@ namespace cotf.Base
                         Main.background[k, l].whoAmI = int.Parse(b1.GetValue("whoAmI"));
                         Main.background[k, l].position.X = int.Parse(b1.GetValue("positionX"));
                         Main.background[k, l].position.Y = int.Parse(b1.GetValue("positionY"));
-                        Main.background[k, l].active = bool.Parse(b1.GetValue("active"));
-                        Main.background[k, l].discovered = bool.Parse(b1.GetValue("discovered"));
+                        bool.TryParse(b1.GetValue("active"), out Main.background[k, l].active);
+                        bool.TryParse(b1.GetValue("discovered"), out Main.background[k, l].discovered);
                         Main.background[k, l].width = int.Parse(b1.GetValue("width"));
                         Main.background[k, l].height = int.Parse(b1.GetValue("height"));
                     }

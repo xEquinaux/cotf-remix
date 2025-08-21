@@ -267,6 +267,21 @@ namespace cotf
 		#region methods
 		private void LoadResources()
 		{
+			Main.magnoStone = Asset<Image>.Request("Ground/magno_stone");
+			Main.skyBrick = Asset<Image>.Request("Ground/skyfort_brick");
+			for (int i = 0; i < 3; i++)
+			{
+				Main.magnoTexture[i] = Asset<Image>.Request($"Ground/magno_stone_{i}");
+			}
+			for (int i = 0; i < 3; i++)
+			{
+				Main.skybrickTexture[i] = Asset<Image>.Request($"Ground/skyfort_brick_{i}");
+			}
+			for (int i = 0; i < 3; i++)
+			{
+				Main.skybrickWallTexture[i] = Asset<Image>.Request($"Walls/skybrick_wall_{i}");
+			}
+			Main.magnoBackground = Asset<Image>.Request("Background/MapBGMagno");
 			Main.cinnabar = Asset<Image>.Request("cinnabar_dagger");
 			Main.bg = Asset<Image>.Request("bg");
 			Main.texture = Asset<Image>.Request("temp");

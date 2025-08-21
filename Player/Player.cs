@@ -39,44 +39,49 @@ namespace cotf
             name = "plr";
         }
         public static Player myPlayer => Main.myPlayer;
-        public float 
-            stopSpeed, 
-            moveSpeed = 0.15f;
-        public const float maxSpeed = 3f;
-        public bool 
-            controlUp,
-            controlRight,
-            controlDown,
-            controlLeft;
-        public bool hasLoaded = false;
-        public int 
-            statMana,
-            statMaxMana = 10;
-        public int restTicks = 0;
-        public int manaRestTicks = 0;
-        public const int RestInterval = 60;
-        public float lightRange => lamp == null ? Sight : lamp.range;
-        public const float PickupRange = 120f;
+        
         public UI.Textbox playerData;
-        public int baseDamage = 5;
         internal List<Item> inventory = new List<Item>();
         internal Item[] equipment = new Item[15];
         private System.Drawing.Point mouse => new System.Drawing.Point((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y);
         internal static UI.Textbox itemTextBox;
         public Rectangle lightBox => new Rectangle((int)(position.X - lightRange), (int)(position.Y - lightRange), width + (int)lightRange * 2, height + (int)lightRange * 2);
-        public bool hasTorch() => equipment[EquipType.OffHand] != null && Main.myPlayer.equipment[EquipType.OffHand].equipped && Main.myPlayer.equipment[EquipType.OffHand].type == ItemID.Torch;
-        int debug = 0;
-        public Skill activeSkill = Skill.SetActive(SkillID.Melee);
-        public Skill[] skill = new Skill[SkillID.Total];
-        public Item Purse => equipment[EquipType.Purse];
-        public Item Torch => equipment[EquipType.OffHand];
-        public bool cursed;
-        private Margin BaseMargin => new Margin(32);
-        public Rectangle Proximity(Margin margin) => new Rectangle(box.X - margin.Left, box.Y - margin.Top, box.Width + margin.Right, box.Height + margin.Bottom);
-        int travelTicks = 0;
-        public int deathCounter = 0;
-        public DungeonID dungeonId = DungeonID.Castle;
-        bool init;
+        
+        private int     debug           = 0;
+        private int     travelTicks     = 0;
+        public int      restTicks       = 0;
+        public int      manaRestTicks   = 0;
+        public int      baseDamage      = 5;
+        public int      deathCounter    = 0;
+        public bool     hasTorch()      => equipment[EquipType.OffHand] != null && Main.myPlayer.equipment[EquipType.OffHand].equipped && Main.myPlayer.equipment[EquipType.OffHand].type == ItemID.Torch;
+        public bool     hasLoaded       = false;
+        private bool    init;
+        public bool     cursed;
+        public float    lightRange      => lamp == null ? Sight + 75 : lamp.range;
+        
+        public const int RestInterval = 60;
+        public const float PickupRange = 120f;
+        public const float maxSpeed = 3f;
+        
+        public float 
+            stopSpeed, 
+            moveSpeed = 0.15f;
+        public bool 
+            controlUp,
+            controlRight,
+            controlDown,
+            controlLeft;
+        public int 
+            statMana,
+            statMaxMana = 10;
+        
+        private Margin      BaseMargin               => new Margin(32);
+        public Rectangle    Proximity(Margin margin) => new Rectangle(box.X - margin.Left, box.Y - margin.Top, box.Width + margin.Right, box.Height + margin.Bottom);
+        public Skill        activeSkill              =  Skill.SetActive(SkillID.Melee);
+        public Skill[]      skill                    =  new Skill[SkillID.Total];
+        public Item         Purse                    => equipment[EquipType.Purse];
+        public Item         Torch                    => equipment[EquipType.OffHand];
+        public DungeonID    dungeonId                =  DungeonID.Castle;
 
         public void Init()
         {
