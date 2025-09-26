@@ -203,6 +203,7 @@ namespace cotf
         private bool init = false;
         public static rand rand = new rand();
         public static float TimeScale => timeScale();
+        public IntPtr WindowHandle = Utility.FindWindowByCaption(IntPtr.Zero, "SharpDX Render Window");
 
         public static float Gamma = 1.2f;
         public static int KeyPressTimer;
@@ -433,13 +434,16 @@ namespace cotf
                 //myPlayer.lamp = lamp[Lamp.NewLamp(myPlayer.Center, myPlayer.lightRange, Lamp.TorchLight, myPlayer, false, 0)];
                 lightmap = worldgen.InitLightmap(width, height);
                 myPlayer.Init();
+                WindowHandle = Utility.FindWindowByCaption(IntPtr.Zero, "SharpDX Render Window");
                 init = true; 
                 return;
             }
             //Map.MapLoad.WaitOne();
             //EscState = Keyboard.GetState().IsKeyDown(Keys.Escape);
             timeSpan = TimeSpan.FromMilliseconds(time.ElapsedMilliseconds);
-            var point = System.Windows.Forms.Cursor.Position;
+            Utility.RECT window = default;
+            Utility.GetWindowRect(WindowHandle, ref window);
+            Vector2 point = System.Windows.Forms.Control.MousePosition.ToVector2() - new Vector2(window.Left, window.Top) - new Vector2(5, 30f);
             MouseScreen = new Vector2(Math.Max(point.X - (float)Game.Position.X, 0f), Math.Max(point.Y - (float)Game.Position.Y, 0f));//  -7 to X coord, -30 to Y coord due to WPF factor
             MouseWorld = MouseScreen + new Vector2(WorldZero.X, WorldZero.Y);
             pressO = ticks3++ == 1 && myPlayer.KeyDown((uint)VIRTUALKEY.VK_O);
@@ -899,6 +903,7 @@ namespace cotf
             if (Thumbnail.showKeybindings)
             {
                 graphics.DrawString($"Keybinds:\n" +
+                    $"G : Quick Item Pickup\n" +
                     $"O : Open Inventory\n" +
                     $"Spacebar : enter stairwell\n" +
                     $"[Hold] R : Rest\n" +

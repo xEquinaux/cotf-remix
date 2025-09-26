@@ -111,6 +111,7 @@
     <Compile Include="cotf-remix\NPC\Hawk.cs" />
     <Compile Include="cotf-remix\NPC\Kobold.cs" />
     <Compile Include="cotf-remix\NPC\Npc.cs" />
+    <Compile Include="cotf-remix\NPC\SkyBoss.cs" />
     <Compile Include="cotf-remix\obj\Debug\net4.8\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="cotf-remix\obj\Debug\net4.8\cotf.AssemblyInfo.cs" />
     <Compile Include="cotf-remix\obj\Debug\net4.8\cotf.GlobalUsings.g.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Keyboardhook.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -222,6 +224,8 @@
     <None Include="cotf-remix\obj\project.assets.json" />
     <None Include="cotf-remix\obj\project.nuget.cache" />
     <None Include="packages.config" />
+    <None Include="save.order.ini" />
+    <None Include="todo.ini" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\REWD\REWD.csproj">

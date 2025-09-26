@@ -1,17 +1,18 @@
-﻿using System;
+﻿using cotf.Collections.Unused;
+using cotf.World;
+using cotf.World.Traps;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
-using cotf.World;
-using cotf.World.Traps;
-using cotf.Collections.Unused;
-using Microsoft.Xna.Framework;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using Color = System.Drawing.Color;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 using Background = cotf.World.Background;
+using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace cotf.Base
@@ -367,7 +368,7 @@ namespace cotf.Base
                         bw.Write(s.position);
                         bw.Write(s.discovered);
                         bw.Write((byte)s.direction);
-                        bw.Write(Tile.Size);
+                        //bw.Write(Tile.Size);
                     }
                 }
                 int sceneryLen = 0;
@@ -394,7 +395,7 @@ namespace cotf.Base
                     if (lamp != null && lamp.active)
                     {
                         string name = $"lamp{lampLen++}";
-                        bw.Write(lamp.whoAmI);
+                        //bw.Write(lamp.whoAmI);
                         bw.Write(lamp.position);
                         bw.Write(lamp.active);
                         bw.Write(lamp.staticLamp);
@@ -419,7 +420,7 @@ namespace cotf.Base
                         bw.Write(npc.height);
                         bw.Write(npc.life);
                         bw.Write(npc.defaultColor);
-                        //  If mana value, save here
+                        //  TODO If mana value, save here
                         bw.Write(npc.type);
                         //  If cursed or enchanted, save -- or if items carried are such and so on
                         //  Look into saving items carried
@@ -452,7 +453,6 @@ namespace cotf.Base
                         bw.Write(trap.rotation);
                     }
                 }
-                return;
                 int stashLen = 0;
                 bw.Write(Main.stash.Count(t => t != null && t.active));
                 foreach (Stash stash in Main.stash)
@@ -474,13 +474,15 @@ namespace cotf.Base
                             foreach (Item i in stash.content)
                             {
                                 string _name = $"stash{stashLen}_content{contentLen}";
+                                bw.Write(i);
+                                /*
                                 bw.Write(i.whoAmI);
                                 bw.Write(i.position);
                                 bw.Write(i.active);
                                 bw.Write(i.width);
                                 bw.Write(i.height);
                                 bw.Write(i.defaultColor);
-                                bw.Write(i.type);
+                                bw.Write(i.type);                                */
                                 //if (i.purse != null && i.purse.Content != null)
                                 //{
                                 //    bw.Write(i.purse);
@@ -561,7 +563,7 @@ namespace cotf.Base
                     StaircaseDirection dir = (StaircaseDirection)br.ReadByte();
                     int index = Staircase.NewStaircase((int)v2.X, (int)v2.Y, dir);
                     Main.staircase[index].discovered = d;
-                    br.ReadInt32();   //  unused
+                    //br.ReadInt32();   //  unused
                 }
                 int sceneryLen = br.ReadInt32();
                 for (int i = 0; i < sceneryLen; i++)
@@ -574,7 +576,7 @@ namespace cotf.Base
                     bool s = br.ReadBoolean();
                     int w = br.ReadInt32();
                     int h = br.ReadInt32();
-                    short t = br.ReadInt16();
+                    int t = br.ReadInt32(); // FIXED this was incorrectly reading an Int16
                     int j = Scenery.NewScenery((int)v2.X, (int)v2.Y, w, h, t);
                     Main.scenery[j].active = a;
                     Main.scenery[j].discovered = d;
@@ -584,17 +586,17 @@ namespace cotf.Base
                 for (int i = 0; i < lampLen; i++)
                 {
                     string name = $"lamp{i}";
-                    int id = br.ReadInt32();
-                    Main.lamp[id] = new Lamp(0);
-                    Main.lamp[id].whoAmI = id;
-                    Main.lamp[id].position = br.ReadVector2();
-                    Main.lamp[id].active = br.ReadBoolean();
-                    Main.lamp[id].staticLamp = br.ReadBoolean();
-                    Main.lamp[id].width = br.ReadInt32();
-                    Main.lamp[id].height = br.ReadInt32();
-                    Main.lamp[id].owner = br.ReadInt32();
-                    Main.lamp[id].color = br.ReadColor();
-                    Main.lamp[id].range = br.ReadSingle();
+                    //int id = br.ReadInt32();
+                    Main.lamp[i] = new Lamp(0);
+                    Main.lamp[i].whoAmI = i;
+                    Main.lamp[i].position = br.ReadVector2();
+                    Main.lamp[i].active = br.ReadBoolean();
+                    Main.lamp[i].staticLamp = br.ReadBoolean();
+                    Main.lamp[i].width = br.ReadInt32();
+                    Main.lamp[i].height = br.ReadInt32();
+                    Main.lamp[i].owner = br.ReadInt32();
+                    Main.lamp[i].color = br.ReadColor();
+                    Main.lamp[i].range = br.ReadSingle();
                 }
                 int npcLen = br.ReadInt32();
                 for (int i = 0; i < npcLen; i++)
@@ -607,8 +609,8 @@ namespace cotf.Base
                     int h = br.ReadInt32();
                     int l = br.ReadInt32();
                     Color c = br.ReadColor();
-                    //  If mana value, save here
-                    short t = br.ReadInt16();
+                    //  TODO If mana value, save here
+                    int t = br.ReadInt32(); // FIXED was incorrectly read as an Int16
                     //  If cursed or enchanted, save -- or if items carried are such and so on
                     //  Look into saving items carried
                     int j = Npc.NewNPC(v2.X, v2.Y, t);
@@ -632,11 +634,11 @@ namespace cotf.Base
                     int h = br.ReadInt32();
                     int l = br.ReadInt32();
                     Color c = br.ReadColor();
-                    short t = br.ReadInt16();
+                    int t = br.ReadInt32();
                     float r = br.ReadSingle();
-                    Trap.NewTrap(v2.X, v2.Y, w, h, t, active: a);
+                    int index = Trap.NewTrap(v2.X, v2.Y, w, h, (short)t, active: a);
+                    Main.trap[index].rotation = r;
                 }
-                return;
                 int stashLen = br.ReadInt32();
                 for (int i = 0; i < stashLen; i++)
                 {
@@ -654,14 +656,15 @@ namespace cotf.Base
                         for (int j = 0; j < content.Length; j++)
                         {
                             string _name = $"stash{i}_content{j}";
-                            content[j] = new Item();
+                            content[j] = br.ReadItem();
+                            /*
                             content[j].whoAmI = br.ReadInt32();
                             content[j].position = br.ReadVector2();
                             content[j].active = br.ReadBoolean();
                             content[j].width = br.ReadInt32();
                             content[j].height = br.ReadInt32();
                             content[j].defaultColor = br.ReadColor();
-                            content[j].type = br.ReadInt16();
+                            content[j].type = br.ReadInt16();*/
                             //content[j].purse = br.ReadPurse();
                         }
                         Stash.NewStash((int)v2.X, (int)v2.Y, 0, content);

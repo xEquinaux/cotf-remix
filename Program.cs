@@ -113,6 +113,7 @@ public class Game : Direct2D
 
 	public override void Update()
 	{
+		//Task.WaitAll(Task.Delay(1));
 		if (!showTitle && CotF_dev.Keyboard.IsKeyPressed((int)VIRTUALKEY.VK_RETURN))
 		{
 			showTitle = true;

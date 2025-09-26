@@ -516,7 +516,7 @@ namespace cotf
             if (lamp == null) return;
             item.lamp.active = true;
             item.lamp.range = myPlayer.lightRange;
-            item.lamp.lampColor = Lamp.TorchLight;
+            //item.lamp.lampColor = Lamp.TorchLight;
             item.lamp.position = Center;
             if (!Main.lamp.Contains(item.lamp))
             {

@@ -291,7 +291,7 @@ namespace cotf.Base
 			Item item = new Item();
 			item.position = br.ReadVector2();
 			item.whoAmI = br.ReadInt32();
-			item.type = br.ReadInt16();
+			item.type = br.ReadInt32();	//FIXED Int16 to Int32
 			item.owner = br.ReadInt32();
 			item.color = br.ReadColor();
 			item.enchanted = br.ReadBoolean();

@@ -338,7 +338,9 @@ namespace cotf
             {
                 const int offset = 6;
                 int c = (int)bar.parent.X + offset, r = (int)bar.parent.Y + offset;
-                foreach (Item i in list)
+                var copy = new Item[list.Count];
+                list.CopyTo(copy, 0);
+                foreach (Item i in copy)
                 {
                     if (i == null) continue;
                     int n = r - (int)(bar.value * bar.parent.Height);
@@ -350,6 +352,7 @@ namespace cotf
                         c = (int)bar.parent.X + offset;
                     }
                 }
+                copy = null;
             }
         }
         public class Scroll : Entity

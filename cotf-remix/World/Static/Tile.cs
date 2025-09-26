@@ -124,16 +124,16 @@ namespace cotf.World
         public static Tile GetSafely(int i, int j)
         {
             //if (i < Main.tile.GetLength(0) && i >= 0 && j < Main.tile.GetLength(1) && j >= 0)
-            return Main.tile[Math.Max(Math.Min(i, Main.tile.GetLength(0) - 1), 0), Math.Max(Math.Min(j, Main.tile.GetLength(1) - 1), 0)];
+            return Main.tile[Math.Max(Math.Min(i, Main.tile.GetLength(0) - 1), 0), Math.Max(Math.Min(j, Main.tile.GetLength(1) - 1), 0)] ?? Main.tile[0, 0];
             //throw new OutOfBoundsException(i, j);
         }
         public static Tile GetSafely(float x, float y)
         {
-            return Main.tile[(int)Math.Max(Math.Min(x / Size, Main.WorldWidth / Size - 1), 0), (int)Math.Max(Math.Min(y / Size, Main.WorldHeight / Size - 1), 0)];
+            return Main.tile[(int)Math.Max(Math.Min(x / Size, Main.WorldWidth / Size - 1), 0), (int)Math.Max(Math.Min(y / Size, Main.WorldHeight / Size - 1), 0)] ?? Main.tile[0, 0];
         }
         public static Tile GetSafely(int i, int j, int width, int height, Tile[,] array)
         {
-            return array[Math.Max(Math.Min(i, width / Size - 1), 0), Math.Max(Math.Min(j, height / Size - 1), 0)];
+            return array[Math.Max(Math.Min(i, width / Size - 1), 0), Math.Max(Math.Min(j, height / Size - 1), 0)] ?? array[0, 0];
         }
         public new void Collision(Entity e, int buffer = 4)
         {

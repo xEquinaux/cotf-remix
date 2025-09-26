@@ -80,7 +80,7 @@ namespace cotf.World
                 Drawing.LightmapHandling(preTexture, this, 1.2f, graphics);
             }
         }
-        public static int NewScenery(int x, int y, int width, int height, short type)
+        public static int NewScenery(int x, int y, int width, int height, int type)
         {
             int num = Main.scenery.Length - 1;
             

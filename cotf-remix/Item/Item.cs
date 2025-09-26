@@ -362,7 +362,7 @@ namespace cotf
                     box = new Rectangle(newX, newY, Item.DrawSize, Item.DrawSize);
                     if (myPlayer.equipment[i] != null && myPlayer.equipment[i].active && myPlayer.equipment[i].equipped && myPlayer.equipment[i].owner == myPlayer.whoAmI)
                     {
-                        int w = (int)Helper.RatioConvert(Helper.Ratio(Item.DrawSize, myPlayer.equipment[i].texture.Width), myPlayer.equipment[i].texture.Width);
+                        int w = (int)Helper.RatioConvert(Helper.Ratio(Item.DrawSize, myPlayer.equipment[i].width), myPlayer.equipment[i].width);
                         Rectangle slot = new Rectangle(box.X + 1, box.Y + 1, Item.DrawSize - 1, w - 1);
                         myPlayer.equipment[i].hitbox = slot;
                     }
