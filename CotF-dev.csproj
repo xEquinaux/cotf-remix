@@ -79,6 +79,7 @@
     <Compile Include="cotf-remix\Base\TagCompound.cs" />
     <Compile Include="cotf-remix\Base\Texture.cs" />
     <Compile Include="cotf-remix\Base\ToolTip.cs" />
+    <Compile Include="cotf-remix\Base\WorldGen.cs" />
     <Compile Include="cotf-remix\Buff\Buff.cs" />
     <Compile Include="cotf-remix\Crafting\Crafting.cs" />
     <Compile Include="cotf-remix\Global\Main.cs" />
@@ -137,6 +138,14 @@
     <Compile Include="cotf-remix\Textures\Pipeline.cs" />
     <Compile Include="cotf-remix\UI\UI.cs" />
     <Compile Include="cotf-remix\WorldGen\Chunk.cs" />
+    <Compile Include="cotf-remix\WorldGen\Factory\DoorNPC.cs" />
+    <Compile Include="cotf-remix\WorldGen\Factory\Factory.cs" />
+    <Compile Include="cotf-remix\WorldGen\Factory\Keypad.cs" />
+    <Compile Include="cotf-remix\WorldGen\Factory\Room.cs" />
+    <Compile Include="cotf-remix\WorldGen\Factory\Tiles\ClosedMetalDoor.cs" />
+    <Compile Include="cotf-remix\WorldGen\Factory\Tiles\FactoryTile.cs" />
+    <Compile Include="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpen.cs" />
+    <Compile Include="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpening.cs" />
     <Compile Include="cotf-remix\WorldGen\FortGen.cs" />
     <Compile Include="cotf-remix\WorldGen\Fortress.cs" />
     <Compile Include="cotf-remix\WorldGen\GenLegacy.cs" />
@@ -429,6 +438,9 @@
     <Content Include="cotf-remix\Textures\Walls\wall2.png" />
     <Content Include="cotf-remix\Textures\Walls\wall3.png" />
     <Content Include="cotf-remix\Textures\Walls\wall4.png" />
+    <Content Include="cotf-remix\WorldGen\Factory\Tiles\ClosedMetalDoor.png" />
+    <Content Include="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpen.png" />
+    <Content Include="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpening.png" />
     <Content Include="lib\Direct2D_Render.dll" />
     <Content Include="lib\MonoGame.Framework.dll" />
     <Content Include="lib\NVorbis.dll" />

@@ -20,6 +20,10 @@ namespace cotf.Base
 {
 	public static class Ext
 	{
+		public static bool Intersects(this Rectangle one, Rectangle r)
+		{
+			return one.IntersectsWith(r);
+		}
 		public static double Distance(this Vector2 one, Vector2 v2)
 		{
 			return Math.Sqrt(Math.Pow(v2.X - one.X, 2) + Math.Pow(v2.Y - one.Y, 2));

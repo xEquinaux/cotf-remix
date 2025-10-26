@@ -53,7 +53,8 @@ namespace ArchaeaMod
 			ConveyorBeltLeft,
 			ConveyorBeltRight,
 			Timers,
-			AdamantiteBeam;
+			AdamantiteBeam,
+			Platforms;
 	}
 	public class Structures
 	{

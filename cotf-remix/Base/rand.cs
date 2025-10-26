@@ -11,7 +11,9 @@ namespace cotf
         private Random random;
         public rand()
         {
-             random = new Random((int)DateTime.Now.Millisecond);
+             // random = new Random((int)DateTime.Now.Millisecond);
+             // changed to seconds
+             random = new Random((int)DateTime.Now.Second);
         }
         public override int Next(int max)
         {
