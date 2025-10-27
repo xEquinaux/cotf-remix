@@ -65,7 +65,7 @@ namespace ArchaeaMod.Structure
             int border = 8;
             foreach (Vector2 node in nodes)
             {
-                Room r = new Room(Main.rand.Next(RoomID.Total));
+                Room r = new Room((short)Main.rand.Next(RoomID.Total));
                 int rand = 0;//Main.rand.Next(2);
                 switch (rand)
                 {

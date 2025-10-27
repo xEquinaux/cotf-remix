@@ -24,7 +24,7 @@
 //        int Bottom => Top + bound.Height;
 //        int Left => bound.X;
 //        Rectangle hitbox => new Rectangle(Left, Top, bound.Width, bound.Height);
-        
+
 //        public Rectangle bound;
 //        public void Build(int buffer = 10)
 //        {
@@ -42,7 +42,7 @@
 //                    //  Get safe coordinates
 //                    i = Math.Max(buffer, Math.Min(Main.maxTilesX - buffer, i));
 //                    j = Math.Max(buffer, Math.Min(Main.maxTilesY - buffer, j));
-                    
+
 //                    //  Set wall type for room
 //                    Main.tile[i, j].WallType = Factory.Wall;
 
@@ -54,7 +54,7 @@
 //                            if (IsBottom(j) && Main.rand.NextBool())
 //                            {
 //                                if (Main.tile[i, j + 1].HasTile)
-//                                { 
+//                                {
 //                                    WorldGen.PlaceTile(i, j, TileID.Spikes, true, true);
 //                                }
 //                            }
@@ -79,7 +79,7 @@
 //                                        int x = i + m;
 //                                        int y = j + n;
 //                                        switch (Structures.cageSafe[m, n])
-//                                        { 
+//                                        {
 //                                            case Structures.TILE_Chain:
 //                                                for (int l = 0; l < 6; l++)
 //                                                {
@@ -101,7 +101,7 @@
 //                            if (IsBottom(j))
 //                            {
 //                                if (Main.tile[i, j + 1].HasTile)
-//                                { 
+//                                {
 //                                    WorldGen.PlaceTile(i, j, TileID.Spikes, true, true);
 //                                }
 //                                if (i % 2 == 0 && Main.tile[i, j + 2].HasTile)
@@ -123,7 +123,7 @@
 //                            if (Main.rand.NextBool(24))
 //                            {
 //                                if (i > X1 + 8 && j > Y1 + 8)
-//                                { 
+//                                {
 //                                    WorldGen.PlaceTile(i, j - 1, TileID.Sand, true, true);
 //                                    WorldGen.PlaceTile(i, j, TileID.Cobweb, true, true);
 //                                }
@@ -138,7 +138,7 @@
 //                            goto default;
 //                        case RoomID.Camp:
 //                            if (IsCenter(i - 1) && IsBottom(j))
-//                            { 
+//                            {
 //                                Terraria.WorldGen.Place3x2(i, j, TileID.Campfire, 7);
 //                                return;
 //                            }
@@ -147,7 +147,7 @@
 //                            if (IsTop(j))
 //                            {
 //                                if (!placed)
-//                                { 
+//                                {
 //                                    t.PlaceTile(i, j, (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>(), true, false, 4, false);
 //                                    placed = Main.tile[i, j].type == (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>();
 //                                }
@@ -159,14 +159,14 @@
 //                                WorldGen.PlaceTile(i, j, ModContent.TileType<ArchaeaMod.Tiles.m_chandelier>(), true, true);
 //                            }
 //                            if (IsRight(i) && IsBottom(j))
-//                            { 
+//                            {
 //                                offX = 2;
-//                                WorldGen.PlaceTile(i     - offX, j, ArchaeaWorld.factoryBrick, true, true);
+//                                WorldGen.PlaceTile(i - offX, j, ArchaeaWorld.factoryBrick, true, true);
 //                                WorldGen.PlaceTile(i - 1 - offX, j, ArchaeaWorld.factoryBrick, true, true);
 //                                WorldGen.PlaceTile(i - 2 - offX, j, ArchaeaWorld.factoryBrick, true, true);
-//                                WorldGen.PlaceTile(i     - offX, j - 1, ArchaeaWorld.factoryBrick, true, true);
+//                                WorldGen.PlaceTile(i - offX, j - 1, ArchaeaWorld.factoryBrick, true, true);
 //                                WorldGen.PlaceTile(i - 1 - offX, j - 1, ArchaeaWorld.factoryBrick, true, true);
-//                                WorldGen.PlaceTile(i     - offX, j - 2, (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chair>(), true, true);
+//                                WorldGen.PlaceTile(i - offX, j - 2, (ushort)ModContent.TileType<ArchaeaMod.Tiles.m_chair>(), true, true);
 //                                return;
 //                            }
 //                            goto default;
@@ -176,7 +176,7 @@
 //                                if (i % 2 == 0)
 //                                {
 //                                    t.PlaceTile(i, j, TileID.Tombstones, true, false, 2, false, Main.rand.Next(11));
-//                                }    
+//                                }
 //                            }
 //                            goto default;
 //                        case RoomID.Heated:
@@ -189,10 +189,10 @@
 //                            goto default;
 //                        default:
 //                            if (!placed && IsBottom(j) && IsCenter(i - 1))
-//                            { 
+//                            {
 //                                WorldGen.PlaceChest(i, j, notNearOtherChests: true);
 //                                if (IsPlaced(i, j, TileID.Containers))
-//                                { 
+//                                {
 //                                    placed = true;
 //                                }
 //                            }
@@ -238,7 +238,7 @@
 //                    player.AddBuff(BuffID.OnFire, 300, false);
 //                    if (ArchaeaItem.Elapsed(180))
 //                    {
-//                        SoundEngine.PlaySound(SoundID.Item8); 
+//                        SoundEngine.PlaySound(SoundID.Item8);
 //                        player.Hurt(PlayerDeathReason.LegacyDefault(), 10, 0);
 //                    }
 //                }
