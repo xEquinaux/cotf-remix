@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using cotf.Base;
 using cotf.World;
-using Microsoft.Xna.Framework;
+
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -26,7 +27,7 @@ namespace cotf.World
         {
             name = "Scenery";
             TextureName = "temp";
-            texture = preTexture = Assets.Asset<Bitmap>.Request(TextureName);
+            texture = preTexture = (Bitmap)Main.Texture[3];//Assets.Asset<Bitmap>.Request(TextureName);
             foreach (Tile t in Main.tile)
             {
                 if (t.hitbox.IntersectsWith(hitbox))
@@ -77,6 +78,10 @@ namespace cotf.World
             {
                 if (preTexture == null)
                     return;
+                using (Graphics pre = Graphics.FromImage(preTexture)) 
+                {
+                    pre.ScaleTransform(50f / preTexture.Width, 50f / preTexture.Height);
+                }
                 Drawing.LightmapHandling(preTexture, this, 1.2f, graphics);
             }
         }

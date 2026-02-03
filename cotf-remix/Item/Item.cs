@@ -12,7 +12,8 @@ using cotf.Assets;
 using ToolTip = cotf.Base.ToolTip;
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
-using Microsoft.Xna.Framework;
+using System.Numerics;
+
 
 namespace cotf
 {
@@ -81,7 +82,7 @@ namespace cotf
             SetToolTip();
             color = defaultColor;
 
-            //  TODO READD STASH
+            //  TODO READ STASH
             //CirclePrefect.Native.Stash.CopperCoin = 1;
             //CirclePrefect.Native.Stash.SilverCoin = 100;
             //CirclePrefect.Native.Stash.GoldCoin = 10000;
@@ -97,6 +98,11 @@ namespace cotf
         protected virtual void Init()
         {
             ticks = MaxTicks;
+        }
+        public void Mutate()
+        {
+            // TODO Real mutations
+            damage += Main.FloorNum;
         }
         public static void RollStatus(Item item)
         {
@@ -370,6 +376,7 @@ namespace cotf
             }
             WorldUpdate(true);
         }
+
         public virtual void WorldUpdate(bool update)
         {
             if (!update)

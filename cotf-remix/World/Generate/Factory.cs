@@ -8,14 +8,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.Xna.Framework;
 
 
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
+
+
 using ArchaeaMod;
 using ArchaeaMod.Structure;
 using TileID = ArchaeaMod.TileID;
-using Microsoft.Xna.Framework.Content;
+using System.Numerics;
 
 namespace cotf.WorldGen
 {

@@ -36,6 +36,7 @@ namespace cotf
             useStyle = UseStyle.Stab;
             equipType = EquipType.MainHand;
             defaultColor = Color.LightGray;
+            texture = Main.Texture[0];
         }
         protected override void Init()
         {

@@ -14,7 +14,7 @@ using Rectangle = System.Drawing.Rectangle;
 using Color = System.Drawing.Color;
 using Point = System.Drawing.Point;
 using Matrix = System.Drawing.Drawing2D.Matrix;
-using Microsoft.Xna.Framework;
+using System.Numerics;
 
 namespace cotf.Base
 {
@@ -333,6 +333,14 @@ namespace cotf.Base
 			if (input > max)
 				input = max;
 			result = input;
+		}
+		public static float Clamp(float input, float min, float max)
+		{
+			if (input < min)
+				input = min;
+			if (input > max)
+				input = max;
+			return input;
 		}
 		public const float Radian = 0.017f;
 		public static double ToRadian(double degrees)

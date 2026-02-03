@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using cotf.Base;
 using cotf.World;
-using Microsoft.Xna.Framework;
+
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
 

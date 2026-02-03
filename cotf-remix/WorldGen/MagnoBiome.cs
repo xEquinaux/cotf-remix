@@ -3,9 +3,11 @@ using cotf.World;
 using cotf.Base;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Numerics;
 
-using Microsoft.Xna.Framework;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
+
+
 
 namespace ArchaeaMod.Biome
 {

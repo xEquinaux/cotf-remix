@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ using cotf.Collections;
 using cotf.ID;
 using cotf.World;
 using cotf.World.Traps;
-using Microsoft.Xna.Framework;
+
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using Rectangle = System.Drawing.Rectangle;
 

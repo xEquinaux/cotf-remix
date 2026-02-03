@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+
 using cotf;
 using cotf.Base;
 using RoomID = ArchaeaMod.Structure.RoomID;
 using Rectangle = System.Drawing.Rectangle;
 using cotf.World;
 using cotf.WorldGen;
+using System.Numerics;
 
 namespace ArchaeaMod.Structure
 {
@@ -77,8 +78,8 @@ namespace ArchaeaMod.Structure
                         int X2 = (int)node.X + W / 2;
                         int Y1 = (int)node.Y - H / 2;
                         int Y2 = (int)node.Y + H / 2;
-                        r.bound = new Rectangle(X1 - border, Y1 - border, W + border, H + border);
-                        if (room.FirstOrDefault(t => t.bound.Intersects(r.bound)) != default)
+                        r.bounds = new Rectangle(X1 - border, Y1 - border, W + border, H + border);
+                        if (room.FirstOrDefault(t => t.bounds.Intersects(r.bounds)) != default)
                         {
                             continue;
                         }
@@ -327,7 +328,7 @@ namespace ArchaeaMod.Structure
                 {
                     int X = Math.Max(0, Math.Min(x + i, Width - 1));
                     int Y = Math.Max(0, Math.Min(y + j, Height - 1));
-                    var r = room.FirstOrDefault(t => t.bound.Intersects(new Rectangle(X, Y, size + border, size + border)));
+                    var r = room.FirstOrDefault(t => t.bounds.Intersects(new Rectangle(X, Y, size + border, size + border)));
                     if (r != default)
                     {
                         continue;
@@ -498,10 +499,10 @@ namespace ArchaeaMod.Structure
             //  Balconies 
             foreach (Room r in room)
             {
-                int Top = y + r.bound.Y;
-                int Right = r.bound.Right;
-                int Bottom = y + r.bound.Bottom;
-                int Left = r.bound.X;
+                int Top = y + r.bounds.Y;
+                int Right = r.bounds.Right;
+                int Bottom = y + r.bounds.Bottom;
+                int Left = r.bounds.X;
                 for (int i = Left; i < Right; i++)
                 {
                     for (int j = Top; j < Bottom; j++)

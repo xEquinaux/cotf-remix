@@ -10,8 +10,9 @@ using System.Windows.Input;
 using ToolTip = cotf.Base.ToolTip;
 using cotf.Base;
 using cotf.World;
-using Microsoft.Xna.Framework;
+
 using Color = System.Drawing.Color;
+using System.Numerics;
 
 namespace cotf
 {
@@ -77,8 +78,8 @@ namespace cotf
                 else ticks = 0;
             }
             else if (!idle) velocity = Vector2.Zero;
-            velocity.X = MathHelper.Clamp(velocity.X, -1f, 1f);
-            velocity.Y = MathHelper.Clamp(velocity.Y, -1f, 1f);
+            velocity.X = Helper.Clamp(velocity.X, -1f, 1f);
+            velocity.Y = Helper.Clamp(velocity.Y, -1f, 1f);
             velocity.X *= Main.TimeScale;
             velocity.Y *= Main.TimeScale;
         }

@@ -11,9 +11,10 @@ using cotf.Base;
 using cotf.World;
 using cotf.Buff;
 using cotf.ID;
-using Microsoft.Xna.Framework;
+
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
+using System.Numerics;
 
 namespace cotf
 {

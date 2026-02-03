@@ -12,6 +12,9 @@ using CotF_dev;
 using Rectangle = System.Drawing.Rectangle;
 using Point = System.Drawing.Point;
 using System.Diagnostics;
+using System.Drawing;
+using System;
+using System.IO;
 
 namespace cotf;
 
@@ -19,7 +22,18 @@ internal class Program
 {
 	static void Main(string[] args)
 	{
-		new Game();
+		try 
+		{ 
+			new Game();
+		}
+		catch (Exception e)
+		{
+			var time = DateTime.Now;
+			using (var s = File.CreateText($"{time.Year}_{time.Month}_{time.Day}_{time.Minute}_{time.Second}_{time.Millisecond}.txt"))
+			{
+				s.WriteLine(e.ToString());
+			}
+		}
 	}
 }
 
@@ -57,7 +71,7 @@ public class Game : Direct2D
 	public override void LoadResources()
 	{
 		Asset.Request("Backgrounds\\MapBGMagno", ".png", out titleScreen);
-		Asset.LoadFromFile("Content\\Sky_boss.rew", out skyBoss);
+		Asset.LoadFromFile("Content\\Sky_boss", out skyBoss);
 		
 		Main.cinnabar = Asset<Image>.Request("cinnabar_dagger");
 		Main.bg = Asset<Image>.Request("bg");
@@ -77,6 +91,10 @@ public class Game : Direct2D
 			Main.wallTexture[i - 1] = Asset<Image>.Request($"Walls/wall{i}");
 		}
 		Main.chainTexture[0] = Asset<Image>.Request("chain");
+		Main.Texture.Add(Asset.LoadFromFile("Content/Projectiles/magno_javelin"));
+		Main.Texture.Add(Asset.LoadFromFile("Content/Items/Jobs/Scroll_plague_nova"));
+		Main.Texture.Add(Asset.LoadFromFile("Content/Items/flask_mercury"));
+		Main.Texture.Add(Asset.LoadFromFile("Content/Walls/magno_brickwall"));
 	}
 
 	public override void Initialize()
@@ -202,7 +220,7 @@ public class Game : Direct2D
 		//cotf.World.FogMethods.DrawEffect(fog, _spriteBatch);
 	}
 
-	private SharpDX.Direct2D1.Bitmap ConvertBitmap(System.Drawing.Bitmap bitmap, SharpDX.Direct2D1.DeviceContext deviceContext)
+	private new SharpDX.Direct2D1.Bitmap ConvertBitmap(System.Drawing.Bitmap bitmap, SharpDX.Direct2D1.DeviceContext deviceContext)
 	{
 		var bitmapProperties = new SharpDX.Direct2D1.BitmapProperties(
 			new SharpDX.Direct2D1.PixelFormat(SharpDX.DXGI.Format.B8G8R8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied));

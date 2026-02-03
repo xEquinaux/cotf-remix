@@ -1,12 +1,13 @@
 ﻿using cotf.Collections.Unused;
 using cotf.World;
 using cotf.World.Traps;
-using Microsoft.Xna.Framework;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -755,7 +756,7 @@ namespace cotf.Base
             }
             bw.Write(value);
         }
-        public void SaveValue(string tag, Microsoft.Xna.Framework.Vector2 value)
+        public void SaveValue(string tag, Vector2 value)
         {
             if (!TagExists(tag))
             {

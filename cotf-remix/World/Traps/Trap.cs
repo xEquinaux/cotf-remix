@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using cotf.Assets;
 using cotf.Base;
 using cotf.ID;
-using Microsoft.Xna.Framework;
+
 using Color = System.Drawing.Color;
 using ToolTip = cotf.Base.ToolTip;
 

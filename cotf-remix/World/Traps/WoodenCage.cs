@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Timers;
 using cotf;
 using cotf.Base;
 using cotf.ID;
-using Microsoft.Xna.Framework;
+
 
 namespace cotf.World.Traps
 {

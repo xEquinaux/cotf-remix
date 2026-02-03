@@ -1,9 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using cotf.Buff;
+﻿using cotf.Buff;
 using cotf.ID;
 using cotf.World;
-using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
+using System.Numerics;
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -219,7 +222,8 @@ namespace cotf.Base
 			for (int n = 0; n < Helper.Distance(from, target.Center); n += step)
 			{
 				var v2 = from + Helper.AngleToSpeed(Helper.AngleTo(from, target.Center), n);
-				if (Tile.GetSafely((int)v2.X / Tile.Size, (int)v2.Y / Tile.Size).Active)
+				var tile = Tile.GetSafely((int)v2.X / Tile.Size, (int)v2.Y / Tile.Size);
+				if (tile != null && tile.Active)
 				{
 					return false;
 				}

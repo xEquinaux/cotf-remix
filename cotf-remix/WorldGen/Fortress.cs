@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+
 
 
 using ArchaeaMod.GenLegacy;
 using System.ComponentModel.Design;
+using System.Numerics;
 
 namespace ArchaeaMod
 {

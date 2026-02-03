@@ -1,1 +1,7 @@
-0.1.0.1441
+# 0.1.0.1447
+
+## 0.1.0.1441 -> 0.2.0.1447
+### Changed
+* Saving and loading
+### Added
+* Hopefully an exception catch-all for monitoring errors

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +12,7 @@ using cotf.Assets;
 using cotf.Base;
 using cotf.NPC;
 using cotf.World;
-using Microsoft.Xna.Framework;
+
 
 namespace cotf
 {
@@ -218,10 +219,18 @@ namespace cotf
             this.life -= damage;
             velocity += Helper.AngleToSpeed(angle, knockBack);
             if (life <= 0)
+            { 
+                Loot();
                 Dispose();
+            }
         }
         public virtual void Loot()
         {
+            if (Main.rand.NextBool())
+            {
+                int num = Item.NewItem(X, Y, 32, 32, (short)(Main.rand.Next(9) + 1));
+                Main.item[num].Mutate();
+            }
         }
         public virtual void IdleActions()
         {

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using cotf.Base;
 using cotf.World;
 using cotf.Collections;
-using Microsoft.Xna.Framework;
+
 using Rectangle = System.Drawing.Rectangle;
+using System.Numerics;
 
 namespace cotf.World
 {

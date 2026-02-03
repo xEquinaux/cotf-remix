@@ -8,8 +8,9 @@ using cotf.World;
 using System.Drawing.Imaging;
 using System.Drawing;
 using ToolTip = cotf.Base.ToolTip;
-using Microsoft.Xna.Framework;
+
 using Color = System.Drawing.Color;
+using System.Numerics;
 
 namespace cotf
 {

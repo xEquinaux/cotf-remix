@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using cotf;
 using cotf.Assets;
 using cotf.Base;
 using cotf.ID;
 using cotf.World;
-using Microsoft.Xna.Framework;
+
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
 

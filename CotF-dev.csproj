@@ -1,459 +1,163 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1748C9B0-C325-4AB9-B75D-7378F1A6E373}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CotF_dev</RootNamespace>
-    <AssemblyName>CotF_dev</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
-    <LangVersion>11</LangVersion>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>cotf</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+	<UseWindowsForms>true</UseWindowsForms>
+	<UseWPF>true</UseWPF>
+	<LangVersion>11</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.5.0.1678, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\REWD\packages\MonoGame.Framework.DesktopGL.3.5.0.1678\lib\net40\MonoGame.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\REWD\packages\MonoGame.Framework.DesktopGL.3.5.0.1678\lib\net40\NVorbis.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\REWD\packages\MonoGame.Framework.DesktopGL.3.5.0.1678\lib\net40\OpenTK.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\REWD\packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct2D1, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\REWD\packages\SharpDX.Direct2D1.4.2.0\lib\net45\SharpDX.Direct2D1.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.DXGI, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\REWD\packages\SharpDX.DXGI.4.2.0\lib\net45\SharpDX.DXGI.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <Compile Remove="cotf-remix\Game.cs" />
+    <Compile Remove="cotf-remix\Program.cs" />
+    <Compile Remove="cotf-remix\WorldGen\Factory\Keypad.cs" />
+    <Compile Remove="cotf-remix\WorldGen\Factory\Tiles\ClosedMetalDoor.cs" />
+    <Compile Remove="cotf-remix\WorldGen\Factory\Tiles\FactoryTile.cs" />
+    <Compile Remove="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpen.cs" />
+    <Compile Remove="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpening.cs" />
+    <Compile Remove="cotf-remix\World\Lighting\Fog.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Asset.cs" />
-    <Compile Include="cotf-remix\Base\BitmapStream.cs" />
-    <Compile Include="cotf-remix\Base\CombatText.cs" />
-    <Compile Include="cotf-remix\Base\Entity.cs" />
-    <Compile Include="cotf-remix\Base\Helper.cs" />
-    <Compile Include="cotf-remix\Base\ID.cs" />
-    <Compile Include="cotf-remix\Base\Input.cs" />
-    <Compile Include="cotf-remix\Base\Lightmap.cs" />
-    <Compile Include="cotf-remix\Base\Margin.cs" />
-    <Compile Include="cotf-remix\Base\rand.cs" />
-    <Compile Include="cotf-remix\Base\Region.cs" />
-    <Compile Include="cotf-remix\Base\TagCompound.cs" />
-    <Compile Include="cotf-remix\Base\Texture.cs" />
-    <Compile Include="cotf-remix\Base\ToolTip.cs" />
-    <Compile Include="cotf-remix\Base\WorldGen.cs" />
-    <Compile Include="cotf-remix\Buff\Buff.cs" />
-    <Compile Include="cotf-remix\Crafting\Crafting.cs" />
-    <Compile Include="cotf-remix\Global\Main.cs" />
-    <Compile Include="cotf-remix\IO\DataHandler.cs" />
-    <Compile Include="cotf-remix\IO\Worker.cs" />
-    <Compile Include="cotf-remix\Item\Broadsword.cs" />
-    <Compile Include="cotf-remix\Item\Item.cs" />
-    <Compile Include="cotf-remix\Item\ItemType.cs" />
-    <Compile Include="cotf-remix\Item\Loot.cs" />
-    <Compile Include="cotf-remix\Item\Potion\Potion.cs" />
-    <Compile Include="cotf-remix\Item\Purse\Coin.cs" />
-    <Compile Include="cotf-remix\Item\Purse\CopperCoin.cs" />
-    <Compile Include="cotf-remix\Item\Purse\GoldCoin.cs" />
-    <Compile Include="cotf-remix\Item\Purse\IronCoin.cs" />
-    <Compile Include="cotf-remix\Item\Purse\PlatinumCoin.cs" />
-    <Compile Include="cotf-remix\Item\Purse\Purse.cs" />
-    <Compile Include="cotf-remix\Item\Purse\SilverCoin.cs" />
-    <Compile Include="cotf-remix\Item\Scroll.cs" />
-    <Compile Include="cotf-remix\Item\Spear.cs" />
-    <Compile Include="cotf-remix\Item\Stash.cs" />
-    <Compile Include="cotf-remix\Item\Torch.cs" />
-    <Compile Include="cotf-remix\Item\Trait\Affix.cs" />
-    <Compile Include="cotf-remix\Item\Trait\Curse.cs" />
-    <Compile Include="cotf-remix\Item\Trait\Identify.cs" />
-    <Compile Include="cotf-remix\Item\Trait\Summoning.cs" />
-    <Compile Include="cotf-remix\Item\Wand.cs" />
-    <Compile Include="cotf-remix\Legacy\Fog.cs" />
-    <Compile Include="cotf-remix\Network\NetMessage.cs" />
-    <Compile Include="cotf-remix\NPC\Factory.cs" />
-    <Compile Include="cotf-remix\NPC\Hawk.cs" />
-    <Compile Include="cotf-remix\NPC\Kobold.cs" />
-    <Compile Include="cotf-remix\NPC\Npc.cs" />
-    <Compile Include="cotf-remix\NPC\SkyBoss.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net4.8\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net4.8\cotf.AssemblyInfo.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net4.8\cotf.GlobalUsings.g.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net48\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net48\cotf.AssemblyInfo.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net48\cotf.GlobalUsings.g.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net8.0-windows\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net8.0-windows\cotf.AssemblyInfo.cs" />
-    <Compile Include="cotf-remix\obj\Debug\net8.0-windows\cotf.GlobalUsings.g.cs" />
-    <Compile Include="cotf-remix\Player\Default.cs" />
-    <Compile Include="cotf-remix\Player\Player.cs" />
-    <Compile Include="cotf-remix\Projectile\Arrow.cs" />
-    <Compile Include="cotf-remix\Projectile\Fireball.cs" />
-    <Compile Include="cotf-remix\Projectile\Firebolt.cs" />
-    <Compile Include="cotf-remix\Projectile\Projectile.cs" />
-    <Compile Include="cotf-remix\Skill\Condition.cs" />
-    <Compile Include="cotf-remix\Skill\Defense\Light.cs" />
-    <Compile Include="cotf-remix\Skill\Defense\MinorHeal.cs" />
-    <Compile Include="cotf-remix\Skill\Offense\Fireball.cs" />
-    <Compile Include="cotf-remix\Skill\Offense\Firebolt.cs" />
-    <Compile Include="cotf-remix\Skill\Skill.cs" />
-    <Compile Include="cotf-remix\Textures\Asset.cs" />
-    <Compile Include="cotf-remix\Textures\Pipeline.cs" />
-    <Compile Include="cotf-remix\UI\UI.cs" />
-    <Compile Include="cotf-remix\WorldGen\Chunk.cs" />
-    <Compile Include="cotf-remix\WorldGen\Factory\DoorNPC.cs" />
-    <Compile Include="cotf-remix\WorldGen\Factory\Factory.cs" />
-    <Compile Include="cotf-remix\WorldGen\Factory\Keypad.cs" />
-    <Compile Include="cotf-remix\WorldGen\Factory\Room.cs" />
-    <Compile Include="cotf-remix\WorldGen\Factory\Tiles\ClosedMetalDoor.cs" />
-    <Compile Include="cotf-remix\WorldGen\Factory\Tiles\FactoryTile.cs" />
-    <Compile Include="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpen.cs" />
-    <Compile Include="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpening.cs" />
-    <Compile Include="cotf-remix\WorldGen\FortGen.cs" />
-    <Compile Include="cotf-remix\WorldGen\Fortress.cs" />
-    <Compile Include="cotf-remix\WorldGen\GenLegacy.cs" />
-    <Compile Include="cotf-remix\WorldGen\Legacy\Backup.cs" />
-    <Compile Include="cotf-remix\WorldGen\MagnoBiome.cs" />
-    <Compile Include="cotf-remix\WorldGen\MagnoGen.cs" />
-    <Compile Include="cotf-remix\WorldGen\MagnoV2.cs" />
-    <Compile Include="cotf-remix\WorldGen\Room.cs" />
-    <Compile Include="cotf-remix\World\Generate\Castle.cs" />
-    <Compile Include="cotf-remix\World\Generate\Factory.cs" />
-    <Compile Include="cotf-remix\World\Generate\Map.cs" />
-    <Compile Include="cotf-remix\World\Generate\Persistent.cs" />
-    <Compile Include="cotf-remix\World\Generate\Room.cs" />
-    <Compile Include="cotf-remix\World\Interact\Door.cs" />
-    <Compile Include="cotf-remix\World\Interact\Staircase.cs" />
-    <Compile Include="cotf-remix\World\Interact\WorldObject.cs" />
-    <Compile Include="cotf-remix\World\Lighting\Fog.cs" />
-    <Compile Include="cotf-remix\World\Lighting\Lamp.cs" />
-    <Compile Include="cotf-remix\World\Lighting\Lighting.cs" />
-    <Compile Include="cotf-remix\World\Lighting\LightPass.cs" />
-    <Compile Include="cotf-remix\World\Overworld.cs" />
-    <Compile Include="cotf-remix\World\Static\Background.cs" />
-    <Compile Include="cotf-remix\World\Static\Floor.cs" />
-    <Compile Include="cotf-remix\World\Static\Scenery.cs" />
-    <Compile Include="cotf-remix\World\Static\Slope.cs" />
-    <Compile Include="cotf-remix\World\Static\Tile.cs" />
-    <Compile Include="cotf-remix\World\Traps\AcidPatch.cs" />
-    <Compile Include="cotf-remix\World\Traps\CrossbowTurret.cs" />
-    <Compile Include="cotf-remix\World\Traps\FlameGeyser.cs" />
-    <Compile Include="cotf-remix\World\Traps\FogMachine.cs" />
-    <Compile Include="cotf-remix\World\Traps\MagicTurret.cs" />
-    <Compile Include="cotf-remix\World\Traps\RockFall.cs" />
-    <Compile Include="cotf-remix\World\Traps\Spikes.cs" />
-    <Compile Include="cotf-remix\World\Traps\Teleport.cs" />
-    <Compile Include="cotf-remix\World\Traps\Trap.cs" />
-    <Compile Include="cotf-remix\World\Traps\TrapDoor.cs" />
-    <Compile Include="cotf-remix\World\Traps\WoodenCage.cs" />
-    <Compile Include="Keyboard.cs" />
-    <Compile Include="Keyboardhook.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility.cs" />
+    <PackageReference Include="SharpDX" Version="4.2.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Content\Sky_boss.rew">
+    <ProjectReference Include="..\REWD\REWD.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Content\Items\flask_mercury.rew">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="cotf-remix\.gitattributes" />
-    <None Include="cotf-remix\.gitignore" />
-    <None Include="cotf-remix\app.manifest" />
-    <None Include="cotf-remix\Content\bin\Windows\background.xnb" />
-    <None Include="cotf-remix\Content\bin\Windows\fow.xnb" />
-    <None Include="cotf-remix\Content\bin\Windows\temp.xnb" />
-    <None Include="cotf-remix\Content\Content.mgcb" />
-    <None Include="cotf-remix\Content\dotnet-tools.json" />
-    <None Include="cotf-remix\Content\obj\Windows\.mgcontent" />
-    <None Include="cotf-remix\Content\obj\Windows\.mgstats" />
-    <None Include="cotf-remix\Content\obj\Windows\background.mgcontent" />
-    <None Include="cotf-remix\Content\obj\Windows\fow.mgcontent" />
-    <None Include="cotf-remix\Content\obj\Windows\temp.mgcontent" />
-    <None Include="cotf-remix\cotf.csproj" />
-    <None Include="cotf-remix\desktop.ini" />
-    <None Include="cotf-remix\obj\cotf.csproj.nuget.dgspec.json" />
-    <None Include="cotf-remix\obj\cotf.csproj.nuget.g.props" />
-    <None Include="cotf-remix\obj\cotf.csproj.nuget.g.targets" />
-    <None Include="cotf-remix\obj\Debug\net4.8\cotf.AssemblyInfoInputs.cache" />
-    <None Include="cotf-remix\obj\Debug\net4.8\cotf.csproj.AssemblyReference.cache" />
-    <None Include="cotf-remix\obj\Debug\net4.8\cotf.exe.withSupportedRuntime.config" />
-    <None Include="cotf-remix\obj\Debug\net4.8\cotf.GeneratedMSBuildEditorConfig.editorconfig" />
-    <None Include="cotf-remix\obj\Debug\net48\cotf.AssemblyInfoInputs.cache" />
-    <None Include="cotf-remix\obj\Debug\net48\cotf.assets.cache" />
-    <None Include="cotf-remix\obj\Debug\net48\cotf.csproj.AssemblyReference.cache" />
-    <None Include="cotf-remix\obj\Debug\net48\cotf.exe.withSupportedRuntime.config" />
-    <None Include="cotf-remix\obj\Debug\net48\cotf.GeneratedMSBuildEditorConfig.editorconfig" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.AssemblyInfoInputs.cache" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.assets.cache" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.csproj.AssemblyReference.cache" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.csproj.BuildWithSkipAnalyzers" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.csproj.CoreCompileInputs.cache" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.csproj.Up2Date" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.GeneratedMSBuildEditorConfig.editorconfig" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.genruntimeconfig.cache" />
-    <None Include="cotf-remix\obj\Debug\net8.0-windows\cotf.sourcelink.json" />
-    <None Include="cotf-remix\obj\project.assets.json" />
-    <None Include="cotf-remix\obj\project.nuget.cache" />
-    <None Include="packages.config" />
-    <None Include="save.order.ini" />
-    <None Include="todo.ini" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\REWD\REWD.csproj">
-      <Project>{56013eab-0808-4c5a-aee4-508b65152857}</Project>
-      <Name>REWD</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Ground\background.png">
+    <None Update="Content\Items\Jobs\Scroll_plague_nova.rew">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Projectiles\magno_javelin.rew">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Sky_boss.rew">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Walls\magno_brickwall.rew">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Waters\LiquidMetalWaterfallStyle.rew">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Waters\LiquidMetalWaterStyle.rew">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Waters\LiquidMetalWaterStyle_Block.rew">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Waters\LiquidMetalWaterStyle_Slope.rew">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Waters\MagnoWaterfallStyle.rew">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Backgrounds\MapBGMagno.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\chain.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\cinnabar_dagger.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\ClassIcon_UI.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\config_icons.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\fow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\fow50.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Ground\background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\item0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\loot0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\npc0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\npc1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\pixel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\projectile0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\scenery0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Sky_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Sky_1_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Sky_1_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Sky_1_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Sky_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Sky_boss.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\temp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\temp90.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\trap0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Walls\wall1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Walls\wall2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Walls\wall3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Walls\wall4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="Textures\Walls\wall1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Content\Items\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Walls\wall2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Walls\wall3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Walls\wall4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\bg.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\chain.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\cinnabar_dagger.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\ClassIcon_UI.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\config_icons.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\fow.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\fow50.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\item0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\loot0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\npc0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\npc1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\pixel.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\projectile0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\scenery0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Sky_1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Sky_1_1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Sky_1_2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Sky_1_3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Sky_3.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\Sky_boss.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\small.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\temp.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\temp90.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Textures\trap0.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="cotf-remix\build.txt" />
-    <Content Include="cotf-remix\Content\fow.png" />
-    <Content Include="cotf-remix\Content\temp.png" />
-    <Content Include="cotf-remix\cotf.sln" />
-    <Content Include="cotf-remix\Icon.ico" />
-    <Content Include="cotf-remix\lib\CirclePrefect.dll" />
-    <Content Include="cotf-remix\lib\Native.dll" />
-    <Content Include="cotf-remix\lib\tUserInterface.dll" />
-    <Content Include="cotf-remix\LICENSE.txt" />
-    <Content Include="cotf-remix\obj\Debug\net8.0-windows\apphost.exe" />
-    <Content Include="cotf-remix\obj\Debug\net8.0-windows\cotf.csproj.FileListAbsolute.txt" />
-    <Content Include="cotf-remix\obj\Debug\net8.0-windows\cotf.dll" />
-    <Content Include="cotf-remix\obj\Debug\net8.0-windows\cotf.pdb" />
-    <Content Include="cotf-remix\obj\Debug\net8.0-windows\refint\cotf.dll" />
-    <Content Include="cotf-remix\obj\Debug\net8.0-windows\ref\cotf.dll" />
-    <Content Include="cotf-remix\Textures\background.png" />
-    <Content Include="cotf-remix\Textures\bg.png" />
-    <Content Include="cotf-remix\Textures\chain.png" />
-    <Content Include="cotf-remix\Textures\cinnabar_dagger.png" />
-    <Content Include="cotf-remix\Textures\ClassIcon_UI.png" />
-    <Content Include="cotf-remix\Textures\config_icons.png" />
-    <Content Include="cotf-remix\Textures\fow.png" />
-    <Content Include="cotf-remix\Textures\fow50.png" />
-    <Content Include="cotf-remix\Textures\Ground\background.png" />
-    <Content Include="cotf-remix\Textures\item0.png" />
-    <Content Include="cotf-remix\Textures\loot0.png" />
-    <Content Include="cotf-remix\Textures\npc0.png" />
-    <Content Include="cotf-remix\Textures\npc1.png" />
-    <Content Include="cotf-remix\Textures\pixel.png" />
-    <Content Include="cotf-remix\Textures\projectile0.png" />
-    <Content Include="cotf-remix\Textures\scenery0.png" />
-    <Content Include="cotf-remix\Textures\Sky_1.png" />
-    <Content Include="cotf-remix\Textures\Sky_1_1.png" />
-    <Content Include="cotf-remix\Textures\Sky_1_2.png" />
-    <Content Include="cotf-remix\Textures\Sky_1_3.png" />
-    <Content Include="cotf-remix\Textures\Sky_3.png" />
-    <Content Include="cotf-remix\Textures\Sky_boss.png" />
-    <Content Include="cotf-remix\Textures\small.png" />
-    <Content Include="cotf-remix\Textures\temp.png" />
-    <Content Include="cotf-remix\Textures\temp90.png" />
-    <Content Include="cotf-remix\Textures\trap0.png" />
-    <Content Include="cotf-remix\Textures\Walls\wall1.png" />
-    <Content Include="cotf-remix\Textures\Walls\wall2.png" />
-    <Content Include="cotf-remix\Textures\Walls\wall3.png" />
-    <Content Include="cotf-remix\Textures\Walls\wall4.png" />
-    <Content Include="cotf-remix\WorldGen\Factory\Tiles\ClosedMetalDoor.png" />
-    <Content Include="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpen.png" />
-    <Content Include="cotf-remix\WorldGen\Factory\Tiles\MetalDoorOpening.png" />
-    <Content Include="lib\Direct2D_Render.dll" />
-    <Content Include="lib\MonoGame.Framework.dll" />
-    <Content Include="lib\NVorbis.dll" />
-    <Content Include="lib\OpenTK.dll" />
-    <Content Include="lib\REWD.exe" />
-    <Content Include="lib\SharpDX.Direct2D1.dll" />
-    <Content Include="lib\SharpDX.Direct3D11.dll" />
-    <Content Include="lib\SharpDX.dll" />
-    <Content Include="lib\SharpDX.DXGI.dll" />
-    <Content Include="Textures\Backgrounds\MapBGMagno.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

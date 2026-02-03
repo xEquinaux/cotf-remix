@@ -8,8 +8,9 @@ using ToolTip = cotf.Base.ToolTip;
 using cotf;
 using cotf.Base;
 using cotf.World;
-using Microsoft.Xna.Framework;
+
 using Color = System.Drawing.Color;
+using System.Numerics;
 
 namespace cotf.Collections.Unused
 {

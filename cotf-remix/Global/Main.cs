@@ -25,11 +25,13 @@ using System.Drawing.Imaging;
 using Bitmap = System.Drawing.Bitmap;
 using System.ComponentModel;
 using static cotf.Base.TagCompound;
-using Microsoft.Xna.Framework;
+
 using Margin = cotf.Base.Margin;
 using CotF_dev;
 using REWD.FoundationR;
-using Microsoft.Xna.Framework;
+using System.Numerics;
+using System.IO;
+
 
 namespace cotf
 {
@@ -156,6 +158,7 @@ namespace cotf
         public static Image[] trapTexture = new Image[TrapID.Sets.Total];
         public static Image[] chainTexture = new Image[1];
         public static Image[] wallTexture = new Image[4];
+        public static List<Image> Texture = new List<Image>();
         //public static KeyStates EscState = KeyStates.None;
         public static Camera camera1 = new Camera();
         public static Vector2 MouseWorld;
@@ -434,7 +437,7 @@ namespace cotf
                 //myPlayer.lamp = lamp[Lamp.NewLamp(myPlayer.Center, myPlayer.lightRange, Lamp.TorchLight, myPlayer, false, 0)];
                 lightmap = worldgen.InitLightmap(width, height);
                 myPlayer.Init();
-                WindowHandle = Utility.FindWindowByCaption(IntPtr.Zero, "SharpDX Render Window");
+                WindowHandle = Utility.FindWindowByCaption(IntPtr.Zero, "Main Window");
                 init = true; 
                 return;
             }

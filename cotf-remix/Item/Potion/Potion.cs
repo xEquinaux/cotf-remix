@@ -35,6 +35,7 @@ namespace cotf
             equipType = EquipType.OffHand;
             defaultColor = Color.Orange;
             friendly = true;
+            texture = Main.Texture[2];
         }
         public override bool UseItem(Player myPlayer)
         {

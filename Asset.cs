@@ -25,6 +25,7 @@ namespace CotF_dev
         }
         public static Bitmap LoadFromFile(string path)
         {
+            path += ".rew";
             REW rew;
             using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
@@ -38,6 +39,7 @@ namespace CotF_dev
         }
         public static void LoadFromFile(string path, out Bitmap image)
         {
+            path += ".rew";
             REW rew;
             using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {

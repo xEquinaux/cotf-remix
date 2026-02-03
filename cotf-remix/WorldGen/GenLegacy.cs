@@ -2,16 +2,18 @@
 using cotf.Base;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.Xna.Framework;
 
 
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
-using Microsoft.Xna.Framework;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
+
+
+
+
 
 namespace ArchaeaMod.Unused
 {
@@ -101,7 +103,7 @@ namespace ArchaeaMod.GenLegacy
         public Vector2 center;
         public static Vector2 origin;
         private Vector2 position;
-        public static Microsoft.Xna.Framework.Rectangle[] bounds;
+        public static Rectangle[] bounds;
         public static Dictionary<Vector2, int> plots = new Dictionary<Vector2, int>();
         public static SkyDen[] mDen;
         private SkyDen den;
@@ -483,7 +485,7 @@ namespace ArchaeaMod.GenLegacy
                                 Vector2 center = new Vector2(centers[i].X, centers[i].Y + randY / 2);
                                 float radius = randX / 2;
                                 float variance = Main.rand.NextFloat(1f, 2f);
-                                for (float k = MathHelper.ToRadians(0f); k < MathHelper.ToRadians(180f); k += 0.017f)
+                                for (float k = Helper.ToRadian(0f); k < Helper.ToRadian(180f); k += 0.017f)
                                 {
                                     float cos = (float)(radius * Math.Cos(k));
                                     float sin = (float)((radius / variance) * Math.Sin(k));

@@ -10,12 +10,10 @@ using System.Windows.Input;
 using cotf.Base;
 using cotf.World;
 using cotf.Collections;
-using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
-using Keys = Microsoft.Xna.Framework.Input.Keys;
-using Microsoft.Xna.Framework;
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
 using CotF_dev;
+using System.Numerics;
 
 namespace cotf.World
 {

@@ -17,9 +17,10 @@ using Color = System.Drawing.Color;
 using static cotf.Base.TagCompound;
 using Point = System.Drawing.Point;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using Microsoft.Xna.Framework;
+
 using Margin = cotf.Base.Margin;
 using CotF_dev;
+using System.Numerics;
 
 
 namespace cotf
@@ -100,13 +101,26 @@ namespace cotf
             color = defaultColor;
             //  Need to reorient draw init positions
             if (!TagCompound.Exists(SaveType.Player, name))
-            { 
+            {
                 FindRandomTile();
             }
+            //  Made a change where the item gets equipped no matter what, then the empty inventory item checker unequips empty items
             else Load();
-            if (hasTorch())
+            //  Skipping this from now on
+            //if (hasTorch())
+            //{
+            //    UnequipTorch(Torch);
+            //}
+            //  Should fix the empty inventory items problem
+            for (int i = 0; i < inventory.Count; i++)
             {
-                UnequipTorch(Torch);
+                if (inventory[i] != null)
+                {
+                    if (inventory[i].NameLen <= 0)
+                    {
+                        inventory[i].UnequipItem(this, out _);
+                    }
+                }
             }
             //int item = Item.NewItem(X, Y, 32, 32, ItemID.Torch, (byte)this.whoAmI);
             //EquipTorch(Main.item[item]);
@@ -159,7 +173,7 @@ namespace cotf
                 for (int i = 0; i < equipment.Length; i++)
                 {
                     var item = tag.GetItem($"{name}_equip{i}");
-                    if (item != null && item.active && item.equipped)
+                    if (item != null)
                     {
                         item.EquipItem(this);
                     }

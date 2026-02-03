@@ -2,7 +2,7 @@
 using cotf.Collections;
 using cotf.World.Traps;
 using cotf.WorldGen;
-using Microsoft.Xna.Framework;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Color = System.Drawing.Color;
 using Rectangle = System.Drawing.Rectangle;
 using Margin = cotf.Base.Margin;
+using System.Threading;
 
 namespace cotf.World
 {

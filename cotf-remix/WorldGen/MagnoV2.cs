@@ -3,15 +3,17 @@ using cotf.Base;
 using cotf.World;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Microsoft.Xna.Framework;
 
 
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
+
+
 
 namespace ArchaeaMod.Gen
 {

@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36202.13
+# Visual Studio Version 18
+VisualStudioVersion = 18.2.11415.280
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CotF-dev", "CotF-dev.csproj", "{1748C9B0-C325-4AB9-B75D-7378F1A6E373}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REWD", "..\REWD\REWD.csproj", "{771068F3-A144-059C-B202-230D28BC15B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchaeaMod", "..\ArchaeaMod-service\ArchaeaMod.csproj", "{67143CEB-E549-4F5F-8C2F-3EBDE0921E9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RewFile", "..\RewFile\RewFile.csproj", "{B1DF0875-BD83-3788-36F9-E6183B69D2D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REWD", "..\REWD\REWD.csproj", "{5BDEDF6E-137D-40FB-938D-5ECCEF9DA805}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RewFile", "..\RewFile\RewFile.csproj", "{4E5E5F92-B561-4CDA-9344-8FD6281B6133}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CotF-dev", "CotF-dev.csproj", "{4A6AB4B5-E313-A35E-519A-060B41FDEC9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,27 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1748C9B0-C325-4AB9-B75D-7378F1A6E373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1748C9B0-C325-4AB9-B75D-7378F1A6E373}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1748C9B0-C325-4AB9-B75D-7378F1A6E373}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1748C9B0-C325-4AB9-B75D-7378F1A6E373}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67143CEB-E549-4F5F-8C2F-3EBDE0921E9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67143CEB-E549-4F5F-8C2F-3EBDE0921E9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67143CEB-E549-4F5F-8C2F-3EBDE0921E9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67143CEB-E549-4F5F-8C2F-3EBDE0921E9C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5BDEDF6E-137D-40FB-938D-5ECCEF9DA805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BDEDF6E-137D-40FB-938D-5ECCEF9DA805}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BDEDF6E-137D-40FB-938D-5ECCEF9DA805}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BDEDF6E-137D-40FB-938D-5ECCEF9DA805}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E5E5F92-B561-4CDA-9344-8FD6281B6133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E5E5F92-B561-4CDA-9344-8FD6281B6133}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E5E5F92-B561-4CDA-9344-8FD6281B6133}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E5E5F92-B561-4CDA-9344-8FD6281B6133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{771068F3-A144-059C-B202-230D28BC15B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{771068F3-A144-059C-B202-230D28BC15B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{771068F3-A144-059C-B202-230D28BC15B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{771068F3-A144-059C-B202-230D28BC15B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1DF0875-BD83-3788-36F9-E6183B69D2D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1DF0875-BD83-3788-36F9-E6183B69D2D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1DF0875-BD83-3788-36F9-E6183B69D2D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1DF0875-BD83-3788-36F9-E6183B69D2D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A6AB4B5-E313-A35E-519A-060B41FDEC9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A6AB4B5-E313-A35E-519A-060B41FDEC9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A6AB4B5-E313-A35E-519A-060B41FDEC9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A6AB4B5-E313-A35E-519A-060B41FDEC9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {679258F5-531F-4C9B-9B86-71B83F7B975B}
+		SolutionGuid = {3D68F30F-7A2B-4D83-8BF9-A2E90E3AE06E}
 	EndGlobalSection
 EndGlobal
