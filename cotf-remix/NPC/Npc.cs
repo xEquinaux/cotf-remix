@@ -18,6 +18,8 @@ namespace cotf
 {
     public class Npc : Entity
     {
+        public int defense;
+
         public Lamp light;
         public const int sightTileRange = 8;
         public bool inHallway = false;
@@ -62,6 +64,7 @@ namespace cotf
             discovered = Distance(Main.myPlayer.Center) < Sight || (NpcSight(Main.myPlayer) && !inShadow);
             return true;
         }
+
         public virtual void AI()
         {
             if (!active)
@@ -409,7 +412,9 @@ namespace cotf
         public const short
             None = 0,
             Kobold = 1,
-            Hawk = 2;
+            Hawk = 2,
+            Wurm = 3,
+            Fanatic = 4;
     }
     public enum IdleBehavior
     {

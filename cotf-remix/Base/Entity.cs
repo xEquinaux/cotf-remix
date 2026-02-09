@@ -14,6 +14,9 @@ namespace cotf.Base
 {
 	public class Entity : Object, IDisposable
 	{
+		//  For wurm NPC
+        public Wurm_Head head;
+
 		public string TextureName;
 		public string Name 
 		{ 
@@ -50,6 +53,7 @@ namespace cotf.Base
 			colRight,
 			colDown,
 			colLeft;
+		public decimal ql;
 		public int width, height;
 		public int ticks;
 		public int whoAmI;
@@ -233,6 +237,10 @@ namespace cotf.Base
 		public double Distance(Vector2 other)
 		{
 			return Math.Sqrt(Math.Pow(other.X - position.X, 2) + Math.Pow(other.Y - position.Y, 2));
+		}
+		public float Distance(Vector2 one, Vector2 two)
+		{
+			return (float)Math.Sqrt(Math.Pow(one.X - two.X, 2) + Math.Pow(one.Y - two.Y, 2));
 		}
 		public float AngleTo(Vector2 other)
 		{

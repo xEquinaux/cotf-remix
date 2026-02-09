@@ -548,7 +548,7 @@ namespace cotf.World
                                 break;
                             case TileID.Monster:
                                 if (numNPCs++ < 12)
-                                    Npc.NewNPC((int)randv2.X + randv2.X % Tile.Size + Tile.Size / 10, (int)randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10, NpcType.Kobold + Main.rand.Next(2));
+                                    Npc.NewNPC((int)randv2.X + randv2.X % Tile.Size + Tile.Size / 10, (int)randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10, NpcType.Kobold + Main.rand.Next(4));
                                 break;
                             case TileID.Trap:
                                 if (numTraps++ < 10)
@@ -678,7 +678,7 @@ namespace cotf.World
                                     break;
                                 case TileID.Monster:
                                     if (numNPCs++ < 12)
-                                        Npc.NewNPC((int)randv2.X + randv2.X % Tile.Size + Tile.Size / 10, (int)randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10, NpcType.Kobold + Main.rand.Next(2));
+                                        Npc.NewNPC((int)randv2.X + randv2.X % Tile.Size + Tile.Size / 10, (int)randv2.Y + randv2.Y % Tile.Size + Tile.Size / 10, NpcType.Kobold + Main.rand.Next(4));
                                     break;
                                 case TileID.Trap:
                                     if (numTraps++ < 10)

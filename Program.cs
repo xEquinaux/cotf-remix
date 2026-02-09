@@ -95,6 +95,9 @@ public class Game : Direct2D
 		Main.Texture.Add(Asset.LoadFromFile("Content/Items/Jobs/Scroll_plague_nova"));
 		Main.Texture.Add(Asset.LoadFromFile("Content/Items/flask_mercury"));
 		Main.Texture.Add(Asset.LoadFromFile("Content/Walls/magno_brickwall"));
+		Main.wurmTex[0] = Asset.LoadFromFile("Content/NPCs/Hatchling_head");
+		Main.wurmTex[1] = Asset.LoadFromFile("Content/NPCs/Hatchling_body");
+		Main.wurmTex[2] = Asset.LoadFromFile("Content/NPCs/Hatchling_tail");
 	}
 
 	public override void Initialize()

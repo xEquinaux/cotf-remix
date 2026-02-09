@@ -314,6 +314,26 @@ namespace cotf.Base
 	}
 	public static class Helper
 	{
+		public static bool InBounds(int i, int j)
+		{
+			return Main.background[i, j].active;
+		}
+		public static Vector2 FindAny(Npc npc, Player target, bool findGround = true, int range = 400)
+        {
+            int x = 0, y = 0;
+            x = Main.rand.Next((int)target.Center.X - range, (int)target.Center.X + range);
+            y = Main.rand.Next((int)target.Center.Y - (int)(range * 0.67f), (int)target.Center.Y + (int)(range * 0.67f));
+            x = (x - (x % Tile.Size)) / Tile.Size;
+            y = (y - (y % Tile.Size)) / Tile.Size;
+            if (!InBounds(x, y))
+                return Vector2.Zero;
+            //if (findGround)
+            //{
+            //    if (!Main.tile[x, y + npc.height / Tile.Size + 1].Active || !Main.tileSolid[Main.tile[x, y + npc.height / 16 + 1].TileType] || !Main.tileSolid[Main.tile[x + 1, y + npc.height / 16 + 1].TileType] || Main.tile[x, y + (npc.height - 4) / 16].HasTile)
+            //        return Vector2.Zero;
+            //}
+            return new Vector2(x * Tile.Size, y * Tile.Size);
+        }
 		public static Vector2 AngleBased(Vector2 position, float angle, float radius)
 		{
 			float cos = position.X + (float)(radius * Math.Cos(angle));

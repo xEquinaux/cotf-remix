@@ -40,4 +40,41 @@ namespace cotf
         Wrists = 32,
         CrossBow = 33    // slow
     }
+    public enum Quality : int
+    {
+        Paper,
+        Wooden,
+        Iron,
+        Bronze,
+        Silver,
+        Steel,
+        Elven,
+        Meteoric
+    }
+    public enum ArmorType : int
+    {
+        Paper = 1,
+        Leather = 2,
+        Studded = 3,
+        Plate = 5,
+        Chain = 5,
+        Elven = 10,
+        Meteoric = 10
+    }
+    public enum Effect : int
+    {
+        Broken = 0,
+        Normal = 1,
+        Tough = 1,
+        Cursed = 2,
+        Enchanted = 2
+    }
+    public enum FloorType
+    {
+        None,
+        Normal,
+        Jackpot,
+        Haunted,
+        Haze
+    }
 }

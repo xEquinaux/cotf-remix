@@ -18,7 +18,6 @@ namespace cotf
 {
     public class Kobold : Npc
     {
-        int frameTicks;
         public override void SetDefaults()
         {
             name = "Kobold";

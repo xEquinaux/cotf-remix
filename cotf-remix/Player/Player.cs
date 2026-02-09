@@ -43,6 +43,7 @@ namespace cotf
             stopSpeed, 
             moveSpeed = 0.15f;
         public const float maxSpeed = 3f;
+        public int statDefense;
         public bool 
             controlUp,
             controlRight,
@@ -551,6 +552,8 @@ namespace cotf
         }
         public void Hurt(int damage, float knockback, float angle)
         {
+            damage -= statDefense / 2;
+
             CombatText.NewText(damage, this);
             life -= damage;
             iFrames = 0;

@@ -142,6 +142,7 @@ namespace cotf
         }
         #endregion
         //private System.Windows.Forms.Form surface;
+        public static FloorType floorType = FloorType.Normal;
         internal static Image
             texture,
             texture90,
@@ -159,6 +160,7 @@ namespace cotf
         public static Image[] chainTexture = new Image[1];
         public static Image[] wallTexture = new Image[4];
         public static List<Image> Texture = new List<Image>();
+        public static Image[] wurmTex = new Image[3];
         //public static KeyStates EscState = KeyStates.None;
         public static Camera camera1 = new Camera();
         public static Vector2 MouseWorld;
@@ -185,6 +187,7 @@ namespace cotf
         internal static Lamp[] lamp = new Lamp[101];
         internal static Projectile[] projectile = new Projectile[256];
         internal static Npc[] npc = new Npc[128];
+        internal static Entity[] wurm = new Entity[101];
         internal static Door[] door = new Door[51];
         internal static Scenery[] scenery = new Scenery[256];
         internal static Trap[] trap = new Trap[101];
