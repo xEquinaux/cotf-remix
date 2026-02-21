@@ -51,6 +51,8 @@ namespace cotf
                 default:
                     break;
             }
+            //  TODO Stand in quality check
+            ql = (decimal)Main.rand.NextDouble();
             life = lifeMax;
         }
         public bool PreUpdate()

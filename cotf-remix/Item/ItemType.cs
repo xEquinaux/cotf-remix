@@ -57,8 +57,8 @@ namespace cotf
         Leather = 2,
         Studded = 3,
         Plate = 5,
-        Chain = 5,
-        Elven = 10,
+        Chain = 4,
+        Elven = 8,
         Meteoric = 10
     }
     public enum Effect : int

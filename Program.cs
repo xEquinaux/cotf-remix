@@ -22,8 +22,8 @@ internal class Program
 {
 	static void Main(string[] args)
 	{
-		try 
-		{ 
+		try
+		{
 			new Game();
 		}
 		catch (Exception e)
@@ -72,7 +72,7 @@ public class Game : Direct2D
 	{
 		Asset.Request("Backgrounds\\MapBGMagno", ".png", out titleScreen);
 		Asset.LoadFromFile("Content\\Sky_boss", out skyBoss);
-		
+
 		Main.cinnabar = Asset<Image>.Request("cinnabar_dagger");
 		Main.bg = Asset<Image>.Request("bg");
 		Main.texture = Asset<Image>.Request("temp");
@@ -98,6 +98,9 @@ public class Game : Direct2D
 		Main.wurmTex[0] = Asset.LoadFromFile("Content/NPCs/Hatchling_head");
 		Main.wurmTex[1] = Asset.LoadFromFile("Content/NPCs/Hatchling_body");
 		Main.wurmTex[2] = Asset.LoadFromFile("Content/NPCs/Hatchling_tail");
+		Main.Texture.Add(Asset.LoadFromFile("Content/Items/Armors/ShockPlate"));
+		Main.Texture.Add(Asset.LoadFromFile("Content/Items/Armors/ShockMask"));
+		Main.Texture.Add(Asset.LoadFromFile("Content/Items/Armors/ShockLegs"));
 	}
 
 	public override void Initialize()
@@ -114,21 +117,21 @@ public class Game : Direct2D
 	public bool RateLimiter()
 	{
 		const int FPS = 600; // Target frames per second
-        TimeSpan frameDuration = TimeSpan.FromMilliseconds(1000.0 / FPS);
+		TimeSpan frameDuration = TimeSpan.FromMilliseconds(1000.0 / FPS);
 
-        Stopwatch stopwatch = Stopwatch.StartNew();
+		Stopwatch stopwatch = Stopwatch.StartNew();
 
-        // Your update logic here
-        Console.WriteLine("Updating...");
+		// Your update logic here
+		Console.WriteLine("Updating...");
 
-        stopwatch.Stop();
-        TimeSpan elapsedTime = stopwatch.Elapsed;
-        TimeSpan sleepTime = frameDuration - elapsedTime;
+		stopwatch.Stop();
+		TimeSpan elapsedTime = stopwatch.Elapsed;
+		TimeSpan sleepTime = frameDuration - elapsedTime;
 
-        if (sleepTime > TimeSpan.Zero)
-        {
-            return false;
-        }
+		if (sleepTime > TimeSpan.Zero)
+		{
+			return false;
+		}
 		return true;
 	}
 
@@ -288,8 +291,8 @@ public class Game : Direct2D
 			// TODO Realtime player light
 			LightPass.PreProcessing(
 				Main.tile,
-				Main.background, 
-				new Lamp[] 
+				Main.background,
+				new Lamp[]
 				{
 					Main.lamp[0]
 				}
@@ -355,4 +358,16 @@ public class Game : Direct2D
 		graphics.SmoothingMode = smoothingMode;
 	}
 	#endregion
+}
+
+public class TextureID
+{
+	public const int
+		Spear = 0,
+		Scroll = 1,
+		Potion = 2,
+		SceneryStone = 3,
+		PaperMask = 5,
+		PaperArmor = 4,
+		PaperLegs = 6;
 }

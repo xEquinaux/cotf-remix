@@ -17,9 +17,15 @@ using System.Numerics;
 
 namespace cotf
 {
-    public class Item : Entity
+    public partial class Item : Entity
     {
         #region variables
+        //  Armor
+        public Effect qlType;
+        public ArmorType style;
+        public int defenseRate;
+        public Npc dropped;
+        
         public bool channel;
         public bool autoReuse;
         public bool isCoin = false;
@@ -167,6 +173,10 @@ namespace cotf
         }
         public virtual void OnEquip(Player player)
         {
+            if (armor)
+            {
+                player.statDefense += defenseRate;
+            }
             if (!this.identified)
             {
                 RollStatus(this);
@@ -194,6 +204,8 @@ namespace cotf
                         break;
                     case ItemID.Purse:
                         break;
+                    case ItemID.BodyArmor:
+                        break;
                     default:
                         break;
                 }
@@ -202,6 +214,8 @@ namespace cotf
                     case EquipType.MainHand:
                         break;
                     case EquipType.OffHand:
+                        break;
+                    case EquipType.Torso:
                         break;
                     default:
                         break;
@@ -217,6 +231,7 @@ namespace cotf
                 return false; 
             myPlayer.equipment[equipType].equipped = false;
             myPlayer.equipment[equipType].owner = myPlayer.whoAmI;
+            OnUnequip(myPlayer);
             switch (type)
             {
                 case ItemID.Torch:
@@ -541,6 +556,18 @@ namespace cotf
         
         public static int Drop(ref Item item, Vector2 position)
         {
+            if (item.armor)
+            {
+                item.defenseRate = (int)item.style;
+
+                switch (item.style)
+                {
+                    case ArmorType.Paper:
+                        item.preTexture = (Bitmap)Main.Texture[TextureID.PaperArmor];
+                        item.texture = Main.Texture[TextureID.PaperArmor];
+                        break;
+                }
+            }
             //  Either modify drop to clone or use ref
             //int i = Item.NewItem(position.X, position.Y, item.width, item.height, item.type, 255, item.value, item.stack);
             //Item drop = Main.item[i];

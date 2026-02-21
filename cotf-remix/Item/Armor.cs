@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace cotf
 {
-    public class Armor : Item
+    public partial class Item
     {
-        public Effect qlType;
-        public ArmorType style;
-        public int defenseRate;
-        public Npc dropped;
+        public bool armor = false;
+        public virtual void OnLootDrop()
+        {
+            qlType = StatusEffect();
+        }
         public virtual void OnPickup()
         {
-
         }
         public Effect StatusEffect()
         {
@@ -36,16 +36,14 @@ namespace cotf
             {
                 num--;
             }
-
             return (Effect)num;
-        }
-        public virtual void OnEquipArmor(Player player)
-        {
-            player.statDefense += defenseRate;
         }
         public virtual void OnUnequip(Player player)
         {
-            player.statDefense -= defenseRate;
+            if (armor)
+            { 
+                player.statDefense -= defenseRate;
+            }
         }
     }
 }
