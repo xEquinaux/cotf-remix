@@ -206,7 +206,7 @@ namespace cotf
         private bool init = false;
         public static rand rand = new rand();
         public static float TimeScale => timeScale();
-        public IntPtr WindowHandle = Utility.FindWindowByCaption(IntPtr.Zero, "SharpDX Render Window");
+        public IntPtr WindowHandle = Utility.FindWindowByCaption(IntPtr.Zero, "Main Window");
 
         public static float Gamma = 1.2f;
         public static int KeyPressTimer;

@@ -1,20 +1,22 @@
 ﻿using cotf.Assets;
+using cotf.Base;
+using CotF_dev;
 using REWD.D2D;
 using REWD.FoundationR;
 using SharpDX;
 using SharpDX.Direct2D1;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using Bitmap = System.Drawing.Bitmap;
-using Image = System.Drawing.Image;
-using cotf.Base;
-using CotF_dev;
-using Rectangle = System.Drawing.Rectangle;
-using Point = System.Drawing.Point;
+using System;
 using System.Diagnostics;
 using System.Drawing;
-using System;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.IO;
+using System.Security.Cryptography;
+using System.Threading;
+using Bitmap = System.Drawing.Bitmap;
+using Image = System.Drawing.Image;
+using Point = System.Drawing.Point;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace cotf;
 
@@ -22,8 +24,8 @@ internal class Program
 {
 	static void Main(string[] args)
 	{
-		try 
-		{ 
+		try
+		{
 			new Game();
 		}
 		catch (Exception e)
@@ -68,11 +70,39 @@ public class Game : Direct2D
 	int width = 800, height = 600;
 	bool showTitle = false;
 
+	private DateTime _lastUpdateTime;
+	private const int TargetFps = 120;
+	private readonly Action _updateLogic; // Your logic (e.g., zoom handling)
+	private readonly Action _render;      // Your drawing loop
+
+	public override void Update()
+	{
+		// 1. Get current time (high precision)
+		DateTime currentTime = DateTime.UtcNow;
+
+		// 2. Calculate time since last update
+		TimeSpan deltaTime = currentTime - _lastUpdateTime;
+
+		// 3. Capped update: Run logic ONLY once per 60 FPS
+		if (deltaTime.TotalSeconds >= 1.0 / TargetFps)
+		{
+			// --- UPDATE LOOP (LOGIC HANDLING) ---
+			UpdateLoop(); // Your zoom logic, input handling, etc.
+			_lastUpdateTime = currentTime;
+		}
+
+		// 5. Sleep to "cap" the frame rate (critical for smooth 60 FPS)
+		if (deltaTime.TotalSeconds < 1.0 / TargetFps)
+		{
+			Thread.Sleep((int)Math.Max(1, (1.0 / TargetFps) - deltaTime.TotalSeconds * 1000));
+		}
+	}
+
 	public override void LoadResources()
 	{
 		Asset.Request("Backgrounds\\MapBGMagno", ".png", out titleScreen);
 		Asset.LoadFromFile("Content\\Sky_boss", out skyBoss);
-		
+
 		Main.cinnabar = Asset<Image>.Request("cinnabar_dagger");
 		Main.bg = Asset<Image>.Request("bg");
 		Main.texture = Asset<Image>.Request("temp");
@@ -99,6 +129,7 @@ public class Game : Direct2D
 
 	public override void Initialize()
 	{
+		_lastUpdateTime = DateTime.UtcNow;
 		new Main();
 		TagCompound.SetPaths(PlayerSavePath, WorldSavePath);   //  TODO: make relative to player name
 		{
@@ -110,26 +141,26 @@ public class Game : Direct2D
 
 	public bool RateLimiter()
 	{
-		const int FPS = 600; // Target frames per second
-        TimeSpan frameDuration = TimeSpan.FromMilliseconds(1000.0 / FPS);
+		const int FPS = 60; // Target frames per second
+		TimeSpan frameDuration = TimeSpan.FromMilliseconds(1000.0 / FPS);
 
-        Stopwatch stopwatch = Stopwatch.StartNew();
+		Stopwatch stopwatch = Stopwatch.StartNew();
 
-        // Your update logic here
-        Console.WriteLine("Updating...");
+		// Your update logic here
+		Console.WriteLine("Updating...");
 
-        stopwatch.Stop();
-        TimeSpan elapsedTime = stopwatch.Elapsed;
-        TimeSpan sleepTime = frameDuration - elapsedTime;
+		stopwatch.Stop();
+		TimeSpan elapsedTime = stopwatch.Elapsed;
+		TimeSpan sleepTime = frameDuration - elapsedTime;
 
-        if (sleepTime > TimeSpan.Zero)
-        {
-            return false;
-        }
+		if (sleepTime > TimeSpan.Zero)
+		{
+			return false;
+		}
 		return true;
 	}
 
-	public override void Update()
+	public void UpdateLoop()
 	{
 		//Task.WaitAll(Task.Delay(1));
 		if (!showTitle && CotF_dev.Keyboard.IsKeyPressed((int)VIRTUALKEY.VK_RETURN))
@@ -285,8 +316,8 @@ public class Game : Direct2D
 			// TODO Realtime player light
 			LightPass.PreProcessing(
 				Main.tile,
-				Main.background, 
-				new Lamp[] 
+				Main.background,
+				new Lamp[]
 				{
 					Main.lamp[0]
 				}
@@ -352,4 +383,48 @@ public class Game : Direct2D
 		graphics.SmoothingMode = smoothingMode;
 	}
 	#endregion
+}
+
+public class GameLoop
+{
+	private DateTime _lastUpdateTime;
+	private const int TargetFps = 60;
+	private readonly Action _updateLogic; // Your logic (e.g., zoom handling)
+	private readonly Action _render;      // Your drawing loop
+
+	public GameLoop(Action updateLogic, Action render)
+	{
+		_updateLogic = updateLogic;
+		_render = render;
+		_lastUpdateTime = DateTime.UtcNow;
+	}
+
+	public void Run()
+	{
+		while (true)
+		{
+			// 1. Get current time (high precision)
+			DateTime currentTime = DateTime.UtcNow;
+
+			// 2. Calculate time since last update
+			TimeSpan deltaTime = currentTime - _lastUpdateTime;
+
+			// 3. Capped update: Run logic ONLY once per 60 FPS
+			if (deltaTime.TotalSeconds >= 1.0 / TargetFps)
+			{
+				// --- UPDATE LOOP (LOGIC HANDLING) ---
+				_updateLogic(); // Your zoom logic, input handling, etc.
+				_lastUpdateTime = currentTime;
+			}
+
+			// 4. DRAW LOOP (UNCAPPED) - KEEP THIS UNCHANGED
+			_render();
+
+			// 5. Sleep to "cap" the frame rate (critical for smooth 60 FPS)
+			if (deltaTime.TotalSeconds < 1.0 / TargetFps)
+			{
+				Thread.Sleep((int)((1.0 / TargetFps) - deltaTime.TotalSeconds * 1000));
+			}
+		}
+	}
 }
