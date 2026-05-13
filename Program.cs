@@ -77,6 +77,8 @@ public class Game : Direct2D
 
 	public override void Update()
 	{
+		UpdateLoop();
+		return;
 		// 1. Get current time (high precision)
 		DateTime currentTime = DateTime.UtcNow;
 
